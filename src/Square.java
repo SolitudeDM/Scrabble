@@ -14,4 +14,6 @@ public class Square {
         this.type = type;
     }
 
+
+
 }
