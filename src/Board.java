@@ -8,7 +8,7 @@ public class Board {
         this.squares = squares;
     }
 
-    public void setSqare(int row, int col, Type type) {
+    public void setSquare(int row, int col, Type type) {
         this.squares[row][col].setType(type);
     }
 
@@ -16,5 +16,15 @@ public class Board {
         this.squares[row][col].setTile(tile);
     }
 
+    /**
+     * @requires ((row <= 15) && (col <= 15))
+     * @param row
+     * @param col
+     * @return
+     */
+    public Square getSquare(int row, int col) {
+        assert ((row <= 15) && (col <= 15));
+        return this.squares[row][col];
+    }
 
 }
