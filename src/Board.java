@@ -17,14 +17,15 @@ public class Board {
     }
 
     /**
-     * @requires ((row <= 15) && (col <= 15))
+     * @requires the required square to be within the bounds
      * @param row
      * @param col
-     * @return
+     * @return the required square
      */
     public Square getSquare(int row, int col) {
-        assert ((row <= 15) && (col <= 15));
+        assert ((row <= RESOLUTION) && (col <= RESOLUTION) && (row > 0) && (col > 0));
         return this.squares[row][col];
     }
+
 
 }
