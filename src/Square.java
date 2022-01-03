@@ -1,9 +1,5 @@
 public class Square {
 
-    public enum Type{
-        TRIPPLE_WORD, DOUBLE_WORD, CENTER, TRIPPLE_LETTER, DOUBLE_LETTER, NORMAL
-    }
-
     private int column;
     private int row;
     private Type type;
