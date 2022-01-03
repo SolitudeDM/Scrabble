@@ -8,13 +8,8 @@ public class Board {
         this.squares = squares;
     }
 
-    public void setSquare(int row, int col, Type type) {
-        this.squares[row][col].setType(type);
-    }
+    public void setSquare(int row, int col, Square.Type type) {
 
-    public void setTile(int row, int col, Tile tile) {
-        this.squares[row][col].setTile(tile);
-    }
 
     /**
      * @requires the required square to be within the bounds
