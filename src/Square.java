@@ -18,7 +18,6 @@ public class Square {
     public Square(int column, int row){
         this.column = column;
         this.row = row;
-        this.type = Type.NORMAL;
         this.tile = null;
     }
 
@@ -34,10 +33,14 @@ public class Square {
         this.tile = tile;
     }
 
+    /**
+     * A setter for variable column*/
     public void setColumn(int column){
         this.column = column;
     }
 
+    /**
+     * A setter for variable row*/
     public void setRow(int row){
         this.row = row;
     }
@@ -46,6 +49,8 @@ public class Square {
         return type;
     }
 
+    /**
+     * This to String() method is used for printing the squares on the board*/
     @Override
     public String toString() {
         switch (getType()) {

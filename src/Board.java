@@ -10,7 +10,10 @@ public class Board {
     /**
      * squares is our two-dimensional array
      * @invariant there are always RESOLUTION * RESOLUTION squares on a board*/
-    private Square[][] squares = new Square[RESOLUTION][RESOLUTION];
+    private Square[][] squares;
+    /**
+     * This two-dimensional array represents the pattern of squares on the board*/
+    //add a custom pattern later
     private String[][] pattern = {
             {"3W", "NO", "NO", "2L", "NO", "NO", "NO", "3W", "NO", "NO", "NO", "2L", "NO", "NO", "3W"},
             {"NO", "2W", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "2W", "NO"},
@@ -37,6 +40,8 @@ public class Board {
         this.squares = squares;
     }
 
+    /**
+     * This method sets the board with the required squares on the right places, using the pattern array*/
     public void setBoard() {
         for (int i = 0; i < RESOLUTION; i++) {
             for (int j = 0; j < RESOLUTION; j++) {
@@ -63,6 +68,8 @@ public class Board {
         }
     }
 
+    /**
+     * This method prints the board to the console*/
     public void showBoard() {
         for (int i = 0; i < RESOLUTION; i++) {
             for (int j = 0; j < RESOLUTION; j++) {
