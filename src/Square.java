@@ -14,14 +14,13 @@ public class Square {
      * Square constructor, creates a new square with a given type, index and tile
      * @param type is the type of the square
      * @param column is the column index of the square
-     * @param row is the row index of the square
-     * @param tile is the tile on the square(initially empty)*/
+     * @param row is the row index of the square*/
     //we need to make the square initially empty, because we just created the square, do we even need to include tile in the constructor???
-    public Square(Type type, int column, int row, Tile tile){
+    public Square(Type type, int column, int row){
         this.column = column;
         this.row = row;
         this.type = type;
-        this.tile = tile;
+        this.tile = null;
     }
 
     /**
