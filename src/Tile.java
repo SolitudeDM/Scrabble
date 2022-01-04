@@ -18,7 +18,7 @@ public class Tile {
     }
 
     /**
-     * getters and setters for the two variables of a tile*/
+     * getters and setters for the variables of a tile*/
     public void setLetter(char letter){
         this.letter = letter;
     }
@@ -32,4 +32,9 @@ public class Tile {
     public int getLetterPoints(){
         return this.letterPoints;
     }
+
+    public int getLetterQuantity(){
+        return this.letterQuantity;
+    }
+
 }
