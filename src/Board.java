@@ -80,8 +80,6 @@ public class Board {
         }
     }
 
-
-
     /**
      * @ensures to set a given square to a given type
      * @param row is the row index

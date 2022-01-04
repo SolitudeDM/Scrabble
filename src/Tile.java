@@ -7,12 +7,14 @@ public class Tile {
      * Variables that a tile in scrabble has*/
     private char letter;
     private int letterPoints;
+    private int letterQuantity;
 
     /**
      * Tile constructor, creates a new tile with the given letter and its points*/
-    public Tile(char letter, int letterPoints){
+    public Tile(char letter, int letterPoints, int letterQuantity){
         this.letter = letter;
         this.letterPoints = letterPoints;
+        this.letterQuantity = letterQuantity;
     }
 
     /**
