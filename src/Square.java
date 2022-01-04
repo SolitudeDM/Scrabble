@@ -41,4 +41,28 @@ public class Square {
     public void setRow(int row){
         this.row = row;
     }
+
+    public Type getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        switch (getType()) {
+
+            case CENTER:
+                return ("CE");
+            case DOUBLE_LETTER:
+                return ("2L");
+            case TRIPPLE_LETTER:
+                return ("3L");
+            case DOUBLE_WORD:
+                return ("2W");
+            case TRIPPLE_WORD:
+                return ("3W");
+            default:
+                return ("__");
+
+        }
+    }
 }

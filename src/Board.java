@@ -40,29 +40,37 @@ public class Board {
     public void SetBoard() {
         for (int i = 1; i <= RESOLUTION; i++) {
             for (int j = 1; j <= RESOLUTION; j++) {
-
                 if (pattern[i][j].equals("NO")) {
-                    squares[i][j].
+                    setSquare(i, j, Type.NORMAL);
                 }
                 if (pattern[i][j].equals("CE")) {
-
+                    setSquare(i, j, Type.CENTER);
                 }
                 if (pattern[i][j].equals("2L")) {
-
+                    setSquare(i, j, Type.DOUBLE_LETTER);
                 }
                 if (pattern[i][j].equals("3L")) {
-
+                    setSquare(i, j, Type.TRIPPLE_LETTER);
                 }
                 if (pattern[i][j].equals("2W")) {
-
+                    setSquare(i, j, Type.DOUBLE_WORD);
                 }
                 if (pattern[i][j].equals("3W")) {
-
+                    setSquare(i, j, Type.TRIPPLE_WORD);
                 }
+            }
+        }
+    }
+
+    public void ShowBoard() {
+        for (int i = 1; i <= RESOLUTION; i++) {
+            for (int j = 1; j <= RESOLUTION; j++) {
 
             }
         }
     }
+
+
 
     /**
      * @ensures to set a given square to a given type
