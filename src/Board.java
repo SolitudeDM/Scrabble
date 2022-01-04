@@ -19,9 +19,7 @@ public class Board {
             {"NO", "NO", "NO", "NO", "2W", "NO", "NO", "NO", "NO", "NO", "2W", "NO", "NO", "NO", "NO"},
             {"NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO"},
             {"NO", "NO", "2L", "NO", "NO", "NO", "2L", "NO", "2L", "NO", "NO", "NO", "2L", "NO", "NO"},
-            {"3W", "NO", "NO", "2L", "NO", "NO", "2L", "NO", "2L", "NO", "NO", "NO", "2L", "NO", "NO"},
             {"3W", "NO", "NO", "2L", "NO", "NO", "NO", "CE", "NO", "NO", "NO", "2L", "NO", "NO", "3W"},
-            {"3W", "NO", "NO", "2L", "NO", "NO", "2L", "NO", "2L", "NO", "NO", "NO", "2L", "NO", "NO"},
             {"NO", "NO", "2L", "NO", "NO", "NO", "2L", "NO", "2L", "NO", "NO", "NO", "2L", "NO", "NO"},
             {"NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO"},
             {"NO", "NO", "NO", "NO", "2W", "NO", "NO", "NO", "NO", "NO", "2W", "NO", "NO", "NO", "NO"},
@@ -42,6 +40,25 @@ public class Board {
     public void SetBoard() {
         for (int i = 1; i <= RESOLUTION; i++) {
             for (int j = 1; j <= RESOLUTION; j++) {
+
+                if (pattern[i][j].equals("NO")) {
+                    squares[i][j].
+                }
+                if (pattern[i][j].equals("CE")) {
+
+                }
+                if (pattern[i][j].equals("2L")) {
+
+                }
+                if (pattern[i][j].equals("3L")) {
+
+                }
+                if (pattern[i][j].equals("2W")) {
+
+                }
+                if (pattern[i][j].equals("3W")) {
+
+                }
 
             }
         }
