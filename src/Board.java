@@ -10,7 +10,7 @@ public class Board {
     /**
      * squares is our two-dimensional array
      * @invariant there are always RESOLUTION * RESOLUTION squares on a board*/
-    private Square[][] squares;
+    private Square[][] squares = new Square[RESOLUTION][RESOLUTION];
     private String[][] pattern = {
             {"3W", "NO", "NO", "2L", "NO", "NO", "NO", "3W", "NO", "NO", "NO", "2L", "NO", "NO", "3W"},
             {"NO", "2W", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "2W", "NO"},
@@ -37,9 +37,10 @@ public class Board {
         this.squares = squares;
     }
 
-    public void SetBoard() {
-        for (int i = 1; i <= RESOLUTION; i++) {
-            for (int j = 1; j <= RESOLUTION; j++) {
+    public void setBoard() {
+        for (int i = 0; i < RESOLUTION; i++) {
+            for (int j = 0; j < RESOLUTION; j++) {
+                    squares[i][j] = new Square(j,i);
                 if (pattern[i][j].equals("NO")) {
                     setSquare(i, j, Type.NORMAL);
                 }
@@ -62,11 +63,13 @@ public class Board {
         }
     }
 
-    public void ShowBoard() {
-        for (int i = 1; i <= RESOLUTION; i++) {
-            for (int j = 1; j <= RESOLUTION; j++) {
-
+    public void showBoard() {
+        for (int i = 0; i < RESOLUTION; i++) {
+            for (int j = 0; j < RESOLUTION; j++) {
+                System.out.print(squares[i][j].toString());
+                System.out.print(" ");
             }
+            System.out.println();
         }
     }
 
@@ -78,6 +81,8 @@ public class Board {
      * @param col is the column index
      * @param type is the type that a square will be set to*/
     public void setSquare(int row, int col, Type type) {
+        this.squares[row][col].setRow(row);
+        this.squares[row][col].setColumn(col);
         this.squares[row][col].setType(type);
     }
 
@@ -98,7 +103,7 @@ public class Board {
      * @return the required square
      */
     public Square getSquare(int row, int col) {
-        assert ((row <= RESOLUTION) && (col <= RESOLUTION) && (row > 0) && (col > 0));
+        assert ((row < RESOLUTION) && (col < RESOLUTION) && (row >= 0) && (col >= 0));
         return this.squares[row][col];
     }
 
