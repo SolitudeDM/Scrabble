@@ -33,4 +33,12 @@ public class Square {
     public void setTile(Tile tile) {
         this.tile = tile;
     }
+
+    public void setColumn(int column){
+        this.column = column;
+    }
+
+    public void setRow(int row){
+        this.row = row;
+    }
 }
