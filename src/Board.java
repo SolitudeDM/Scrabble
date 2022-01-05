@@ -112,5 +112,9 @@ public class Board {
         return this.squares[row][col];
     }
 
+    public boolean isEmptySquare(Square square){
+        return square.getTile() == null;
+    }
+
 
 }

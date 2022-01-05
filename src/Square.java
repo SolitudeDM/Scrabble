@@ -48,6 +48,9 @@ public class Square {
     public Type getType() {
         return type;
     }
+    public Tile getTile(){
+        return this.tile;
+    }
 
     /**
      * This to String() method is used for printing the squares on the board*/
