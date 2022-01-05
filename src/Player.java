@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 /**
  * Abstract class for a player in scrabble game, will later on be subclassed by HumanPlayer and ComputerPlayer*/
 public abstract class Player {
     private String name;
     private int score;
+    private ArrayList<Tile> hand;
 
     /**
      * Constructor that creates a player instance
@@ -24,6 +27,12 @@ public abstract class Player {
     }
     public void setScore(int score){
         this.score = score;
+    }
+    public ArrayList<Tile> getHand() {
+        return this.hand;
+    }
+    public void setHand(ArrayList<Tile> hand) {
+        this.hand = hand;
     }
 
     public abstract String determineMove(Board board);
