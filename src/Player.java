@@ -35,7 +35,7 @@ public abstract class Player {
         this.hand = hand;
     }
 
-    public abstract String determineMove(Board board);
+    public abstract String determineMove(Board board,int row, int col, Tile tile);
 
 
 }
