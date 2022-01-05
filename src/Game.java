@@ -2,6 +2,12 @@ import java.util.ArrayList;
 
 public class Game {
 
+    private Player[] players;
+
+    public Game(Player[] players) {
+        this.players = players;
+    }
+
     /**
      * This method creates and fills in a sack with tiles
      * @ensures to return a complete tileSack
