@@ -5,12 +5,15 @@ public class Game {
 
     private ArrayList<Tile> tileSack;
     private Player[] players;
+    private Board board;
 
     private HashMap<Player, ArrayList<Tile>> hands;
 
 
-    public Game(Player[] players) {
+    public Game(Player[] players, Board board) {
         this.players = players;
+        this.board = board;
+        tileSack = createTileSack();
     }
 
     /**
@@ -61,9 +64,9 @@ public class Game {
         return completeTileSack;
     }
 
-//    public HashMap<Player, ArrayList<Tile>> shuffle(){
-//
-//    }
+    public HashMap<Player, ArrayList<Tile>> shuffle(){
+
+    }
 
     /**
      * This method return a Tile based on its letter
