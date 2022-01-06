@@ -37,4 +37,20 @@ public abstract class Player {
 
     public abstract String determineMove(Board board);
 
+    public boolean searchHand(ArrayList<Tile> lettersUsed) {
+        //Add copy of hand tiles
+        ArrayList<Tile> handDupe = getHand();
+
+        for (int i = 0; i < handDupe.size(); i++) {
+            if (handDupe.contains(lettersUsed.get(i))) {
+                handDupe.remove(lettersUsed.get(i));
+            } else {
+                return false;
+            }
+        }
+        setHand(handDupe);
+        // ADD MISSING TILES
+        return true;
+    }
+
 }

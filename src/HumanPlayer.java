@@ -29,14 +29,22 @@ public class HumanPlayer extends Player{
 
             case ("PLACE"):
 
-                HashMap<String[], String> map = new HashMap<>();
-//                ArrayList<Tile> handClone = ;
-            for (int i = 0; i <= splittedChoice.length - 1; i = i + 3) {
+                HashMap<String[], String> tileset = new HashMap<>();
+                ArrayList<Tile> lettersUsed = new ArrayList<>();
+
+            for (int i = 1; i <= splittedChoice.length - 1; i = i + 3) {
                 String[] Index = new String[2];
+                // add method to convert letter to position in the alphabet
                 Index[0] = splittedChoice[i];
                 Index[1] = splittedChoice[i + 1];
-                map.put(Index, splittedChoice[i + 2]);
+                tileset.put(Index, splittedChoice[i + 2]);
+
+//                lettersUsed.add(getTile(splittedChoice[i + 2]));
+
             }
+
+
+
                 break;
 
             case ("SWAP"):
