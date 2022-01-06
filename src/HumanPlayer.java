@@ -32,17 +32,16 @@ public class HumanPlayer extends Player{
                 HashMap<String[], String> tileset = new HashMap<>();
                 ArrayList<Tile> lettersUsed = new ArrayList<>();
 
-            for (int i = 1; i <= splittedChoice.length - 1; i = i + 3) {
-                String[] Index = new String[2];
-                // add method to convert letter to position in the alphabet
-                Index[0] = splittedChoice[i];
-                Index[1] = splittedChoice[i + 1];
-                tileset.put(Index, splittedChoice[i + 2]);
+                for (int i = 1; i <= splittedChoice.length - 1; i = i + 3) {
+                    String[] Index = new String[2];
+                    // add method to convert letter to position in the alphabet
+                    Index[0] = splittedChoice[i];
+                    Index[1] = splittedChoice[i + 1];
+                    tileset.put(Index, splittedChoice[i + 2]);
 
 //                lettersUsed.add(getTile(splittedChoice[i + 2]));
 
-            }
-
+                }
 
 
                 break;
@@ -63,5 +62,7 @@ public class HumanPlayer extends Player{
 //        if(board.isEmptySquare(board.getSquare(parseInt(splittedChoice[1]), parseInt(splittedChoice[2])))){
 //            board.setTile(parseInt(splittedChoice[1]), parseInt(splittedChoice[2]), );
 
+
     }
 }
+

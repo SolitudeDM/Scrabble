@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class Game {
 
@@ -8,20 +9,21 @@ public class Game {
     private Player[] players;
     private Board board;
 
-    private HashMap<Player, ArrayList<Tile>> hands;
+    private HashMap<Player, List<Tile>> hands;
 
 
     public Game(Player[] players, Board board) {
         this.players = players;
         this.board = board;
         tileSack = createTileSack();
+        handOut();
     }
 
     /**
-     * This method creates and fills in a sack with tiles
+     * This method creates,fills and shuffles a sack with tiles
      * @ensures to return a complete tileSack
      * @return Arraylist of tiles with the right quantity*/
-    public ArrayList<Tile> createTileSack() {
+    public static ArrayList<Tile> createTileSack() {
         //this is a list of letters without duplicates (quantity not counted yet)
         ArrayList<Tile> tileSack = new ArrayList<>();
 
@@ -62,11 +64,19 @@ public class Game {
             }
         }
 
+        Collections.shuffle(completeTileSack);
         return completeTileSack;
     }
 
-    public void shuffleSack(){
-        Collections.shuffle(tileSack);
+    /**
+     * This method hands out tiles for the players
+     * @ensures number of entries in HashMap hands to be equal to amount of players and that every player will have 7 tiles*/
+    public void handOut(){
+        for(Player p : players){
+            List<Tile> given = tileSack.subList(0,7);
+            tileSack.remove(given);
+            hands.put(p, given);
+        }
     }
 
     /**
@@ -85,6 +95,23 @@ public class Game {
         return null;
     }
 
+    /**
+     * This method finds players hand and prints all the tiles he has
+     * @param player is the player we want to show tiles to
+     * @requires player != null
+     * @requires player to be included in the players array of the game
+     * @ensures to print all the tiles this player has*/
+    public void showTiles(Player player){
+        assert player != null;
+        for(Player p : hands.keySet()){
+            if (p.equals(player)){
+                for(Tile t : hands.get(p)){
+                    System.out.println(t.getLetter());
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         //Here we checked if the board will be printed properly, using the setBoard() and showBoard() methods
         Square[][] squares = new Square[15][15];
@@ -95,7 +122,7 @@ public class Game {
         /*Here we checked if the tileSack is created properly (commented out because we don't need the createTileSack() method to be static
         made it static only for the testing
          */
-        //ArrayList<Tile> test = createTileSack();
-        //System.out.println(test);
+//        ArrayList<Tile> test = createTileSack();
+//        System.out.println(test);
     }
 }
