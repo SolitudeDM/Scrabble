@@ -55,7 +55,5 @@ public class HumanPlayer extends Player{
 //        if(board.isEmptySquare(board.getSquare(parseInt(splittedChoice[1]), parseInt(splittedChoice[2])))){
 //            board.setTile(parseInt(splittedChoice[1]), parseInt(splittedChoice[2]), );
 
-
-        }
     }
 }
