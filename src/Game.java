@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Game {
@@ -64,8 +65,8 @@ public class Game {
         return completeTileSack;
     }
 
-    public HashMap<Player, ArrayList<Tile>> shuffle(){
-
+    public void shuffleSack(){
+        Collections.shuffle(tileSack);
     }
 
     /**
