@@ -9,7 +9,7 @@ public class Game {
     private Player[] players;
     private Board board;
 
-    private HashMap<Player, List<Tile>> hands;
+    private HashMap<Player, ArrayList<Tile>> hands;
 
 
     public Game(Player[] players, Board board) {
@@ -74,8 +74,8 @@ public class Game {
     public void handOut(){
         for(Player p : players){
             List<Tile> given = tileSack.subList(0,7);
+            hands.put(p, new ArrayList<>(given));
             tileSack.remove(given);
-            hands.put(p, given);
         }
     }
 
