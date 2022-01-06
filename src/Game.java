@@ -1,9 +1,13 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game {
 
     private ArrayList<Tile> tileSack;
     private Player[] players;
+
+    private HashMap<Player, ArrayList<Tile>> hands;
+
 
     public Game(Player[] players) {
         this.players = players;
@@ -55,6 +59,26 @@ public class Game {
         }
 
         return completeTileSack;
+    }
+
+//    public HashMap<Player, ArrayList<Tile>> shuffle(){
+//
+//    }
+
+    /**
+     * This method return a Tile based on its letter
+     * @requires letter != null
+     * @param letter is the letter we want to get a Tile for
+     * @ensures to return the right Tile
+     * @return Tile with required letter
+     */
+    public Tile getTile(char letter){
+        for (int i = 0; i < tileSack.size(); i++){
+            if(letter == tileSack.get(i).getLetter()){
+                return tileSack.get(i);
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) {
