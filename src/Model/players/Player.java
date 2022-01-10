@@ -1,7 +1,13 @@
+package Model.players;
+
+import Model.Board;
+import Model.Game;
+import Model.Tile;
+
 import java.util.ArrayList;
 
 /**
- * Abstract class for a player in scrabble game, will later on be subclassed by HumanPlayer and ComputerPlayer*/
+ * Abstract class for a player in scrabble game, will later on be subclassed by Model.players.HumanPlayer and ComputerPlayer*/
 public abstract class Player {
     private String name;
     private int score;

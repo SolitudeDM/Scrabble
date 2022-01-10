@@ -1,5 +1,7 @@
+package Model;
+
 /**
- * Board for the scrabble game
+ * Model.Board for the scrabble game
  * @author Mark Zhitchenko and Dani Mahaini*/
 public class Board {
 
@@ -35,7 +37,7 @@ public class Board {
 
 
     /**
-     * Board constructor creates a new board with a two-dimensional array of squares*/
+     * Model.Board constructor creates a new board with a two-dimensional array of squares*/
     public Board(Square[][] squares) {
         this.squares = squares;
     }

@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * enum for the types of squares*/
 public enum Type {

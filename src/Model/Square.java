@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * Represents a square on the board in the scrabble game
  * @author Mark Zhitchenko and Dani Mahaini*/
@@ -11,7 +13,7 @@ public class Square {
     private Tile tile;
 
     /**
-     * Square constructor, creates a new square with a given type, index and tile
+     * Model.Square constructor, creates a new square with a given type, index and tile
 //     * @param type is the type of the square
      * @param column is the column index of the square
      * @param row is the row index of the square*/

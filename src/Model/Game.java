@@ -1,3 +1,7 @@
+package Model;
+
+import Model.players.Player;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,11 +83,11 @@ public class Game {
     }
 
     /**
-     * This method return a Tile based on its letter
+     * This method return a Model.Tile based on its letter
      * @requires letter != null
-     * @param letter is the letter we want to get a Tile for
-     * @ensures to return the right Tile
-     * @return Tile with required letter
+     * @param letter is the letter we want to get a Model.Tile for
+     * @ensures to return the right Model.Tile
+     * @return Model.Tile with required letter
      */
     public Tile getTile(char letter){
         for (int i = 0; i < tileSack.size(); i++){
@@ -121,7 +125,7 @@ public class Game {
         /*Here we checked if the tileSack is created properly (commented out because we don't need the createTileSack() method to be static
         made it static only for the testing
          */
-//        ArrayList<Tile> test = createTileSack();
+//        ArrayList<Model.Tile> test = createTileSack();
 //        System.out.println(test);
     }
 }
