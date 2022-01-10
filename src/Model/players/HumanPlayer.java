@@ -1,6 +1,11 @@
+package Model.players;
+
+import Model.Board;
+import Model.Game;
+import Model.Tile;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;

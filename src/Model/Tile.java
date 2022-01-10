@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * Represents a tile in the scrabble game
  * @author Dani Mahaini and Mark Zhitchenko*/
@@ -10,7 +12,7 @@ public class Tile {
     private int letterQuantity;
 
     /**
-     * Tile constructor, creates a new tile with the given letter and its points*/
+     * Model.Tile constructor, creates a new tile with the given letter and its points*/
     public Tile(char letter, int letterPoints, int letterQuantity){
         this.letter = letter;
         this.letterPoints = letterPoints;
