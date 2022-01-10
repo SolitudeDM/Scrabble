@@ -7,9 +7,12 @@ import static java.lang.Integer.parseInt;
 
 public class HumanPlayer extends Player{
 
-    public HumanPlayer(String name){
-        super(name);
+    public HumanPlayer(String name, Game game){
+        super(name,game);
     }
+
+
+    //SWAP
 
     @Override
     public String determineMove(Board board) {
@@ -43,7 +46,7 @@ public class HumanPlayer extends Player{
                         Index[1] = splittedChoice[i + 1];
                         tileset.put(Index, splittedChoice[i + 2]);
 
-//                lettersUsed.add(getTile(splittedChoice[i + 2]));
+                lettersUsed.add(this.getGame().getTile(splittedChoice[i + 2].charAt(0)));
 
                         if (searchHand(lettersUsed)) {
                             moveMade = true;

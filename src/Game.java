@@ -11,7 +11,6 @@ public class Game {
 
     private HashMap<Player, List<Tile>> hands;
 
-
     public Game(Player[] players, Board board) {
         this.players = players;
         this.board = board;

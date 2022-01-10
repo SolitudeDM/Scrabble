@@ -6,14 +6,24 @@ public abstract class Player {
     private String name;
     private int score;
     private ArrayList<Tile> hand;
+    private Game game;
 
     /**
      * Constructor that creates a player instance
      * @requires name != null
      * @ensures the Name of the player will be the parameter name */
-    public Player(String name){
+    public Player(String name, Game game){
         assert name!= null;
         this.name = name;
+        this.game = game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Game getGame() {
+        return game;
     }
 
     /**
