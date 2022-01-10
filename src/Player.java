@@ -18,14 +18,6 @@ public abstract class Player {
         this.game = game;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
     /**
      * Getters and setters for the class variables
      * Note: name only has a getter, because it is a read only property of the class*/
@@ -44,6 +36,13 @@ public abstract class Player {
     public void setHand(ArrayList<Tile> hand) {
         this.hand = hand;
     }
+    public void setGame(Game game) {
+        this.game = game;
+    }
+    public Game getGame() {
+        return game;
+    }
+
 
     public abstract String determineMove(Board board);
 
