@@ -79,6 +79,14 @@ public class HumanPlayerHV extends Player{
         return null;
     }
 
+    /**
+     * This method is responsible for placing a word on the board
+     * @param coordinates are the coordinates of the required square
+     * @param vertical is used to see whether the word should be set vertically or horizontally
+     * @param word is the word that is going to be placed
+     * @param board is the board where the word is going to be placed at
+     * @requires all the parameter != null
+     * @ensures to put the given word to the board*/
     public void place(String coordinates, boolean vertical, String word, Board board) {
 
 //       //  Check if word exists
@@ -126,7 +134,11 @@ public class HumanPlayerHV extends Player{
         }
 
     }
-
+    /**
+     * This method converts the letter index to numeric index using ASCII
+     * @requires letter != null
+     * @param letter is the letter that is going to be represented as a number
+     * @ensures to???*/
     public int letterToCoordinate(char letter) {
         int temp = (int)letter;
         int temp_integer = 64; //for upper case
