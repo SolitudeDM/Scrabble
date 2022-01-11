@@ -31,7 +31,7 @@ public class HumanPlayerHV extends Player{
             System.out.println("enter your choice(command; coordinates; orientation; word)");
 
             String choice = keyboard.nextLine();
-            String[] splittedChoice = choice.split(" ");
+            String[] splittedChoice = choice.split("; ");
 
             if (splittedChoice.length < 1) {
                 System.out.println("Empty command");
@@ -49,11 +49,12 @@ public class HumanPlayerHV extends Player{
                     } else if (splittedChoice[2].equals("H")) {
                         orientation = true;
                     } else {
+                        System.out.println("POSHEL V ZHEPU");
                         break;
                     }
 
                     place(splittedChoice[1], orientation, splittedChoice[3], board);
-
+//FORMAT --> PLACE H8; V; COCK
                     break;
 
                 case ("SWAP"):
@@ -79,6 +80,17 @@ public class HumanPlayerHV extends Player{
     }
 
     public void place(String coordinates, boolean vertical, String word, Board board) {
+
+//       //  Check if word exists
+//        if (!isValidWord(word)) {
+//            // moveMade = true
+//            return;
+//        }
+
+        // Add score
+        int wordScore = 0;
+
+
         // Revert coordinates of letter-number to number-number
         String[] index = coordinates.split("");
         index[1] = String.valueOf(letterToCoordinate(index[1].charAt(0)));
@@ -87,7 +99,6 @@ public class HumanPlayerHV extends Player{
         ArrayList<Tile> tilesUsed = new ArrayList<>();
 
         // remove letters that are already on the board from the lettersUsed, so only the fresh ones will be counted
-
         for (String letter : lettersUsed) {
             tilesUsed.add(this.getGame().getTile(letter.charAt(0)));
         }
@@ -95,6 +106,7 @@ public class HumanPlayerHV extends Player{
         // Remove all the existing letters from "lettersUsed" horizontal
         if (!vertical) {
             for (int i = Integer.parseInt(index[1]); i < word.length(); i++) {
+                board.getSquare(i,Integer.parseInt(index[0])).getTile();
                tilesUsed.remove(board.getSquare(i,Integer.parseInt(index[0])).getTile());
             }
         }
@@ -106,9 +118,11 @@ public class HumanPlayerHV extends Player{
             }
         }
 
-
+        //ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (searchHand(tilesUsed)) {
-
+            for (Tile tile : tilesUsed) {
+                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
+            }
         }
 
     }
