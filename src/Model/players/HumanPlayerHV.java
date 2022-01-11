@@ -130,9 +130,26 @@ public class HumanPlayerHV extends Player {
 
         //ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (searchHand(tilesUsed)) {
-            for (Tile tile : tilesUsed) {
-                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
-            }
+                if(vertical) {
+                    int i = 0;
+                    while (i < word.length()) {
+                        for (Tile tile : tilesUsed) {
+                            board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
+                            i++;
+                        }
+                    }
+                }
+                if(!vertical) {
+                    int i = 0;
+                        while (i < word.length()) {
+                            for (Tile tile : tilesUsed) {
+                                board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
+                                i++;
+                            }
+                        }
+
+//                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
+                }
         }
 
     }
