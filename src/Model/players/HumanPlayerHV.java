@@ -106,7 +106,8 @@ public class HumanPlayerHV extends Player{
         // Remove all the existing letters from "lettersUsed" horizontal
         if (!vertical) {
             for (int i = Integer.parseInt(index[1]); i < word.length(); i++) {
-                board.getSquare(i,Integer.parseInt(index[0])).getTile();
+//                wordScore += (board.getSquare(i,Integer.parseInt(index[0])).getTile().getLetterPoints()) *board.getSquare(i,Integer.parseInt(index[0])).getType()
+
                tilesUsed.remove(board.getSquare(i,Integer.parseInt(index[0])).getTile());
             }
         }
