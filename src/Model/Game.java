@@ -22,6 +22,10 @@ public class Game {
         handOut();
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
     /**
      * This method creates,fills and shuffles a sack with tiles
      * @ensures to return a complete tileSack
