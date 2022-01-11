@@ -27,6 +27,8 @@ public class HumanPlayer extends Player{
 
         while (!moveMade) {
 
+            HashMap<String[], String> tileset = new HashMap<>();
+
             System.out.println("enter your choice(command, row, col, letter)");
 
             String choice = keyboard.nextLine();
@@ -41,27 +43,55 @@ public class HumanPlayer extends Player{
 
                 case ("PLACE"):
 
-                    HashMap<String[], String> tileset = new HashMap<>();
                     ArrayList<Tile> lettersUsed = new ArrayList<>();
-
                     for (int i = 1; i <= splittedChoice.length - 1; i = i + 3) {
                         String[] Index = new String[2];
-                        // add method to convert letter to position in the alphabet
-                        Index[0] = splittedChoice[i];
+
+                        Index[0] = String.valueOf(letterToCoordinate(splittedChoice[i].charAt(0)));
                         Index[1] = splittedChoice[i + 1];
                         tileset.put(Index, splittedChoice[i + 2]);
 
                 lettersUsed.add(this.getGame().getTile(splittedChoice[i + 2].charAt(0)));
 
                         if (searchHand(lettersUsed)) {
+
+                        // Make two ArrayLists to store all the rows and columns that will be scanned for new, generated words...
+                        ArrayList<Integer> rowsInvolved = new ArrayList<>();
+                        ArrayList<Integer> colInvolved = new ArrayList<>();
+
+                        // Make a board copy to check if word was established using ALL of the letters used
+
+
+                        // Scan through the all the row and col coordinates in the hashmap
+                            for (String[] key : tileset.keySet()) {
+                                if (!rowsInvolved.contains(Integer.parseInt(key[1]))) {
+                                    rowsInvolved.add(Integer.parseInt(key[1]));
+                                }
+                                if (!colInvolved.contains(Integer.parseInt(key[2]))) {
+                                    colInvolved.add(Integer.parseInt(key[2]));
+                                }
+                            }
+
+                            //Horizontal check
+                            // Check wheteher new words had been established (make a new array of words that are used)
+                            // Remove the letters from the UsedLetters if they were involved in new words establishment
+                            for (int j = 0; j < rowsInvolved.size(); j++) {
+
+                            }
+
+                            //Vertical check
+                            // Remove the letters from the UsedLetters if they were involved in new words establishment
+
+
+
                             moveMade = true;
                         }
                     }
-
-
                     break;
 
                 case ("SWAP"):
+
+
 
                     break;
 
@@ -79,5 +109,16 @@ public class HumanPlayer extends Player{
 //            board.setTile(parseInt(splittedChoice[1]), parseInt(splittedChoice[2]), );
 
         return null;
+    }
+
+
+
+    public int letterToCoordinate(char letter) {
+        int temp = (int)letter;
+        int temp_integer = 64; //for upper case
+        if(temp<=90 & temp>=65) {
+            return (temp - temp_integer);
+        }
+        return -69;
     }
 }
