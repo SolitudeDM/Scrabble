@@ -63,7 +63,7 @@ public abstract class Player {
                 return false;
             }
         }
-        setHand(handDupe);
+        //setHand(handDupe);
         // ADD MISSING TILES
         return true;
     }
