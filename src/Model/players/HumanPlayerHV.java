@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class HumanPlayerHV extends Player{
+public class HumanPlayerHV extends Player {
 
     public HumanPlayerHV(String name, Game game){
         super(name,game);
@@ -25,8 +25,6 @@ public class HumanPlayerHV extends Player{
         boolean moveMade = false;
 
         while (!moveMade) {
-
-            HashMap<String[], String> tileset = new HashMap<>();
 
             System.out.println("enter your choice(command; coordinates; orientation; word)");
 
@@ -45,16 +43,17 @@ public class HumanPlayerHV extends Player{
                     boolean orientation;
 
                     if ((splittedChoice[2].equals("V"))) {
-                        orientation = false;
-                    } else if (splittedChoice[2].equals("H")) {
                         orientation = true;
+                    } else if (splittedChoice[2].equals("H")) {
+                        orientation = false;
                     } else {
                         System.out.println("POSHEL V ZHEPU");
                         break;
                     }
 
                     place(splittedChoice[1], orientation, splittedChoice[3], board);
-//FORMAT --> PLACE H8; V; COCK
+                    moveMade = true;
+//FORMAT --> PLACE; H8; V; COCK
                     break;
 
                 case ("SWAP"):
@@ -89,6 +88,7 @@ public class HumanPlayerHV extends Player{
      * @ensures to put the given word to the board*/
     public void place(String coordinates, boolean vertical, String word, Board board) {
 
+
 //       //  Check if word exists
 //        if (!isValidWord(word)) {
 //            // moveMade = true
@@ -101,13 +101,14 @@ public class HumanPlayerHV extends Player{
 
         // Revert coordinates of letter-number to number-number
         String[] index = coordinates.split("");
-        index[1] = String.valueOf(letterToCoordinate(index[1].charAt(0)));
+        index[0] = String.valueOf(letterToCoordinate(index[0].charAt(0)));
 
         String[] lettersUsed = (word.toUpperCase().split(""));
         ArrayList<Tile> tilesUsed = new ArrayList<>();
 
         // remove letters that are already on the board from the lettersUsed, so only the fresh ones will be counted
         for (String letter : lettersUsed) {
+
             tilesUsed.add(this.getGame().getTile(letter.charAt(0)));
         }
 

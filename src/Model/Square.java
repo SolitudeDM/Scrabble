@@ -59,7 +59,6 @@ public class Square {
     @Override
     public String toString() {
         switch (getType()) {
-
             case CENTER:
                 return ("CE");
             case DOUBLE_LETTER:
@@ -70,9 +69,12 @@ public class Square {
                 return ("2W");
             case TRIPPLE_WORD:
                 return ("3W");
-            default:
-                return ("__");
-
         }
+
+        if (String.valueOf(getTile()) == null) {
+            return getTile() + " ";
+        }
+
+        return ("__");
     }
 }

@@ -36,9 +36,11 @@ public abstract class Player {
     public void setScore(int score){
         this.score = score;
     }
+
     public ArrayList<Tile> getHand() {
         return this.hand;
     }
+
     public void setHand(ArrayList<Tile> hand) {
         this.hand = hand;
     }
@@ -54,9 +56,9 @@ public abstract class Player {
 
     public boolean searchHand(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
-        ArrayList<Tile> handDupe = getHand();
+        ArrayList<Tile> handDupe = new ArrayList<>(getHand());
 
-        for (int i = 0; i < handDupe.size(); i++) {
+        for (int i = 0; i < lettersUsed.size(); i++) {
             if (handDupe.contains(lettersUsed.get(i))) {
                 handDupe.remove(lettersUsed.get(i));
             } else {

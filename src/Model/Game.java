@@ -1,5 +1,6 @@
 package Model;
 
+import Model.players.HumanPlayerHV;
 import Model.players.Player;
 
 import java.util.ArrayList;
@@ -10,16 +11,20 @@ import java.util.List;
 public class Game {
 
     private ArrayList<Tile> tileSack;
-    private Player[] players;
+    private ArrayList<Player> players;
     private Board board;
 
     private HashMap<Player, ArrayList<Tile>> hands;
 
-    public Game(Player[] players, Board board) {
+    public Game(ArrayList<Player> players, Board board) {
         this.players = players;
         this.board = board;
         tileSack = createTileSack();
         handOut();
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
     }
 
     public Board getBoard() {
@@ -81,7 +86,9 @@ public class Game {
     public void handOut(){
         for(Player p : players){
             List<Tile> given = tileSack.subList(0,7);
+            hands = new HashMap<>();
             hands.put(p, new ArrayList<>(given));
+            p.setHand(new ArrayList<>(given));
             tileSack.remove(given);
         }
     }
@@ -113,8 +120,9 @@ public class Game {
         for(Player p : hands.keySet()){
             if (p.equals(player)){
                 for(Tile t : hands.get(p)){
-                    System.out.println(t.getLetter());
+                    System.out.print(t.getLetter() + " ");
                 }
+                System.out.println();
             }
         }
     }
@@ -126,6 +134,19 @@ public class Game {
         board.setBoard();
         board.showBoard();
 
+        ArrayList<Player> players = new ArrayList<>();
+
+        Game game = new Game(players, board);
+        Player player1 = new HumanPlayerHV("Boris", game);
+        players.add(player1);
+
+        game.setPlayers(players);
+
+        game.handOut();
+        game.showTiles(player1);
+
+        player1.determineMove(board);
+        board.showBoard();
         /*Here we checked if the tileSack is created properly (commented out because we don't need the createTileSack() method to be static
         made it static only for the testing
          */
