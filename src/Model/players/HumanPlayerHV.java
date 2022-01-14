@@ -100,7 +100,11 @@ public class HumanPlayerHV extends Player {
 
 
         // Revert coordinates of letter-number to number-number
+
         String[] index = coordinates.split("");
+        if (index.length != 2) {
+            index[1] = index[1] + index [2];
+        }
         index[0] = String.valueOf(letterToCoordinate(index[0].charAt(0)));
 
         String[] lettersUsed = (word.toUpperCase().split(""));

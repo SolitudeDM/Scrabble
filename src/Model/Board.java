@@ -73,8 +73,15 @@ public class Board {
     /**
      * This method prints the board to the console*/
     public void showBoard() {
+            System.out.println("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O");
         for (int i = 0; i < RESOLUTION; i++) {
+            if (i < 10) {
+                System.out.print(i + "  ");
+            } else {
+                System.out.print(i + " ");
+            }
             for (int j = 0; j < RESOLUTION; j++) {
+
                 if (isEmptySquare(squares[i][j])) {
                     System.out.print(squares[i][j].toString());
                     System.out.print(" ");
