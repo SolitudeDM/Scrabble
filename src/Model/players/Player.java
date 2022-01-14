@@ -57,11 +57,19 @@ public abstract class Player {
     public boolean searchHand(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
         ArrayList<Tile> handDupe = new ArrayList<>(getHand());
+        boolean letterFound = false;
 
         for (int i = 0; i < lettersUsed.size(); i++) {
-            if (handDupe.contains(lettersUsed.get(i))) {
-                handDupe.remove(lettersUsed.get(i));
-            } else {
+            for (int j = 0; j < handDupe.size(); j++) {
+                if ((handDupe.get(j).getLetter()) == (lettersUsed.get(i).getLetter())) {
+                    handDupe.remove(j);
+                    letterFound = true;
+                    break;
+                } else {
+                    letterFound = false;
+                }
+            }
+            if (!letterFound) {
                 return false;
             }
         }

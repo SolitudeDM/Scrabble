@@ -75,8 +75,14 @@ public class Board {
     public void showBoard() {
         for (int i = 0; i < RESOLUTION; i++) {
             for (int j = 0; j < RESOLUTION; j++) {
-                System.out.print(squares[i][j].toString());
-                System.out.print(" ");
+                if (isEmptySquare(squares[i][j])) {
+                    System.out.print(squares[i][j].toString());
+                    System.out.print(" ");
+                } else {
+                    System.out.print(" ");
+                    System.out.print(squares[i][j].getTile().getLetter());
+                    System.out.print(" ");
+                }
             }
             System.out.println();
         }
