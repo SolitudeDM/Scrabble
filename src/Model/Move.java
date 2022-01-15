@@ -3,7 +3,7 @@ package Model;
 import Model.players.Player;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 public class Move {
 
@@ -48,8 +48,25 @@ public class Move {
                     break;
 
                 case ("SWAP"):
-
-
+                    ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
+                    String[] swap = splittedChoice[1].split(" ");
+                    int tilesToSwap = swap.length;
+                    for(String letter : swap){
+                        for(Tile tile : player.getHand()){
+                            if(!letter.equals(String.valueOf(tile.getLetter()))){
+                                System.out.println("You don't have this Tile!");
+                                break;
+                            }
+                            else{
+                                newHand.remove(tile);
+                                List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
+                                newHand.addAll(newTiles);
+                                //game.getTileSack().add(letter)
+                                player.setHand(newHand);
+                            }
+                        }
+                    }
+                    moveMade = true;
                     break;
 
                 case ("EXIT"):

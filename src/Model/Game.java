@@ -31,6 +31,10 @@ public class Game {
         return board;
     }
 
+    public ArrayList<Tile> getTileSack(){
+        return tileSack;
+    }
+
     /**
      * This method creates,fills and shuffles a sack with tiles
      * @ensures to return a complete tileSack
