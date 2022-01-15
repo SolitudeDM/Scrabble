@@ -19,7 +19,7 @@ public class HumanPlayerHV extends Player {
     //SWAP
 
     @Override
-    public String determineMove(Board board) {
+    public void determineMove(Board board) {
         // Create a Scanner object to read input.
         Scanner keyboard = new Scanner(System.in);
         boolean moveMade = false;
@@ -33,7 +33,6 @@ public class HumanPlayerHV extends Player {
 
             if (splittedChoice.length < 1) {
                 System.out.println("Empty command");
-                return null;
             }
 
             switch (splittedChoice[0].toUpperCase()) {
@@ -75,7 +74,6 @@ public class HumanPlayerHV extends Player {
 //        if(board.isEmptySquare(board.getSquare(parseInt(splittedChoice[1]), parseInt(splittedChoice[2])))){
 //            board.setTile(parseInt(splittedChoice[1]), parseInt(splittedChoice[2]), );
 
-        return null;
     }
 
     /**

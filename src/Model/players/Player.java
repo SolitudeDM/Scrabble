@@ -23,6 +23,7 @@ public abstract class Player {
         this.name = name;
         this.game = game;
         this.hand = new ArrayList<Tile>();
+        this.score = 0;
     }
 
     /**
@@ -55,7 +56,7 @@ public abstract class Player {
     }
 
 
-    public abstract String determineMove(Board board);
+    public abstract void determineMove(Board board);
 
     public boolean searchHand(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
