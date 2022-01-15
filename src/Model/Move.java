@@ -50,22 +50,36 @@ public class Move {
                 case ("SWAP"):
                     ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
                     String[] swap = splittedChoice[1].split(" ");
-                    int tilesToSwap = swap.length;
+                    int tilesToSwap = 0;
+                    boolean letterDoesNotBelong = true;
+
                     for(String letter : swap){
-                        if (!player.getHand().contains(game.getTile(letter.charAt(0)))) {
-                            System.out.println("You don't have this Tile!");
-                            break;
-                        } else {
-                            player.getHand().remove(game.getTile(letter.charAt(0)));
-                            newHand.remove(game.getTile(letter.charAt(0)));
-//                            tilesToSwap++;
+                    letterDoesNotBelong = true;
+
+
+                        for (int i = 0; i < player.getHand().size() && letterDoesNotBelong; i++) {
+                            if (!(player.getHand().get(i).getLetter() == letter.charAt(0))) {
+                                letterDoesNotBelong = true;
+                            } else {
+                                for (int j = 0; j < newHand.size(); j++) {
+                                    if (newHand.get(j).getLetter() == letter.charAt(0)) {
+                                        newHand.remove(j);
+                                    }
+                                }
+//                                newHand.remove(game.getTile(letter.charAt(0)));
+                                tilesToSwap++;
+                                letterDoesNotBelong = false;
+                            }
                         }
                     }
 
                     List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
                     newHand.addAll(newTiles);
-                    game.getTileSack().removeAll(newTiles);
-                    //game.getTileSack().add()
+
+                    ArrayList<Tile> tileSackCopy = new ArrayList<>(game.getTileSack());
+                    tileSackCopy.removeAll(newTiles);
+                    game.setTileSack(tileSackCopy);
+
                     player.setHand(newHand);
 
                     moveMade = true;

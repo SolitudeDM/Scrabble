@@ -34,6 +34,7 @@ public class Game {
     public ArrayList<Tile> getTileSack(){
         return tileSack;
     }
+
     public void setTileSack(ArrayList<Tile> tileSack){
         this.tileSack = tileSack;
     }
