@@ -56,7 +56,7 @@ public class HumanPlayerHV extends Player {
                     break;
 
                 case ("SWAP"):
-
+//FORMAT --> SWAP; A B E
 
 
                     break;
