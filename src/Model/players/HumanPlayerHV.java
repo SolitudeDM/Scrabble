@@ -107,6 +107,15 @@ public class HumanPlayerHV extends Player {
         }
         index[0] = String.valueOf(letterToCoordinate(index[0].charAt(0)));
 
+        //Fix for the sliding coordinates problem
+        index[0] =  String.valueOf(Integer.parseInt(index[0]) - 1);
+        index[1] =  String.valueOf(Integer.parseInt(index[1]) - 1);
+
+        //Fix for the marrowed coordinates
+        String tempCoordinate = index[0];
+        index[0] = index[1];
+        index[1] = tempCoordinate;
+
         String[] lettersUsed = (word.toUpperCase().split(""));
         ArrayList<Tile> tilesUsed = new ArrayList<>();
 

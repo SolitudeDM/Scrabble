@@ -75,10 +75,10 @@ public class Board {
     public void showBoard() {
             System.out.println("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O");
         for (int i = 0; i < RESOLUTION; i++) {
-            if (i < 10) {
-                System.out.print(i + "  ");
+            if (i + 1 < 10) {
+                System.out.print(i + 1 + "  ");
             } else {
-                System.out.print(i + " ");
+                System.out.print(i + 1 + " ");
             }
             for (int j = 0; j < RESOLUTION; j++) {
 
