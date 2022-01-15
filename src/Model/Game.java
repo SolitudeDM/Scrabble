@@ -34,6 +34,9 @@ public class Game {
     public ArrayList<Tile> getTileSack(){
         return tileSack;
     }
+    public void setTileSack(ArrayList<Tile> tileSack){
+        this.tileSack = tileSack;
+    }
 
     /**
      * This method creates,fills and shuffles a sack with tiles
@@ -100,7 +103,7 @@ public class Game {
                 }
                 p.setHand(result);
 //                p.setHand(new ArrayList<>(given));
-                tileSack.remove(given);
+                tileSack.removeAll(given);
             }
         }
     }
