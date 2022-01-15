@@ -86,8 +86,8 @@ public class Board {
                     System.out.print(squares[i][j].toString());
                     System.out.print(" ");
                 } else {
-                    System.out.print(" ");
                     System.out.print(squares[i][j].getTile().getLetter());
+                    System.out.print(" ");
                     System.out.print(" ");
                 }
             }

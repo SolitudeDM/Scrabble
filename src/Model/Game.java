@@ -85,11 +85,19 @@ public class Game {
      * @ensures number of entries in HashMap hands to be equal to amount of players and that every player will have 7 tiles*/
     public void handOut(){
         for(Player p : players){
-            List<Tile> given = tileSack.subList(0,7);
-            hands = new HashMap<>();
-            hands.put(p, new ArrayList<>(given));
-            p.setHand(new ArrayList<>(given));
-            tileSack.remove(given);
+            int missingTiles = 7 - p.getHand().size();
+            if (missingTiles != 0) {
+                List<Tile> given = tileSack.subList(0,missingTiles);
+//                hands = new HashMap<>();
+//                hands.put(p, new ArrayList<>(given));
+                ArrayList<Tile> result = p.getHand();
+                for (Tile tile : given) {
+                    result.add(tile);
+                }
+                p.setHand(result);
+//                p.setHand(new ArrayList<>(given));
+                tileSack.remove(given);
+            }
         }
     }
 
@@ -117,15 +125,20 @@ public class Game {
      * @ensures to print all the tiles this player has*/
     public void showTiles(Player player){
         assert player != null;
-        for(Player p : hands.keySet()){
-            if (p.equals(player)){
-                for(Tile t : hands.get(p)){
-                    System.out.print(t.getLetter() + " ");
-                }
-                System.out.println();
-            }
+        ArrayList<Tile> hand = player.getHand();
+        for (Tile tile : hand) {
+            System.out.print(tile.getLetter() + " ");
         }
-    }
+        System.out.println();
+//        for(Player p : hands.keySet()){
+//            if (p.equals(player)){
+//
+//                for(Tile t : hands.get(p)){
+//                    System.out.print(t.getLetter() + " ");
+//                }
+//                System.out.println();
+//            }
+        }
 
     public static void main(String[] args) {
         //Here we checked if the board will be printed properly, using the setBoard() and showBoard() methods
@@ -147,7 +160,10 @@ public class Game {
 
         player1.determineMove(board);
         board.showBoard();
-        /*Here we checked if the tileSack is created properly (commented out because we don't need the createTileSack() method to be static
+        game.showTiles(player1);
+        game.handOut();
+        game.showTiles(player1);
+        /*Here we checked if the tileSack is created properly(commented out because we don't need the createTileSack() method to be static
         made it static only for the testing
          */
 //        ArrayList<Model.Tile> test = createTileSack();

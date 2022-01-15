@@ -22,6 +22,7 @@ public abstract class Player {
         assert name!= null;
         this.name = name;
         this.game = game;
+        this.hand = new ArrayList<Tile>();
     }
 
     /**
@@ -44,9 +45,11 @@ public abstract class Player {
     public void setHand(ArrayList<Tile> hand) {
         this.hand = hand;
     }
+
     public void setGame(Game game) {
         this.game = game;
     }
+
     public Game getGame() {
         return game;
     }
@@ -73,8 +76,8 @@ public abstract class Player {
                 return false;
             }
         }
-        //setHand(handDupe);
-        // ADD MISSING TILES
+        setHand(handDupe);
+
         return true;
     }
 
