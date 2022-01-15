@@ -9,6 +9,8 @@ public class Move {
 
     private Game game;
     private Player player;
+    private int score;
+    private boolean valid;
 
     public Move(Game game, Player player) {
         this.game = game;
@@ -90,7 +92,7 @@ public class Move {
         index[0] =  String.valueOf(Integer.parseInt(index[0]) - 1);
         index[1] =  String.valueOf(Integer.parseInt(index[1]) - 1);
 
-        //Fix for the marrowed coordinates
+        //Fix for the mirrowed coordinates
         String tempCoordinate = index[0];
         index[0] = index[1];
         index[1] = tempCoordinate;
@@ -131,6 +133,7 @@ public class Move {
                     }
                 }
             }
+
             if(!vertical) {
                 int i = 0;
                 while (i < word.length()) {
