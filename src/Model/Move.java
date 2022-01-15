@@ -44,18 +44,20 @@ public class Move {
 
                     place(splittedChoice[1], orientation, splittedChoice[3], game.getBoard());
                     moveMade = true;
-//FORMAT --> PLACE; H8; V; COCK
+//FORMAT --> PLACE; H8; V; WORD
                     break;
 
                 case ("SWAP"):
+//FORMAT --> SWAP; A B C D
                     ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
                     String[] swap = splittedChoice[1].split(" ");
+                    ArrayList<Tile> swappedTiles = new ArrayList<>();
                     int tilesToSwap = 0;
                     boolean letterDoesNotBelong = true;
 
                     for(String letter : swap){
                     letterDoesNotBelong = true;
-
+                    swappedTiles.add(game.getTile(letter.charAt(0)));
 
                         for (int i = 0; i < player.getHand().size() && letterDoesNotBelong; i++) {
                             if (!(player.getHand().get(i).getLetter() == letter.charAt(0))) {
@@ -78,6 +80,7 @@ public class Move {
 
                     ArrayList<Tile> tileSackCopy = new ArrayList<>(game.getTileSack());
                     tileSackCopy.removeAll(newTiles);
+                    tileSackCopy.addAll(swappedTiles);
                     game.setTileSack(tileSackCopy);
 
                     player.setHand(newHand);
