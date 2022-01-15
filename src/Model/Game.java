@@ -1,6 +1,6 @@
 package Model;
 
-import Model.players.HumanPlayerHV;
+import Model.players.HumanPlayer_v3;
 import Model.players.Player;
 
 import java.util.ArrayList;
@@ -154,7 +154,7 @@ public class Game {
         ArrayList<Player> players = new ArrayList<>();
 
         Game game = new Game(players, board);
-        Player player1 = new HumanPlayerHV("Boris", game);
+        HumanPlayer_v3 player1 = new HumanPlayer_v3("Boris", game);
         players.add(player1);
 
         game.setPlayers(players);
@@ -162,7 +162,9 @@ public class Game {
         game.handOut();
         game.showTiles(player1);
 
-        player1.determineMove(board);
+
+        player1.getMove().options(player1.determineMove(board));
+
         board.showBoard();
         game.showTiles(player1);
         game.handOut();
