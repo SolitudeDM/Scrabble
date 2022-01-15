@@ -50,22 +50,24 @@ public class Move {
                 case ("SWAP"):
                     ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
                     String[] swap = splittedChoice[1].split(" ");
-                    int tilesToSwap = swap.length;
+                    int tilesToSwap = 0;
                     for(String letter : swap){
-                        for(Tile tile : player.getHand()){
-                            if(!letter.equals(String.valueOf(tile.getLetter()))){
-                                System.out.println("You don't have this Tile!");
-                                break;
-                            }
-                            else{
-                                newHand.remove(tile);
-                                List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
-                                newHand.addAll(newTiles);
-                                //game.getTileSack().add(letter)
-                                player.setHand(newHand);
-                            }
+                        if (!player.getHand().contains(game.getTile(letter.charAt(0)))) {
+                            System.out.println("You don't have this Tile!");
+                            break;
+                        } else {
+                            player.getHand().remove(game.getTile(letter.charAt(0)));
+                            newHand.remove(game.getTile(letter.charAt(0)));
+                            tilesToSwap++;
                         }
                     }
+
+                    List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
+                    game.getTileSack().removeAll(newTiles);
+                    newHand.addAll(new ArrayList<>(newTiles));
+                    //game.getTileSack().add(letter)
+                    player.setHand(newHand);
+
                     moveMade = true;
                     break;
 
