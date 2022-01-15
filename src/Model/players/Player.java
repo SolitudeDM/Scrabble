@@ -56,7 +56,7 @@ public abstract class Player {
     }
 
 
-    public abstract void determineMove(Board board);
+    public abstract String determineMove(Board board);
 
     public boolean searchHand(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
