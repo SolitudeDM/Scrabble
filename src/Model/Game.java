@@ -16,7 +16,14 @@ public class Game {
 
     //private HashMap<Player, ArrayList<Tile>> hands;
 
+    /**
+     * Game constructor creates an instance of a Game
+     * @param players is the list of players of the Game
+     * @param board is the board where the game will be played
+     * @requires players.size() >= 2 && players.size() <= 4 && board != null
+     * @ensures to create a Game instance*/
     public Game(ArrayList<Player> players, Board board) {
+        assert players.size() >= 2 && players.size() <= 4 && board != null;
         this.players = players;
         this.board = board;
         tileSack = createTileSack();
@@ -173,8 +180,25 @@ public class Game {
                 if(tileSack.size() == 0 && p.getHand().size() == 0){
                     return true;
                 }
+                //добавить сюда случай, когда один из игроков пишет комманду "EXIT"???
             }
             return false;
+        }
+
+        /**
+         * This method determines the winner after the game is finished*/
+        public void determineWinner(){
+            if(isFinished()){
+                int highestScore = 0;
+                Player tempWinner = players.get(0);
+                for (Player player : players){
+                    if(player.getScore() > highestScore){
+                        highestScore = player.getScore();
+                        tempWinner = player;
+                    }
+                }
+                System.out.println("The winner is: " + tempWinner.getName() +  ". His score: " + highestScore);
+            }
         }
 
     public static void main(String[] args) {
