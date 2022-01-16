@@ -5,6 +5,9 @@ import Model.players.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a move in Scrabble game
+ * @author Mark Zhitchenko and Dani Mahaini*/
 public class Move {
 
     private Game game;
@@ -185,6 +188,11 @@ public class Move {
 
     }
 
+    /**
+     * This method converts the letter index to numeric index using ASCII
+     * @requires letter != null
+     * @param letter is the letter that is going to be represented as a number
+     * @ensures to return an integer value of an alphabetic letter*/
     public int letterToCoordinate(char letter) {
         int temp = (int)letter;
         int temp_integer = 64; //for upper case

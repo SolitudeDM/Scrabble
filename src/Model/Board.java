@@ -1,7 +1,7 @@
 package Model;
 
 /**
- * Model.Board for the scrabble game
+ * Board for the scrabble game
  * @author Mark Zhitchenko and Dani Mahaini*/
 public class Board {
 

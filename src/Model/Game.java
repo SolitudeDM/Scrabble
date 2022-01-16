@@ -14,7 +14,7 @@ public class Game {
     private ArrayList<Player> players;
     private Board board;
 
-    private HashMap<Player, ArrayList<Tile>> hands;
+    //private HashMap<Player, ArrayList<Tile>> hands;
 
     public Game(ArrayList<Player> players, Board board) {
         this.players = players;
@@ -90,11 +90,11 @@ public class Game {
 
     /**
      * This method hands out tiles for the players
-     * @ensures number of entries in HashMap hands to be equal to amount of players and that every player will have 7 tiles*/
+     * @ensures that every player will have 7 tiles (if the size of the tileSack allows that)*/
     public void handOut(){
         for(Player p : players){
             int missingTiles = 7 - p.getHand().size();
-            if (missingTiles != 0) {
+            if (missingTiles != 0 && tileSack.size() > missingTiles) {
                 List<Tile> given = tileSack.subList(0,missingTiles);
 //                hands = new HashMap<>();
 //                hands.put(p, new ArrayList<>(given));
@@ -105,6 +105,19 @@ public class Game {
                 p.setHand(result);
 //                p.setHand(new ArrayList<>(given));
                 tileSack.removeAll(given);
+            }
+            else if(missingTiles != 0 && tileSack.size() < missingTiles && tileSack.size() != 0){
+                int remainingTiles = tileSack.size();
+                List<Tile> given2 = tileSack.subList(0, remainingTiles);
+                ArrayList<Tile> newHand = p.getHand();
+                for(Tile t : given2){
+                    newHand.add(t);
+                }
+                p.setHand(newHand);
+                tileSack.removeAll(given2);
+            }
+            else{
+                System.out.println("The tileSack is empty, the game is almost finished!");
             }
         }
     }
@@ -150,6 +163,18 @@ public class Game {
 
         public void scoreCalculator(Player player){
 
+        }
+
+        /**
+         * This method checks if the game is finished
+         * @return true if the tileSack is empty and one of the player's hands is empty*/
+        public boolean isFinished(){
+            for(Player p : players){
+                if(tileSack.size() == 0 && p.getHand().size() == 0){
+                    return true;
+                }
+            }
+            return false;
         }
 
     public static void main(String[] args) {
