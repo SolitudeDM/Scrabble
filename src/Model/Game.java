@@ -168,9 +168,6 @@ public class Game {
 //            }
         }
 
-        public void scoreCalculator(Player player){
-
-        }
 
         /**
          * This method checks if the game is finished

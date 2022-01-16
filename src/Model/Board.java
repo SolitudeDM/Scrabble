@@ -58,13 +58,13 @@ public class Board {
                     setSquare(i, j, Type.DOUBLE_LETTER);
                 }
                 if (pattern[i][j].equals("3L")) {
-                    setSquare(i, j, Type.TRIPPLE_LETTER);
+                    setSquare(i, j, Type.TRIPLE_LETTER);
                 }
                 if (pattern[i][j].equals("2W")) {
                     setSquare(i, j, Type.DOUBLE_WORD);
                 }
                 if (pattern[i][j].equals("3W")) {
-                    setSquare(i, j, Type.TRIPPLE_WORD);
+                    setSquare(i, j, Type.TRIPLE_WORD);
                 }
             }
         }

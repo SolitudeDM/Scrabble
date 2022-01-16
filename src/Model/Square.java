@@ -63,11 +63,11 @@ public class Square {
                 return ("CE");
             case DOUBLE_LETTER:
                 return ("2L");
-            case TRIPPLE_LETTER:
+            case TRIPLE_LETTER:
                 return ("3L");
             case DOUBLE_WORD:
                 return ("2W");
-            case TRIPPLE_WORD:
+            case TRIPLE_WORD:
                 return ("3W");
         }
 
