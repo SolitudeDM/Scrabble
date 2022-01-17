@@ -2,6 +2,7 @@ package Model.players;
 
 import Model.Board;
 import Model.Game;
+import Model.Move;
 import Model.Tile;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public abstract class Player {
     private int score;
     private ArrayList<Tile> hand;
     private Game game;
-
+    private Move move;
     /**
      * Constructor that creates a player instance
      * @requires name != null
@@ -24,6 +25,16 @@ public abstract class Player {
         this.game = game;
         this.hand = new ArrayList<Tile>();
         this.score = 0;
+//        this.move = new Move(this.getGame(), this);
+        this.move = null;
+    }
+
+    public Move getMove() {
+        return move;
+    }
+
+    public void setMove(Move move) {
+        this.move = move;
     }
 
     /**

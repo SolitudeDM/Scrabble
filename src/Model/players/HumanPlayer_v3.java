@@ -12,15 +12,9 @@ import java.util.Scanner;
 
 public class HumanPlayer_v3 extends Player {
 
-    private Move move;
-
     public HumanPlayer_v3(String name, Game game){
         super(name,game);
-        this.move = new Move(this.getGame(), this);
-    }
 
-    public Move getMove() {
-        return move;
     }
 
     @Override

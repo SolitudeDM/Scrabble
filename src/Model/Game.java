@@ -10,7 +10,11 @@ import java.util.List;
 
 public class Game {
 
+
+
     private ArrayList<Tile> tileSack;
+    // Tilesack for searches
+    private final ArrayList<Tile> initialTiles;
     private ArrayList<Player> players;
     private Board board;
 
@@ -27,8 +31,10 @@ public class Game {
         this.players = players;
         this.board = board;
         tileSack = createTileSack();
-        handOut();
+        initialTiles = createTileSack();
     }
+
+
 
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
@@ -91,7 +97,7 @@ public class Game {
             }
         }
 
-        Collections.shuffle(completeTileSack);
+//        Collections.shuffle(completeTileSack);
         return completeTileSack;
     }
 
@@ -137,12 +143,12 @@ public class Game {
      * @return Model.Tile with required letter
      */
     public Tile getTile(char letter){
-        for (int i = 0; i < tileSack.size(); i++){
-            if(letter == tileSack.get(i).getLetter()){
-                return tileSack.get(i);
+        for (int i = 0; i < initialTiles.size(); i++){
+            if(letter == initialTiles.get(i).getLetter()){
+                return initialTiles.get(i);
             }
         }
-        return null;
+        return initialTiles.get(26);
     }
 
     /**
@@ -199,6 +205,7 @@ public class Game {
         }
 
     public static void main(String[] args) {
+
         //Here we checked if the board will be printed properly, using the setBoard() and showBoard() methods
         Square[][] squares = new Square[15][15];
         Board board = new Board(squares);
@@ -209,20 +216,38 @@ public class Game {
 
         Game game = new Game(players, board);
         HumanPlayer_v3 player1 = new HumanPlayer_v3("Boris", game);
+        HumanPlayer_v3 player2 = new HumanPlayer_v3("Viktor", game);
         players.add(player1);
+        players.add(player2);
 
         game.setPlayers(players);
 
         game.handOut();
-        game.showTiles(player1);
 
 
-        player1.getMove().options(player1.determineMove(board));
 
-        board.showBoard();
-        game.showTiles(player1);
-        game.handOut();
-        game.showTiles(player1);
+        while (!game.isFinished()) {
+            int currentPlayer = 0;
+
+            for (currentPlayer = 0; currentPlayer < players.size(); currentPlayer++) {
+                game.showTiles(players.get(currentPlayer));
+                players.get(currentPlayer).setMove(new Move(game, players.get(currentPlayer)));
+                players.get(currentPlayer).getMove().options(players.get(currentPlayer).determineMove(board));
+                board.showBoard();
+                game.handOut();
+            }
+
+        }
+
+//        game.showTiles(player1);
+//
+//
+//        player1.getMove().options(player1.determineMove(board));
+
+//        board.showBoard();
+//        game.showTiles(player1);
+//        game.handOut();
+//        game.showTiles(player1);
         /*Here we checked if the tileSack is created properly(commented out because we don't need the createTileSack() method to be static
         made it static only for the testing
          */
