@@ -1,6 +1,7 @@
 package Model;
 
 import Model.players.Player;
+import main.java.InMemoryScrabbleWordChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Move {
     private boolean doubleWord;
     private boolean trippleWord;
     private boolean bingo;
+    private boolean moveMade;
 
     public String getCoordinatesUsed() {
         return coordinatesUsed;
@@ -52,7 +54,7 @@ public class Move {
     }
 
     public void options(String choice) {
-        boolean moveMade = false;
+        moveMade = false;
 
         while (!moveMade) {
             String[] splittedChoice = choice.split("; ");
@@ -146,11 +148,12 @@ public class Move {
      * @ensures to put the given word to the board*/
     public void place(String coordinates, boolean vertical, String word, Board board) {
 
-//       //  Check if word exists
-//        if (!isValidWord(word)) {
-//            // moveMade = true
-//            return;
-//        }
+        InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
+       //  Check if word exists
+        if (checker.isValidWord(word) == null) {
+            moveMade = true;
+            return;
+        }
 
 
         //in case the row index is a double-digit number
