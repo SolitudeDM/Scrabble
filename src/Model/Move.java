@@ -150,12 +150,13 @@ public class Move {
 //            return;
 //        }
 
-        // Revert coordinates of letter-number to number-number
 
+        //in case the row index is a double-digit number
         String[] index = coordinates.split("");
         if (index.length != 2) {
             index[1] = index[1] + index [2];
         }
+        // Revert coordinates of letter-number to number-number
         index[0] = String.valueOf(letterToCoordinate(index[0].charAt(0)));
 
         //Fix for the sliding coordinates problem
