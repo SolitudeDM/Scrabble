@@ -15,37 +15,10 @@ public class Move {
     private Player player;
     private int score = 0;
     private boolean valid;
-    private String coordinatesUsed;
-    //orientation true if vertical || false if horizontal
-    private boolean orientationUsed;
-    private String wordUsed;
     private boolean doubleWord;
-    private boolean trippleWord;
+    private boolean tripleWord;
     private boolean bingo;
     private boolean moveMade;
-
-    public String getCoordinatesUsed() {
-        return coordinatesUsed;
-    }
-
-    public void setCoordinatesUsed(String coordinatesUsed) {
-        this.coordinatesUsed = coordinatesUsed;
-    }
-
-    public boolean getOrientationUsed() {
-        return orientationUsed;
-    }
-
-    public void setOrientationUsed(boolean orientationUsed) {
-        this.orientationUsed = orientationUsed;
-    }
-
-    public String getWordUsed() {
-        return wordUsed;
-    }
-    public void setWordUsed(String wordUsed) {
-        this.wordUsed = wordUsed;
-    }
 
 
     public Move(Game game, Player player) {
@@ -79,9 +52,6 @@ public class Move {
                     }
 
                     place(splittedChoice[1], orientation, splittedChoice[3], game.getBoard());
-                    setCoordinatesUsed(splittedChoice[1]);
-                    setOrientationUsed(orientation);
-                    setWordUsed(splittedChoice[3]);
                     moveMade = true;
 //FORMAT --> PLACE; H8; V; WORD
                     break;
@@ -168,7 +138,7 @@ public class Move {
         index[0] =  String.valueOf(Integer.parseInt(index[0]) - 1);
         index[1] =  String.valueOf(Integer.parseInt(index[1]) - 1);
 
-        //Fix for the mirrowed coordinates
+        //Fix for the mirrored coordinates
         String tempCoordinate = index[0];
         index[0] = index[1];
         index[1] = tempCoordinate;
@@ -183,8 +153,10 @@ public class Move {
         }
 
         ArrayList<Tile> tilesUsedCopy = new ArrayList<>(tilesUsed);
+
+        //doubleWord and tripleWord booleans are initialized
          doubleWord = false;
-         trippleWord = false;
+         tripleWord = false;
 
         // Remove all the existing letters from "lettersUsed" vertical
         if (vertical) {
@@ -221,14 +193,10 @@ public class Move {
                 if (doubleWord) {
                     score *= 2;
                 }
-                if (trippleWord) {
+                if (tripleWord) {
                     score *= 3;
                 }
             }
-
-
-
-
 
             if(!vertical) {
                 int i = 0;
@@ -241,7 +209,7 @@ public class Move {
                     if (doubleWord) {
                         score *= 2;
                     }
-                    if (trippleWord) {
+                    if (tripleWord) {
                         score *= 3;
                     }
                 }
@@ -252,6 +220,16 @@ public class Move {
         System.out.println(score);
     }
 
+
+    /**
+     * This method calculates the score of a move
+     * @requires row != null && row >= 0 && row <= 14
+     * @requires col != null && col >= 0 && col <= 14
+     * @requires board != null
+     * @param row is the index of the row
+     * @param col is index of the column
+     * @param board is the board where the move was made
+     * @ensures to calculate the right score of a move and set it to the variable score*/
     public void calculate(int row, int col, Board board) {
         switch (board.getSquare(row, col).getType()) {
             case NORMAL:
@@ -269,78 +247,12 @@ public class Move {
                 break;
             case TRIPLE_WORD:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
-                trippleWord = true;
+                tripleWord = true;
                 break;
             default:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
                 break;
         }
-    }
-
-    public void calculateScore(){
-        //split coordinates to row and col indexes
-        String[] coordinates = this.coordinatesUsed.split("");
-        int coorCol = letterToCoordinate(coordinates[0].charAt(0)) - 1;
-        int coorRow = Integer.parseInt(coordinates[1]) - 1;
-        //we will use this list to determine if any squares here have type DOUBLE_WORD or TRIPLE_WORD
-        ArrayList<Square> squaresUsed = new ArrayList<>();
-
-        int score = 0;
-
-        //first we calculate only the letter points (not whole word)
-
-        //if the word is placed vertically, we iterate from the given row coordinate to the word length, col remains the same
-        if(getOrientationUsed()){
-            for(int i = coorRow; i <= getWordUsed().length() + coorRow; i++){
-                //if the type of the square is DOUBLE_LETTER we multiply the letter points by 2
-                if(game.getBoard().getSquare(i, coorCol).getType().equals(Type.DOUBLE_LETTER)){
-                    score += game.getBoard().getSquare(i, coorCol).getTile().getLetterPoints() * 2;
-                    squaresUsed.add(game.getBoard().getSquare(i, coorCol));
-                }
-                //if the type of the square is TRIPLE_LETTER we multiply the letter points by 3
-                else if(game.getBoard().getSquare(i, coorCol).getType().equals(Type.TRIPLE_LETTER)){
-                    score += game.getBoard().getSquare(i, coorCol).getTile().getLetterPoints() * 3;
-                    squaresUsed.add(game.getBoard().getSquare(i, coorCol));
-                }
-                //if the type of the square is NORMAL,CENTER or any of WORD modifiers, we just add the points for the letter
-                else {
-                    score += game.getBoard().getSquare(i, coorCol).getTile().getLetterPoints();
-                    squaresUsed.add(game.getBoard().getSquare(i, coorCol));
-                }
-            }
-        }
-        //if the word is placed horizontally, we iterate from the given col coordinate to the word length, row remains the same
-        if(!getOrientationUsed()){
-            for(int i = coorCol; i <= getWordUsed().length() + coorCol; i++){
-                //if the type of the square is DOUBLE_LETTER we multiply the letter points by 2
-                if(game.getBoard().getSquare(coorRow, i).getType().equals(Type.DOUBLE_LETTER)){
-                    score += game.getBoard().getSquare(coorRow, i).getTile().getLetterPoints() * 2;
-                    squaresUsed.add(game.getBoard().getSquare(coorRow, i));
-                }
-                //if the type of the square is TRIPLE_LETTER we multiply the letter points by 3
-                else if(game.getBoard().getSquare(coorRow, i).getType().equals(Type.TRIPLE_LETTER)){
-                    score += game.getBoard().getSquare(coorRow, i).getTile().getLetterPoints() * 3;
-                    squaresUsed.add(game.getBoard().getSquare(coorRow, i));
-                }
-                //if the type of the square is NORMAL,CENTER or any of WORD modifiers, we just add the points for the letter
-                else {
-                    score += game.getBoard().getSquare(coorRow, i).getTile().getLetterPoints();
-                    squaresUsed.add(game.getBoard().getSquare(coorRow, i));
-                }
-            }
-        }
-        //now when we have the score ready for the letters of the word, we check for word modifiers
-        for(Square square : squaresUsed){
-            //so if any of the used squares have type DOUBLE_WORD we multiply the whole letters score by 2
-            if(square.getType().equals(Type.DOUBLE_WORD)){
-                score *= 2;
-            }
-            //and if any of the used squares have type TRIPLE_WORD we multiply the whole letters score by 3
-            if(square.getType().equals(Type.TRIPLE_WORD)){
-                score *= 3;
-            }
-        }
-        this.score = score;
     }
 
     /**
