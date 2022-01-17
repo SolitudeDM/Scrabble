@@ -113,6 +113,7 @@ public class Board {
      * @param tile is the tile that will be set on the square*/
     public void setTile(int row, int col, Tile tile) {
         this.squares[row][col].setTile(tile);
+        showBoard();
     }
 
     /**

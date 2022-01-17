@@ -176,19 +176,22 @@ public class Move {
             tilesUsed.add(player.getGame().getTile(letter.charAt(0)));
         }
 
-        // Remove all the existing letters from "lettersUsed" horizontal
-        if (!vertical) {
-            for (int i = Integer.parseInt(index[1]); i < word.length(); i++) {
+        // Remove all the existing letters from "lettersUsed" vertical
+        if (vertical) {
+            for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
 //                wordScore += (board.getSquare(i,Integer.parseInt(index[0])).getTile().getLetterPoints()) *board.getSquare(i,Integer.parseInt(index[0])).getType()
-
-                tilesUsed.remove(board.getSquare(i,Integer.parseInt(index[0])).getTile());
+                tilesUsed.remove(board.getSquare(i, Integer.parseInt(index[1])).getTile());
             }
         }
 
-        // Remove all the existing letters from "lettersUsed" vertical
-        if (vertical) {
-            for (int i = Integer.parseInt(index[0]); i < word.length(); i++) {
-                tilesUsed.remove(board.getSquare(i,Integer.parseInt(index[1])).getTile());
+        // Remove all the existing letters from "lettersUsed" horizontal
+        if (!vertical) {
+            for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
+                System.out.println();
+                System.out.println("Row =" + Integer.parseInt(index[1]));
+                System.out.println("Col =" + i);
+                System.out.println();
+                tilesUsed.remove(board.getSquare(Integer.parseInt(index[0]), i).getTile());
             }
         }
 
