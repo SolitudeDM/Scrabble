@@ -234,7 +234,7 @@ public class Game {
                 players.get(currentPlayer).setMove(new Move(game, players.get(currentPlayer)));
                 players.get(currentPlayer).getMove().options(players.get(currentPlayer).determineMove(board));
                 board.showBoard();
-                players.get(currentPlayer).getMove().calculateScore();
+//                players.get(currentPlayer).getMove().calculateScore();
                 game.handOut();
             }
 

@@ -12,12 +12,15 @@ public class Move {
 
     private Game game;
     private Player player;
-    private int score;
+    private int score = 0;
     private boolean valid;
     private String coordinatesUsed;
     //orientation true if vertical || false if horizontal
     private boolean orientationUsed;
     private String wordUsed;
+    private boolean doubleWord;
+    private boolean trippleWord;
+    private boolean bingo;
 
     public String getCoordinatesUsed() {
         return coordinatesUsed;
@@ -143,7 +146,6 @@ public class Move {
      * @ensures to put the given word to the board*/
     public void place(String coordinates, boolean vertical, String word, Board board) {
 
-
 //       //  Check if word exists
 //        if (!isValidWord(word)) {
 //            // moveMade = true
@@ -177,10 +179,16 @@ public class Move {
             tilesUsed.add(player.getGame().getTile(letter.charAt(0)));
         }
 
+        ArrayList<Tile> tilesUsedCopy = new ArrayList<>(tilesUsed);
+         doubleWord = false;
+         trippleWord = false;
+
         // Remove all the existing letters from "lettersUsed" vertical
         if (vertical) {
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
 //                wordScore += (board.getSquare(i,Integer.parseInt(index[0])).getTile().getLetterPoints()) *board.getSquare(i,Integer.parseInt(index[0])).getType()
+//                calculate(i, Integer.parseInt(index[1]), board);
+
                 tilesUsed.remove(board.getSquare(i, Integer.parseInt(index[1])).getTile());
             }
         }
@@ -188,39 +196,82 @@ public class Move {
         // Remove all the existing letters from "lettersUsed" horizontal
         if (!vertical) {
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
-                System.out.println();
-                System.out.println("Row =" + Integer.parseInt(index[1]));
-                System.out.println("Col =" + i);
-                System.out.println();
+
+//                calculate(Integer.parseInt(index[0]), i, board);
+
                 tilesUsed.remove(board.getSquare(Integer.parseInt(index[0]), i).getTile());
             }
         }
+
 
         //ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (player.searchHand(tilesUsed)) {
             if(vertical) {
                 int i = 0;
                 while (i < word.length()) {
-                    for (Tile tile : tilesUsed) {
+                    for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
+                        calculate(Integer.parseInt(index[0]) + i,  Integer.parseInt(index[1]), board);
                         i++;
                     }
                 }
+                if (doubleWord) {
+                    score *= 2;
+                }
+                if (trippleWord) {
+                    score *= 3;
+                }
             }
+
+
+
+
 
             if(!vertical) {
                 int i = 0;
                 while (i < word.length()) {
-                    for (Tile tile : tilesUsed) {
+                    for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
+                        calculate(Integer.parseInt(index[0]),  Integer.parseInt(index[1]) + i, board);
                         i++;
+                    }
+                    if (doubleWord) {
+                        score *= 2;
+                    }
+                    if (trippleWord) {
+                        score *= 3;
                     }
                 }
 
 //                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
+        System.out.println(score);
+    }
 
+    public void calculate(int row, int col, Board board) {
+        switch (board.getSquare(row, col).getType()) {
+            case NORMAL:
+                score += board.getSquare(row, col).getTile().getLetterPoints();
+                break;
+            case DOUBLE_LETTER:
+                score += board.getSquare(row, col).getTile().getLetterPoints() * 2;
+                break;
+            case TRIPLE_LETTER:
+                score += board.getSquare(row, col).getTile().getLetterPoints() * 3;
+                break;
+            case DOUBLE_WORD:
+                score += board.getSquare(row, col).getTile().getLetterPoints();
+                doubleWord = true;
+                break;
+            case TRIPLE_WORD:
+                score += board.getSquare(row, col).getTile().getLetterPoints();
+                trippleWord = true;
+                break;
+            default:
+                score += board.getSquare(row, col).getTile().getLetterPoints();
+                break;
+        }
     }
 
     public void calculateScore(){
