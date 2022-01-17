@@ -222,8 +222,8 @@ public class Move {
     public void calculateScore(){
         //split coordinates to row and col indexes
         String[] coordinates = this.coordinatesUsed.split("");
-        int coorCol = letterToCoordinate(coordinates[0].charAt(0));
-        int coorRow = Integer.parseInt(coordinates[1]);
+        int coorCol = letterToCoordinate(coordinates[0].charAt(0)) - 1;
+        int coorRow = Integer.parseInt(coordinates[1]) - 1;
         //we will use this list to determine if any squares here have type DOUBLE_WORD or TRIPLE_WORD
         ArrayList<Square> squaresUsed = new ArrayList<>();
 
