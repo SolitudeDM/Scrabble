@@ -219,11 +219,11 @@ public class Move {
 
     }
 
-    public int calculateScore(){
+    public void calculateScore(){
         //split coordinates to row and col indexes
         String[] coordinates = this.coordinatesUsed.split("");
-        int coorRow = letterToCoordinate(coordinates[0].charAt(0));
-        int coorCol = Integer.parseInt(coordinates[1]);
+        int coorCol = letterToCoordinate(coordinates[0].charAt(0));
+        int coorRow = Integer.parseInt(coordinates[1]);
         //we will use this list to determine if any squares here have type DOUBLE_WORD or TRIPLE_WORD
         ArrayList<Square> squaresUsed = new ArrayList<>();
 
@@ -233,7 +233,7 @@ public class Move {
 
         //if the word is placed vertically, we iterate from the given row coordinate to the word length, col remains the same
         if(getOrientationUsed()){
-            for(int i = coorRow; i <= getWordUsed().length(); i++){
+            for(int i = coorRow; i <= getWordUsed().length() + coorRow; i++){
                 //if the type of the square is DOUBLE_LETTER we multiply the letter points by 2
                 if(game.getBoard().getSquare(i, coorCol).getType().equals(Type.DOUBLE_LETTER)){
                     score += game.getBoard().getSquare(i, coorCol).getTile().getLetterPoints() * 2;
@@ -253,7 +253,7 @@ public class Move {
         }
         //if the word is placed horizontally, we iterate from the given col coordinate to the word length, row remains the same
         if(!getOrientationUsed()){
-            for(int i = coorCol; i <= getWordUsed().length(); i++){
+            for(int i = coorCol; i <= getWordUsed().length() + coorCol; i++){
                 //if the type of the square is DOUBLE_LETTER we multiply the letter points by 2
                 if(game.getBoard().getSquare(coorRow, i).getType().equals(Type.DOUBLE_LETTER)){
                     score += game.getBoard().getSquare(coorRow, i).getTile().getLetterPoints() * 2;
@@ -282,7 +282,7 @@ public class Move {
                 score *= 3;
             }
         }
-        return score;
+        this.score = score;
     }
 
     /**

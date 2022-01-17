@@ -97,7 +97,7 @@ public class Game {
             }
         }
 
-//        Collections.shuffle(completeTileSack);
+        Collections.shuffle(completeTileSack);
         return completeTileSack;
     }
 
@@ -129,7 +129,7 @@ public class Game {
                 p.setHand(newHand);
                 tileSack.removeAll(given2);
             }
-            else{
+            else if(tileSack.size() == 0){
                 System.out.println("The tileSack is empty, the game is almost finished!");
             }
         }
@@ -148,7 +148,7 @@ public class Game {
                 return initialTiles.get(i);
             }
         }
-        return initialTiles.get(26);
+        return null;
     }
 
     /**
@@ -234,6 +234,7 @@ public class Game {
                 players.get(currentPlayer).setMove(new Move(game, players.get(currentPlayer)));
                 players.get(currentPlayer).getMove().options(players.get(currentPlayer).determineMove(board));
                 board.showBoard();
+                players.get(currentPlayer).getMove().calculateScore();
                 game.handOut();
             }
 
