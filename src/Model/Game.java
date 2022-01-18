@@ -186,7 +186,9 @@ public class Game {
                 if(tileSack.size() == 0 && p.getHand().size() == 0){
                     return true;
                 }
-                //добавить сюда случай, когда один из игроков пишет комманду "EXIT"???
+                if(p.determineMove(board).equals("EXIT")){
+                    return true;
+                }
             }
             return false;
         }
