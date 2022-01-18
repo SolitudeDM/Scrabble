@@ -5,6 +5,7 @@ import Exceptions.InvalidCommandException;
 import Exceptions.WrongOrientationException;
 import Model.players.HumanPlayer_v3;
 import Model.players.Player;
+import View.utils.ANSI;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -163,10 +164,34 @@ public class Game {
     public void showTiles(Player player){
         assert player != null;
         ArrayList<Tile> hand = player.getHand();
-        for (Tile tile : hand) {
-            System.out.print(tile.getLetter() + " ");
+//        System.out.println();
+        System.out.print(ANSI.PURPLE);
+        System.out.print("               ║");
+        System.out.print(ANSI.RESET);
+        for (int i = 0; i < hand.size(); i++) {
+            System.out.print(ANSI.YELLOW_BACKGROUND_BRIGHT);
+            System.out.print(ANSI.BLACK_BOLD);
+            System.out.print(hand.get(i).getLetter() + " ");
+            System.out.print(ANSI.RESET);
+            if (i != 6) {
+                System.out.print(" ");
+            }
         }
+//        for (Tile tile : hand) {
+//            System.out.print(ANSI.YELLOW_BACKGROUND_BRIGHT);
+//            System.out.print(ANSI.BLACK_BOLD);
+//            System.out.print(tile.getLetter() + " ");
+//            System.out.print(ANSI.RESET);
+//            System.out.println(" ");
+//        }
+        System.out.print(ANSI.PURPLE);
+        System.out.print("║");
         System.out.println();
+        System.out.print("               ╚═════Your Tiles═════╝");
+        System.out.println();
+        System.out.print(ANSI.RESET);
+
+
 //        for(Player p : hands.keySet()){
 //            if (p.equals(player)){
 //
@@ -186,9 +211,9 @@ public class Game {
                 if(tileSack.size() == 0 && p.getHand().size() == 0){
                     return true;
                 }
-                if(p.determineMove(board).equals("EXIT")){
-                    return true;
-                }
+//                if(p.determineMove(board).equals("EXIT")){
+//                    return true;
+//                }
             }
             return false;
         }

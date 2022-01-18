@@ -169,11 +169,17 @@ public class Board {
             System.out.print(ANSI.RESET);
         }
         System.out.print(ANSI.PURPLE);
-        System.out.println("║  ░▒▓Made by: Mark Zhitchenko & Dani Mahaini▓▒░   ║");
+//        System.out.println();
+        System.out.print("║  ░▒▓");
+        System.out.print(ANSI.WHITE_BRIGHT);
+        System.out.print(ANSI.PURPLE_BACKGROUND);
+        System.out.print("Made by: Mark Zhitchenko && Dani Mahaini");
+        System.out.print(ANSI.RESET);
+        System.out.print(ANSI.PURPLE);
+        System.out.println("▓▒░  ║");
         System.out.println("╚══════════════╦════════════════════╦══════════════╝");
         System.out.print(ANSI.RESET);
     }
-
     /**
      * @ensures to set a given square to a given type
      * @param row is the row index
