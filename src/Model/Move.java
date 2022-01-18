@@ -163,6 +163,28 @@ public class Move {
          doubleWord = false;
          tripleWord = false;
 
+         //Check if cells are available
+        if (vertical) {
+            for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
+                if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[0])))) {
+                    moveMade = true;
+                    System.out.println("Square occupied");
+                    return;
+                }
+            }
+        }
+
+        //Check if cells are available
+        if (!vertical) {
+            for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
+                if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
+                    moveMade = true;
+                    System.out.println("Square occupied");
+                    return;
+                }
+            }
+        }
+
         // Remove all the existing letters from "lettersUsed" vertical
         if (vertical) {
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
