@@ -123,6 +123,8 @@ public class Move {
      * @ensures to put the given word to the board*/
     public void place(String coordinates, boolean vertical, String word, Board board) {
 
+        boolean firstMove = false;
+
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
        //  Check if word exists
         if (checker.isValidWord(word) == null) {
