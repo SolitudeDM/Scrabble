@@ -1,5 +1,8 @@
 package Model;
 
+import Exceptions.EmptyCommandException;
+import Exceptions.InvalidCommandException;
+import Exceptions.WrongOrientationException;
 import Model.players.HumanPlayer_v3;
 import Model.players.Player;
 
@@ -204,7 +207,7 @@ public class Game {
             }
         }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EmptyCommandException, InvalidCommandException, WrongOrientationException {
 
         //Here we checked if the board will be printed properly, using the setBoard() and showBoard() methods
         Square[][] squares = new Square[15][15];
