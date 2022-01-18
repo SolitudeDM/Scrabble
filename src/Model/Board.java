@@ -1,5 +1,7 @@
 package Model;
 
+import View.utils.ANSI;
+
 /**
  * Board for the scrabble game
  * @author Mark Zhitchenko and Dani Mahaini*/
@@ -73,26 +75,103 @@ public class Board {
     /**
      * This method prints the board to the console*/
     public void showBoard() {
-            System.out.println("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O");
+        System.out.print(ANSI.PURPLE);
+        System.out.print("╔═════════════════════");
+        System.out.print(ANSI.PURPLE_BACKGROUND);
+        System.out.print(ANSI.WHITE_BOLD_BRIGHT);
+        System.out.print("Scrabble");
+        System.out.print(ANSI.RESET);
+        System.out.print(ANSI.PURPLE);
+        System.out.print("═════════════════════╗");
+        System.out.println();
+        System.out.print("║");
+        System.out.print(ANSI.PURPLE_BOLD_BRIGHT);
+        System.out.print("    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  ");
+
+        System.out.print(ANSI.PURPLE);
+        System.out.print(" ║");
+        System.out.print(ANSI.RESET);
+
+        System.out.print(ANSI.PURPLE);
+        System.out.println();
         for (int i = 0; i < RESOLUTION; i++) {
             if (i + 1 < 10) {
-                System.out.print(i + 1 + "  ");
+                System.out.print(ANSI.PURPLE);
+                System.out.print("║");
+                System.out.print(ANSI.RESET);
+                System.out.print(ANSI.PURPLE_BOLD_BRIGHT);
+                System.out.print((i + 1) + "  ");
             } else {
+                System.out.print(ANSI.PURPLE);
+                System.out.print("║");
+                System.out.print(ANSI.RESET);
+                System.out.print(ANSI.PURPLE_BOLD_BRIGHT);
                 System.out.print(i + 1 + " ");
             }
-            for (int j = 0; j < RESOLUTION; j++) {
 
+            for (int j = 0; j < RESOLUTION; j++) {
+                System.out.print(ANSI.WHITE);
                 if (isEmptySquare(squares[i][j])) {
-                    System.out.print(squares[i][j].toString());
+
+                    switch (squares[i][j].getType()) {
+                        case CENTER:
+                            System.out.print(ANSI.RED_BACKGROUND);
+                            System.out.print(ANSI.WHITE_BOLD_BRIGHT);
+                            System.out.print(squares[i][j].toString());
+                            System.out.print(ANSI.RESET);
+                            break;
+                        case DOUBLE_LETTER:
+                            System.out.print(ANSI.BLUE_BACKGROUND);
+                            System.out.print(ANSI.WHITE_BOLD_BRIGHT);
+                            System.out.print(squares[i][j].toString());
+                            System.out.print(ANSI.RESET);
+                            break;
+                        case TRIPLE_LETTER:
+                            System.out.print(ANSI.BLUE_BACKGROUND_BRIGHT);
+                            System.out.print(ANSI.WHITE_BOLD_BRIGHT);
+                            System.out.print(squares[i][j].toString());
+                            System.out.print(ANSI.RESET);
+                            break;
+                        case DOUBLE_WORD:
+                            System.out.print(ANSI.PURPLE_BACKGROUND);
+                            System.out.print(ANSI.WHITE_BOLD_BRIGHT);
+                            System.out.print(squares[i][j].toString());
+                            System.out.print(ANSI.RESET);
+                            break;
+                        case TRIPLE_WORD:
+                            System.out.print(ANSI.PURPLE_BACKGROUND_BRIGHT);
+                            System.out.print(ANSI.WHITE_BOLD_BRIGHT);
+                            System.out.print(squares[i][j].toString());
+                            System.out.print(ANSI.RESET);
+                            break;
+                        default:
+                            System.out.print(ANSI.RESET);
+                            System.out.print(ANSI.WHITE);
+                            System.out.print(squares[i][j].toString());
+                            System.out.print(ANSI.RESET);
+                            break;
+                    }
+
+//                    System.out.print(squares[i][j].toString());
+//                    System.out.print(ANSI.RESET);
                     System.out.print(" ");
                 } else {
+                    System.out.print(ANSI.YELLOW_BACKGROUND_BRIGHT);
+                    System.out.print(ANSI.BLACK_BOLD);
                     System.out.print(squares[i][j].getTile().getLetter());
                     System.out.print(" ");
+                    System.out.print(ANSI.RESET);
                     System.out.print(" ");
                 }
             }
-            System.out.println();
+            System.out.print(ANSI.PURPLE);
+            System.out.println("  ║");
+            System.out.print(ANSI.RESET);
         }
+        System.out.print(ANSI.PURPLE);
+        System.out.println("║  ░▒▓Made by: Mark Zhitchenko & Dani Mahaini▓▒░   ║");
+        System.out.println("╚══════════════╦════════════════════╦══════════════╝");
+        System.out.print(ANSI.RESET);
     }
 
     /**

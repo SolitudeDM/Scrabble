@@ -75,6 +75,6 @@ public class Square {
             return getTile() + " ";
         }
 
-        return ("__");
+        return ("░░");
     }
 }
