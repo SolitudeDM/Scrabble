@@ -175,9 +175,11 @@ public class Move {
          //Check if cells are available
         if (vertical) {
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
-                if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[0])))) {
-                    moveMade = true;
-                    throw new SquareNotEmptyException("Square is already occupied!");
+                if (!tilesUsed.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
+                    if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[1])))) {
+                        moveMade = true;
+                        throw new SquareNotEmptyException("Square is already occupied!");
+                    }
                 }
             }
         }
@@ -185,9 +187,11 @@ public class Move {
         //Check if cells are available
         if (!vertical) {
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
-                if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
-                    moveMade = true;
-                    throw new SquareNotEmptyException("Square is already occupied!");
+                if (!tilesUsed.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
+                    if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[1]), i))) {
+                        moveMade = true;
+                        throw new SquareNotEmptyException("Square is already occupied!");
+                    }
                 }
             }
         }
