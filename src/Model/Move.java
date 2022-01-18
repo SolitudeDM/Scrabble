@@ -26,6 +26,11 @@ public class Move {
         this.player = player;
     }
 
+    /**
+     * This method is responsible for the options the player has for the turn
+     * @requires choice to be of the right format, for placing a word(PLACE; H8; V; WORD), for swapping tiles (SWAP; A B C D)
+     * @ensures to place a word if the move is valid
+     * @ensures to swap the chosen tiles if that is possible*/
     public void options(String choice) {
         moveMade = false;
 
