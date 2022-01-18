@@ -1,5 +1,9 @@
 package Model;
 
+import Exceptions.EmptyCommandException;
+import Exceptions.InvalidCommandException;
+import Exceptions.SquareNotEmptyException;
+import Exceptions.WrongOrientationException;
 import Model.players.Player;
 import main.java.InMemoryScrabbleWordChecker;
 
@@ -31,14 +35,14 @@ public class Move {
      * @requires choice to be of the right format, for placing a word(PLACE; H8; V; WORD), for swapping tiles (SWAP; A B C D)
      * @ensures to place a word if the move is valid
      * @ensures to swap the chosen tiles if that is possible*/
-    public void options(String choice) {
+    public void options(String choice) throws EmptyCommandException, WrongOrientationException, InvalidCommandException {
         moveMade = false;
 
         while (!moveMade) {
             String[] splittedChoice = choice.split("; ");
 
             if (splittedChoice.length < 1) {
-                System.out.println("Empty command");
+                throw new EmptyCommandException("Command is empty!");
             }
 
             switch (splittedChoice[0].toUpperCase()) {
@@ -52,11 +56,14 @@ public class Move {
                     } else if (splittedChoice[2].equals("H")) {
                         orientation = false;
                     } else {
-                        System.out.println("POSHEL V ZHEPU");
-                        break;
+                        throw new WrongOrientationException("The orientation should be horizontal(H) or vertical(V)!");
                     }
 
-                    place(splittedChoice[1], orientation, splittedChoice[3], game.getBoard());
+                    try {
+                        place(splittedChoice[1], orientation, splittedChoice[3], game.getBoard());
+                    } catch (SquareNotEmptyException e) {
+                        e.printStackTrace();
+                    }
                     moveMade = true;
 //FORMAT --> PLACE; H8; V; WORD
                     break;
@@ -107,8 +114,7 @@ public class Move {
                     break;
 
                 default:
-                    System.out.println("Invalid command " + splittedChoice[0]);
-                    break;
+                    throw new InvalidCommandException("Command invalid, valid commands are(PLACE | SWAP | EXIT");
             }
         }
     }
@@ -121,7 +127,7 @@ public class Move {
      * @param board is the board where the word is going to be placed at
      * @requires all the parameter != null
      * @ensures to put the given word to the board*/
-    public void place(String coordinates, boolean vertical, String word, Board board) {
+    public void place(String coordinates, boolean vertical, String word, Board board) throws SquareNotEmptyException {
 
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
        //  Check if word exists
@@ -168,8 +174,7 @@ public class Move {
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
                 if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[0])))) {
                     moveMade = true;
-                    System.out.println("Square occupied");
-                    return;
+                    throw new SquareNotEmptyException("Square is already occupied!");
                 }
             }
         }
@@ -179,8 +184,7 @@ public class Move {
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
                 if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
                     moveMade = true;
-                    System.out.println("Square occupied");
-                    return;
+                    throw new SquareNotEmptyException("Square is already occupied!");
                 }
             }
         }
