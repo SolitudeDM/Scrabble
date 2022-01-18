@@ -21,6 +21,7 @@ public class Game {
     private final ArrayList<Tile> initialTiles;
     private ArrayList<Player> players;
     private Board board;
+    private boolean finishGame;
 
     //private HashMap<Player, ArrayList<Tile>> hands;
 
@@ -54,6 +55,9 @@ public class Game {
 
     public void setTileSack(ArrayList<Tile> tileSack){
         this.tileSack = tileSack;
+    }
+    public void setFinishGame(boolean finishGame){
+        this.finishGame = finishGame;
     }
 
     /**
@@ -211,9 +215,9 @@ public class Game {
                 if(tileSack.size() == 0 && p.getHand().size() == 0){
                     return true;
                 }
-//                if(p.determineMove(board).equals("EXIT")){
-//                    return true;
-//                }
+                else if(finishGame){
+                    return true;
+                }
             }
             return false;
         }
@@ -266,6 +270,9 @@ public class Game {
                 board.showBoard();
 //                players.get(currentPlayer).getMove().calculateScore();
                 game.handOut();
+                if(game.isFinished()){
+                    break;
+                }
             }
 
         }

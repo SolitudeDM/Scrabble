@@ -110,11 +110,12 @@ public class Move {
                     break;
 
                 case ("EXIT"):
-
+                    game.setFinishGame(true);
+                    moveMade = true;
                     break;
 
                 default:
-                    throw new InvalidCommandException("Command invalid, valid commands are(PLACE | SWAP | EXIT");
+                    throw new InvalidCommandException("Command invalid, valid commands are(PLACE | SWAP | EXIT)");
             }
         }
     }
