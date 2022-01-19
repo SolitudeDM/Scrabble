@@ -255,6 +255,7 @@ public class Move {
 //                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
+        player.setScore(player.getScore() + score);
         System.out.println(score);
     }
 
