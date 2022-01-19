@@ -198,13 +198,20 @@ public class Game {
 
         System.out.print(ANSI.BLUE_BOLD_BRIGHT);
 
-        System.out.print(" ");
+        System.out.print("    Score:");
 
         System.out.print(player.getScore());
         System.out.print(ANSI.PURPLE);
 
         System.out.println();
-        System.out.print("               ╚═════Your Tiles═════╝");
+        System.out.print("               ╚═════");
+
+        System.out.print(ANSI.PURPLE_UNDERLINED);
+//        System.out.print(ANSI.PURPLE_BACKGROUND);
+        System.out.print("Your Tiles");
+        System.out.print(ANSI.RESET);
+        System.out.print(ANSI.PURPLE);
+        System.out.print("═════╝");
         System.out.println();
         System.out.print(ANSI.RESET);
 
