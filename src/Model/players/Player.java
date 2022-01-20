@@ -69,10 +69,17 @@ public abstract class Player {
 
     public abstract String determineMove(Board board);
 
+    /**
+     * This method checks whether a player has the tiles he wanted to place and adapts his hand if possible
+     * @requires lettersUsed != null && lettersUsed.size() > 0
+     * @ensures to return true if the player has all the tiles he wants to place && to remove all used tiles from his hand
+     * @param lettersUsed is the ArrayList with Tiles containing Tiles the player used*/
     public boolean searchHand(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
         ArrayList<Tile> handDupe = new ArrayList<>(getHand());
         boolean letterFound = false;
+        //Tile variable that will be used for checking if blank tiles were used
+        Tile tileNotFound;
 
         for (int i = 0; i < lettersUsed.size(); i++) {
             for (int j = 0; j < handDupe.size(); j++) {
@@ -80,11 +87,29 @@ public abstract class Player {
                     handDupe.remove(j);
                     letterFound = true;
                     break;
-                } else {
+                }else{
                     letterFound = false;
                 }
             }
+            //check for blank tiles
             if (!letterFound) {
+                tileNotFound = lettersUsed.get(i);
+                for(int r = 0; r < handDupe.size(); r++) {
+                    if(handDupe.get(r).getLetter() == game.getTile(' ').getLetter()){
+                        handDupe.get(r).setLetter(tileNotFound.getLetter());
+                        this.score -= tileNotFound.getLetterPoints();
+                        handDupe.remove(r);
+                        letterFound = true;
+                        //this break is needed in case a player has two blank tiles we change and use only one
+                        break;
+                    }
+                    else{
+                        letterFound = false;
+                    }
+                }
+            }
+            //check again after the blank tiles analysis
+            if(!letterFound){
                 return false;
             }
         }
