@@ -215,6 +215,7 @@ public class Move {
 
         if (tilesAbused) {
             System.out.println("Заабузел B)");
+            return;
         }
 
         // Remove all the existing letters from "lettersUsed" vertical
@@ -304,6 +305,7 @@ public class Move {
                 score += board.getSquare(row, col).getTile().getLetterPoints() * 3;
                 break;
             case DOUBLE_WORD:
+            case CENTER:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
                 doubleWord = true;
                 break;
