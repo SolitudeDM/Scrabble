@@ -39,8 +39,6 @@ public class Game {
         initialTiles = createTileSack();
     }
 
-
-
     public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
@@ -111,7 +109,8 @@ public class Game {
 
     /**
      * This method hands out tiles for the players
-     * @ensures that every player will have 7 tiles (if the size of the tileSack allows that)*/
+     * @ensures that every player will have 7 tiles (if the size of the tileSack allows that)
+     */
     public void handOut(){
         for(Player p : players){
             int missingTiles = 7 - p.getHand().size();
@@ -186,6 +185,7 @@ public class Game {
                 System.out.print(" ");
             }
         }
+
 //        for (Tile tile : hand) {
 //            System.out.print(ANSI.YELLOW_BACKGROUND_BRIGHT);
 //            System.out.print(ANSI.BLACK_BOLD);
@@ -193,6 +193,7 @@ public class Game {
 //            System.out.print(ANSI.RESET);
 //            System.out.println(" ");
 //        }
+
         System.out.print(ANSI.PURPLE);
         System.out.print("║");
 
@@ -269,8 +270,8 @@ public class Game {
         ArrayList<Player> players = new ArrayList<>();
 
         Game game = new Game(players, board);
-        HumanPlayer_v3 player1 = new HumanPlayer_v3("Boris", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Viktor", game);
+        HumanPlayer_v3 player1 = new HumanPlayer_v3("Chris Peacock", game);
+        HumanPlayer_v3 player2 = new HumanPlayer_v3("Gabe Itch", game);
         players.add(player1);
         players.add(player2);
 

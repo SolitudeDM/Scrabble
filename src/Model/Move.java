@@ -133,6 +133,8 @@ public class Move {
      */
     public void place(String coordinates, boolean vertical, String word, Board board) throws SquareNotEmptyException {
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
+        boolean tilesAbused = false;
+
 
         //  Check if word exists
         if (checker.isValidWord(word) == null) {
@@ -183,28 +185,36 @@ public class Move {
 
         //Check if cells are available
         if (vertical) {
+            tilesAbused = true;
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
-
                 if (!tilesUsed.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
+                    tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[1])))) {
-
                         moveMade = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
+
             }
         }
 
         //Check if cells are available
         if (!vertical) {
+            tilesAbused = true;
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
                 if (!tilesUsed.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
+                    tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[1]), i))) {
                         moveMade = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
+
             }
+        }
+
+        if (tilesAbused) {
+            System.out.println("Заабузел B)");
         }
 
         // Remove all the existing letters from "lettersUsed" vertical
