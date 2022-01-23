@@ -277,6 +277,7 @@ public class Move {
 //                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
+        neighboursCheck(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
         player.setScore(player.getScore() + score);
         System.out.println(score);
     }
@@ -381,6 +382,50 @@ public class Move {
         return false;
         }
 
+    public void neighboursCheck(Board board, int row, int col, String word, boolean vertical){
+        InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
+
+        String wordToCheck = "";
+        int[] coordinates = {-1, -1};
+        if(!vertical){
+            for(int i = col; i < col + word.length(); i++){
+                if(row != 0){
+                    if(board.getSquare(row - 1, i).getTile() != null){
+                        int j = row - 1;
+                        while(board.getSquare(j, i).getTile() != null && j != 0){
+                            j--;
+                        }
+                        coordinates[0] = j + 1;
+                        coordinates[1] = i;
+                        while(board.getSquare(j + 1, i).getTile() != null && j != 14){
+                            wordToCheck += board.getSquare(j + 1, i).getTile().getLetter();
+                            j++;
+                        }
+                        if(checker.isValidWord(wordToCheck) != null){
+                            for(int k = 0; k < wordToCheck.length(); k++){
+                                score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
+                            }
+                        }
+                    }
+                }
+
+                if(board.getSquare(row + 1, i).getTile() != null){
+                    //to be implemented
+                }
+            }
+        }
+        if(vertical){
+            for(int i = row; i < row + word.length(); i++){
+                if(board.getSquare(i, col - 1).getTile() != null){
+                    //to be implemented
+                }
+                if(board.getSquare(i, col + 1).getTile() != null){
+                    //to be implemented
+                }
+            }
+        }
     }
+
+}
 
 
