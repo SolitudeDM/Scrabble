@@ -32,9 +32,11 @@ public class Move {
 
     /**
      * This method is responsible for the options the player has for the turn
+     *
      * @requires choice to be of the right format, for placing a word(PLACE; H8; V; WORD), for swapping tiles (SWAP; A B C D)
      * @ensures to place a word if the move is valid
-     * @ensures to swap the chosen tiles if that is possible*/
+     * @ensures to swap the chosen tiles if that is possible
+     */
     public void options(String choice) throws EmptyCommandException, WrongOrientationException, InvalidCommandException {
         moveMade = false;
 
@@ -76,7 +78,7 @@ public class Move {
                     int tilesToSwap = 0;
                     boolean letterDoesNotBelong = true;
 
-                    for(String letter : swap){
+                    for (String letter : swap) {
                         letterDoesNotBelong = true;
                         swappedTiles.add(game.getTile(letter.charAt(0)));
 
@@ -122,35 +124,35 @@ public class Move {
 
     /**
      * This method is responsible for placing a word on the board
+     *
      * @param coordinates are the coordinates of the required square
-     * @param vertical is used to see whether the word should be set vertically or horizontally
-     * @param word is the word that is going to be placed
-     * @param board is the board where the word is going to be placed at
+     * @param vertical    is used to see whether the word should be set vertically or horizontally
+     * @param word        is the word that is going to be placed
+     * @param board       is the board where the word is going to be placed at
      * @requires all the parameter != null
-     * @ensures to put the given word to the board*/
+     * @ensures to put the given word to the board
+     */
     public void place(String coordinates, boolean vertical, String word, Board board) throws SquareNotEmptyException {
-
-        boolean firstMove = false;
-
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
-       //  Check if word exists
+
+        //  Check if word exists
         if (checker.isValidWord(word) == null) {
             moveMade = true;
             return;
         }
 
-
-        //in case the row index is a double-digit number
+        //in case the row index is a two-digit number
         String[] index = coordinates.split("");
         if (index.length != 2) {
-            index[1] = index[1] + index [2];
+            index[1] = index[1] + index[2];
         }
+
         // Revert coordinates of letter-number to number-number
         index[0] = String.valueOf(letterToCoordinate(index[0].charAt(0)));
 
         //Fix for the sliding coordinates problem
-        index[0] =  String.valueOf(Integer.parseInt(index[0]) - 1);
-        index[1] =  String.valueOf(Integer.parseInt(index[1]) - 1);
+        index[0] = String.valueOf(Integer.parseInt(index[0]) - 1);
+        index[1] = String.valueOf(Integer.parseInt(index[1]) - 1);
 
         //Fix for the mirrored coordinates
         String tempCoordinate = index[0];
@@ -159,6 +161,7 @@ public class Move {
 
         String[] lettersUsed = (word.toUpperCase().split(""));
         ArrayList<Tile> tilesUsed = new ArrayList<>();
+
 
         // remove letters that are already on the board from the lettersUsed, so only the fresh ones will be counted
         for (String letter : lettersUsed) {
@@ -169,14 +172,23 @@ public class Move {
         ArrayList<Tile> tilesUsedCopy = new ArrayList<>(tilesUsed);
 
         //doubleWord and tripleWord booleans are initialized
-         doubleWord = false;
-         tripleWord = false;
+        doubleWord = false;
+        tripleWord = false;
 
-         //Check if cells are available
+        //Check if rigged correctly
+
+        if (!checkRig(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical)) {
+            System.out.println("Invalid placement!");
+            return;
+        }
+
+        //Check if cells are available
         if (vertical) {
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
+
                 if (!tilesUsed.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
                     if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[1])))) {
+
                         moveMade = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
@@ -219,12 +231,12 @@ public class Move {
 
         //ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (player.searchHand(tilesUsed)) {
-            if(vertical) {
+            if (vertical) {
                 int i = 0;
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
-                        calculate(Integer.parseInt(index[0]) + i,  Integer.parseInt(index[1]), board);
+                        calculate(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), board);
                         i++;
                     }
                 }
@@ -236,12 +248,12 @@ public class Move {
                 }
             }
 
-            if(!vertical) {
+            if (!vertical) {
                 int i = 0;
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
-                        calculate(Integer.parseInt(index[0]),  Integer.parseInt(index[1]) + i, board);
+                        calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, board);
                         i++;
                     }
                     if (doubleWord) {
@@ -262,13 +274,15 @@ public class Move {
 
     /**
      * This method calculates the score of a move
+     *
+     * @param row   is the index of the row
+     * @param col   is index of the column
+     * @param board is the board where the move was made
      * @requires row != null && row >= 0 && row <= 14
      * @requires col != null && col >= 0 && col <= 14
      * @requires board != null
-     * @param row is the index of the row
-     * @param col is index of the column
-     * @param board is the board where the move was made
-     * @ensures to calculate the right score of a move and set it to the variable score*/
+     * @ensures to calculate the right score of a move and set it to the variable score
+     */
     public void calculate(int row, int col, Board board) {
         switch (board.getSquare(row, col).getType()) {
             case NORMAL:
@@ -296,16 +310,46 @@ public class Move {
 
     /**
      * This method converts the letter index to numeric index using ASCII
-     * @requires letter != null
+     *
      * @param letter is the letter that is going to be represented as a number
-     * @ensures to return an integer value of an alphabetic letter*/
+     * @requires letter != null
+     * @ensures to return an integer value of an alphabetic letter
+     */
     public int letterToCoordinate(char letter) {
-        int temp = (int)letter;
+        int temp = (int) letter;
         int temp_integer = 64; //for upper case
-        if(temp<=90 & temp>=65) {
+        if (temp <= 90 & temp >= 65) {
             return (temp - temp_integer);
         }
         return -69;
     }
-}
+
+    public boolean checkRig(Board board, int row, int col, String word, boolean vertical) {
+
+        // Check if the first move is correctly placed
+        if (board.isEmpty()) {
+            //Check if cells are available
+            if (vertical) {
+                for (int i = row; i < word.length() + row; i++) {
+                    if (board.getSquare(i, col).getType() == Type.CENTER) {
+                        return true;
+                    }
+                }
+            }
+                //Check if cells are available
+                if (!vertical) {
+                    for (int i = col; i < word.length() + col; i++) {
+                        if (board.getSquare(row, i).getType() == Type.CENTER) {
+                            return true;
+                        }
+                    }
+                }
+
+            }
+
+        return false;
+        }
+
+    }
+
 

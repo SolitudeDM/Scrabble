@@ -217,5 +217,16 @@ public class Board {
         return square.getTile() == null;
     }
 
+    public boolean isEmpty(){
+
+        for (int row = 0; row < squares.length; row++) {
+            for (int col = 0; col < squares[row].length; col++) {
+                if (!isEmptySquare(squares[row][col])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }
