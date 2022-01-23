@@ -85,7 +85,7 @@ public abstract class Player {
             for (int j = 0; j < handDupe.size(); j++) {
                 if ((handDupe.get(j).getLetter()) == (lettersUsed.get(i).getLetter())) {
                     handDupe.remove(j);
-                    letterFound = true;
+                    letterFound = true;;
                     break;
                 }else{
                     letterFound = false;
@@ -97,7 +97,7 @@ public abstract class Player {
                 for(int r = 0; r < handDupe.size(); r++) {
                     if(handDupe.get(r).getLetter() == game.getTile(' ').getLetter()){
                         handDupe.get(r).setLetter(tileNotFound.getLetter());
-                        this.score -= tileNotFound.getLetterPoints();
+                        tileNotFound.setLetterPoints(0);
                         handDupe.remove(r);
                         letterFound = true;
                         //this break is needed in case a player has two blank tiles we change and use only one

@@ -24,7 +24,6 @@ public class Move {
     private boolean bingo;
     private boolean moveMade;
 
-
     public Move(Game game, Player player) {
         this.game = game;
         this.player = player;
@@ -129,7 +128,7 @@ public class Move {
      * @param vertical    is used to see whether the word should be set vertically or horizontally
      * @param word        is the word that is going to be placed
      * @param board       is the board where the word is going to be placed at
-     * @requires all the parameter != null
+     * @requires all the parameters != null && coordinates within the board boundaries && word to be an existing word
      * @ensures to put the given word to the board
      */
     public void place(String coordinates, boolean vertical, String word, Board board) throws SquareNotEmptyException {
