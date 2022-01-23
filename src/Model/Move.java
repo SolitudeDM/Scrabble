@@ -347,6 +347,26 @@ public class Move {
 
             }
 
+        if (!board.isEmpty()) {
+            //Check if cells are available
+            if (vertical) {
+                for (int i = row; i < word.length() + row; i++) {
+                    if (board.getSquare(i, col).getTile() != null) {
+                        return true;
+                    }
+                }
+            }
+            //Check if cells are available
+            if (!vertical) {
+                for (int i = col; i < word.length() + col; i++) {
+                    if (board.getSquare(row, i).getTile() != null) {
+                        return true;
+                    }
+                }
+            }
+
+        }
+
         return false;
         }
 
