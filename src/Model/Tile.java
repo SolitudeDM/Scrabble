@@ -10,7 +10,8 @@ public class Tile {
     private char letter;
     private int letterPoints;
     private int letterQuantity;
-    private boolean substituted;
+    private boolean placed;
+
 
     /**
      * Model.Tile constructor, creates a new tile with the given letter and its points*/
@@ -18,7 +19,7 @@ public class Tile {
         this.letter = letter;
         this.letterPoints = letterPoints;
         this.letterQuantity = letterQuantity;
-        this.substituted = false;
+        this.placed = false;
     }
 
     /**
@@ -41,11 +42,11 @@ public class Tile {
         return this.letterQuantity;
     }
 
-    public boolean isSubstituted() {
-        return substituted;
+    public boolean isPlaced() {
+        return placed;
     }
-    public void setSubstituted(boolean substituted) {
-        this.substituted = substituted;
+    public void setPlaced(boolean substituted) {
+        this.placed = substituted;
     }
 
 }

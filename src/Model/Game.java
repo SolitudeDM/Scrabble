@@ -12,6 +12,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import static Model.Board.RESOLUTION;
+
 public class Game {
 
 
@@ -22,6 +24,8 @@ public class Game {
     private ArrayList<Player> players;
     private Board board;
     private boolean finishGame;
+
+    private ArrayList<String> usedCoordinates;
 
     //private HashMap<Player, ArrayList<Tile>> hands;
 
@@ -37,6 +41,15 @@ public class Game {
         this.board = board;
         tileSack = createTileSack();
         initialTiles = createTileSack();
+        usedCoordinates = new ArrayList<>();
+    }
+
+    public ArrayList<String> getUsedCoordinates() {
+        return usedCoordinates;
+    }
+
+    public void setUsedCoordinates(ArrayList<String> usedCoordinates) {
+        this.usedCoordinates = usedCoordinates;
     }
 
     public void setPlayers(ArrayList<Player> players) {
@@ -113,6 +126,9 @@ public class Game {
      */
     public void handOut(){
         for(Player p : players){
+            if (p.getHand().size() > 7) {
+                return;
+            }
             int missingTiles = 7 - p.getHand().size();
             if (missingTiles != 0 && tileSack.size() > missingTiles) {
                 List<Tile> given = tileSack.subList(0,missingTiles);
@@ -271,9 +287,9 @@ public class Game {
 
         Game game = new Game(players, board);
         HumanPlayer_v3 player1 = new HumanPlayer_v3("Chris Peacock", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Gabe Itch", game);
+//        HumanPlayer_v3 player2 = new HumanPlayer_v3("Gabe Itch", game);
         players.add(player1);
-        players.add(player2);
+//        players.add(player2);
 
         game.setPlayers(players);
 
