@@ -178,6 +178,7 @@ public class Move {
         }
 
         ArrayList<Tile> tilesUsedCopy = new ArrayList<>(tilesUsed);
+        ArrayList<Tile> tilesUsedCopy2 = new ArrayList<>(tilesUsed);
 
         //doubleWord and tripleWord booleans are initialized
         doubleWord = false;
@@ -301,7 +302,7 @@ public class Move {
 
         neighboursCheck(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
 
-        if (player.searchHand(tilesUsed)) {
+        if (player.searchHandUndelete(tilesUsedCopy2)) {
             if (vertical) {
                 int i = 0;
                 while (i < word.length()) {
@@ -371,7 +372,7 @@ public class Move {
 //            }
 //        }
 
-
+        tilesUsedCopy2 = tilesUsed;
         player.setScore(player.getScore() + score);
         System.out.println(score);
     }
