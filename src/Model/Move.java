@@ -117,7 +117,7 @@ public class Move {
                     break;
 
                 case ("DEBUG"):
-                    player.setHand(game.getTileSack());
+                    player.setHand(game.getInitialTiles());
                     moveMade = true;
                     break;
 
@@ -370,6 +370,7 @@ public class Move {
 //
 //            }
 //        }
+
 
         player.setScore(player.getScore() + score);
         System.out.println(score);

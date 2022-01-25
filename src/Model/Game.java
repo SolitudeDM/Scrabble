@@ -116,8 +116,12 @@ public class Game {
             }
         }
 
-        Collections.shuffle(completeTileSack);
+//        Collections.shuffle(completeTileSack);
         return completeTileSack;
+    }
+
+    public ArrayList<Tile> getInitialTiles() {
+        return initialTiles;
     }
 
     /**
