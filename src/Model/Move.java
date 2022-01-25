@@ -248,6 +248,7 @@ public class Move {
         }
 
 
+
         //ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (player.searchHand(tilesUsed)) {
             if (vertical) {
@@ -256,7 +257,9 @@ public class Move {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
 
-                        game.getUsedCoordinates().add(((index[0]) + i) + ", " + index[1]);
+//                        int temp = Integer.parseInt(index[0]) + i;
+
+//                        game.getUsedCoordinates().add(temp + ", " + index[1]);
 
                         calculate(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), board);
                         i++;
@@ -276,7 +279,9 @@ public class Move {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
 
-                        game.getUsedCoordinates().add(index[0] + ", " + (index[1]) + i);
+//                        int temp = Integer.parseInt(index[1]) + i;
+//
+//                        game.getUsedCoordinates().add(index[0] + ", " + (temp));
 
                         calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, board);
                         i++;
@@ -296,31 +301,75 @@ public class Move {
 
         neighboursCheck(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
 
-        for (Tile t : tilesUsed) {
-            t.setPlaced(true);
-        }
+        if (player.searchHand(tilesUsed)) {
+            if (vertical) {
+                int i = 0;
+                while (i < word.length()) {
+                    for (Tile tile : tilesUsedCopy) {
+                        board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
 
-        if (vertical) {
-            for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
+                        int temp = Integer.parseInt(index[0]) + i;
 
-                if (board.getSquare(i, Integer.parseInt(index[1])).getTile().isPlaced()) {
-                    board.getSquare(i, Integer.parseInt(index[1])).setType(Type.NORMAL);
+                        if (board.getSquare(temp, Integer.parseInt(index[1])).getTile() != null) {
+                            board.getSquare(temp, Integer.parseInt(index[1])).setType(Type.NORMAL);
+                        }
+
+                        game.getUsedCoordinates().add(temp + ", " + index[1]);
+
+                        i++;
+                    }
+                }
+            }
+
+            if (!vertical) {
+                int i = 0;
+                while (i < word.length()) {
+                    for (Tile tile : tilesUsedCopy) {
+                        board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
+
+                        int temp = Integer.parseInt(index[1]) + i;
+
+                        if (board.getSquare(Integer.parseInt(index[0]), temp).getTile() != null) {
+                            board.getSquare(Integer.parseInt(index[0]), temp).setType(Type.NORMAL);
+                        }
+
+                        game.getUsedCoordinates().add(index[0] + ", " + (temp));
+
+                        i++;
+                    }
+
                 }
 
-
+//                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
 
-        // Remove all the existing letters from "lettersUsed" horizontal
-        if (!vertical) {
-            for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
 
-                if (board.getSquare(Integer.parseInt(index[0]), i).getTile().isPlaced()) {
-                    board.getSquare(Integer.parseInt(index[0]), i).setType(Type.NORMAL);
-                }
-
-            }
-        }
+//        for (Tile t : tilesUsed) {
+//            t.setPlaced(true);
+//        }
+//
+//        if (vertical) {
+//            for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
+//
+//                if (board.getSquare(i, Integer.parseInt(index[1])).getTile().isPlaced()) {
+//                    board.getSquare(i, Integer.parseInt(index[1])).setType(Type.NORMAL);
+//                }
+//
+//
+//            }
+//        }
+//
+//        // Remove all the existing letters from "lettersUsed" horizontal
+//        if (!vertical) {
+//            for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
+//
+//                if (board.getSquare(Integer.parseInt(index[0]), i).getTile().isPlaced()) {
+//                    board.getSquare(Integer.parseInt(index[0]), i).setType(Type.NORMAL);
+//                }
+//
+//            }
+//        }
 
         player.setScore(player.getScore() + score);
         System.out.println(score);
@@ -435,7 +484,8 @@ public class Move {
         int[] coordinates = {-1, -1};
         if (!vertical) {
             for (int i = col; i < col + word.length(); i++) {
-                if (!board.getSquare(row, i).getTile().isPlaced()) {
+
+                if (!game.getUsedCoordinates().contains(row + ", " + i)) {
                     if (row != 0) {
                         if (board.getSquare(row - 1, i).getTile() != null) {
                             directionChecked = true;
@@ -449,12 +499,15 @@ public class Move {
                                 wordToCheck += board.getSquare(j + 1, i).getTile().getLetter();
                                 j++;
                             }
+
                             if (checker.isValidWord(wordToCheck) != null) {
                                 for (int k = 0; k < wordToCheck.length(); k++) {
                                     score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
 
                                 }
-
+                                player.setScore(player.getScore() + score);
+                                score = 0;
+                                System.out.println("Word " + wordToCheck + " changed score to " + player.getScore());
                             } else {
                                 System.out.println(wordToCheck + " is not a word");
                                 moveMade = true;
@@ -479,6 +532,9 @@ public class Move {
                                     for (int k = 0; k < wordToCheck.length(); k++) {
                                         score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
                                     }
+                                    player.setScore(player.getScore() + score);
+                                    score = 0;
+                                    System.out.println("Word " + wordToCheck + " changed score tO " + player.getScore());
                                 } else {
                                     System.out.println(wordToCheck + " is not a word");
                                     moveMade = true;
@@ -497,7 +553,7 @@ public class Move {
 
             if (vertical) {
                 for (int i = row; i < row + word.length(); i++) {
-                     if (!board.getSquare(i, col).getTile().isPlaced()) {
+                     if (!game.getUsedCoordinates().contains(i + ", " + col)) {
                      if (col != 0) {
                           if (board.getSquare(i, col - 1).getTile() != null) {
                               directionChecked = true;
