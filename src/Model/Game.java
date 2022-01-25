@@ -105,7 +105,7 @@ public class Game {
         tileSack.add(new Tile('X', 8, 1));
         tileSack.add(new Tile('Y', 4, 2));
         tileSack.add(new Tile('Z', 10, 1));
-//        tileSack.add(new Tile(' ', 0, 2));
+        tileSack.add(new Tile(' ', 0, 2));
 
         //this list has all the letters with the right amount of duplicates
         ArrayList<Tile> completeTileSack = new ArrayList<>();
@@ -116,7 +116,7 @@ public class Game {
             }
         }
 
-//        Collections.shuffle(completeTileSack);
+        Collections.shuffle(completeTileSack);
         return completeTileSack;
     }
 

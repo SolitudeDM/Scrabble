@@ -8,7 +8,6 @@ import Model.players.Player;
 import main.java.InMemoryScrabbleWordChecker;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -302,7 +301,7 @@ public class Move {
 
         neighboursCheck(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
 
-        if (player.searchHandUndelete(tilesUsed)) {
+        if (player.searchHandDelete(tilesUsed)) {
             if (vertical) {
                 int i = 0;
                 while (i < word.length()) {
@@ -476,6 +475,17 @@ public class Move {
         return false;
     }
 
+    /**
+     * This method checks whether a placed word created any other new words on the board and
+     * calculates the score of the new words if there are any
+     *
+     * @param board is the board the game is being played on
+     * @param row is the row index
+     * @param col is the column index
+     * @param word is the word we check neighbours for
+     * @param vertical is the orientation of the placed word
+     * @requires all parameters != null && index to be within the board boundaries
+     * @ensures to properly check all the newly created words and calculate their score*/
     public void neighboursCheck(Board board, int row, int col, String word, boolean vertical) {
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
         boolean directionChecked = false;

@@ -74,7 +74,7 @@ public abstract class Player {
      * @requires lettersUsed != null && lettersUsed.size() > 0
      * @ensures to return true if the player has all the tiles he wants to place && to remove all used tiles from his hand
      * @param lettersUsed is the ArrayList with Tiles containing Tiles the player used*/
-    public boolean searchHandUndelete(ArrayList<Tile> lettersUsed) {
+    public boolean searchHandDelete(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
         ArrayList<Tile> handDupe = new ArrayList<>(getHand());
         boolean letterFound = false;
@@ -119,9 +119,11 @@ public abstract class Player {
     }
 
     /**
-     * This method checks whether a player has the tiles he wanted to place and adapts his hand if possible
+     * This method checks whether a player has the tiles he wanted to place
+     * This is also a copy of the method above except this method doesn't set the hand of the player to the hand duplicate
+     *
      * @requires lettersUsed != null && lettersUsed.size() > 0
-     * @ensures to return true if the player has all the tiles he wants to place && to remove all used tiles from his hand
+     * @ensures to return true if the player has all the tiles he wants to place
      * @param lettersUsed is the ArrayList with Tiles containing Tiles the player used*/
     public boolean searchHand(ArrayList<Tile> lettersUsed) {
         //Add copy of hand tiles
