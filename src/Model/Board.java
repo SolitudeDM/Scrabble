@@ -195,11 +195,12 @@ public class Board {
      * @param row  is the row index
      * @param col  is the column index
      * @param type is the type that a square will be set to
+     * @requires all parameters != null && row and col to be withing the board boundaries
      * @ensures to set a given square to a given type
      */
     public void setSquare(int row, int col, Type type) {
-        this.squares[row][col].setRow(row);
-        this.squares[row][col].setColumn(col);
+//        this.squares[row][col].setRow(row);
+//        this.squares[row][col].setColumn(col);
         this.squares[row][col].setType(type);
     }
 
@@ -207,6 +208,7 @@ public class Board {
      * @param row  is the row index of the square
      * @param col  is the column index of the square
      * @param tile is the tile that will be set on the square
+     * @requires parameters != null && row and col to be within the board boundaries
      * @ensures to set a tile on a given square
      */
     public void setTile(int row, int col, Tile tile) {
@@ -226,10 +228,21 @@ public class Board {
         return this.squares[row][col];
     }
 
+    /**
+     * @param square is the square to check
+     * @requires square != null
+     * @ensures to return true if the square has no tile attached && return false if the square has a tile attached to it
+     * @return true if square is indeed empty
+     * @return false if square is not empty*/
     public boolean isEmptySquare(Square square) {
         return square.getTile() == null;
     }
 
+    /**
+     * Checks whether the whole boad is empty
+     * @ensures to return false if any square on the board has a tile && to return true if all squares have no tiles
+     * @return true if board is indeed empty
+     * @return false if board is not empty*/
     public boolean isEmpty() {
 
         for (int row = 0; row < squares.length; row++) {
