@@ -156,6 +156,7 @@ public class Move {
         //  Check if word exists
         if (checker.isValidWord(word) == null) {
             moveMade = true;
+            System.out.println("Word " + word + " does not exist!");
             return;
         }
 
