@@ -267,6 +267,13 @@ public class Game {
          * This method determines the winner after the game is finished*/
         public void determineWinner(){
             if(isFinished()){
+
+                for (Player p : players) {
+                    for (Tile t : p.getHand()) {
+                        p.setScore(p.getScore() - t.getLetterPoints());
+                    }
+                }
+
                 int highestScore = 0;
                 Player tempWinner = players.get(0);
                 for (Player player : players){
@@ -320,6 +327,9 @@ public class Game {
             }
 
         }
+
+
+        game.determineWinner();
 
 //        game.showTiles(player1);
 //
