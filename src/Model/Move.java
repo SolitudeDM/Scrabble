@@ -22,8 +22,10 @@ public class Move {
     private Player player;
     private int score = 0;
     private boolean valid;
-    private boolean doubleWord;
-    private boolean tripleWord;
+//    private boolean doubleWord;
+//    private boolean tripleWord;
+    private int doubleWord;
+    private int tripleWord;
     private boolean bingo;
     private boolean moveMade;
 
@@ -189,8 +191,8 @@ public class Move {
 //        ArrayList<Tile> tilesUsedCopy2 = new ArrayList<>(tilesUsed);
 
         //doubleWord and tripleWord booleans are initialized
-        doubleWord = false;
-        tripleWord = false;
+        doubleWord = 0;
+        tripleWord = 0;
 
 
         //Check if rigged correctly
@@ -199,8 +201,15 @@ public class Move {
             return;
         }
 
+
         //Check if cells are available
         if (vertical) {
+
+            if (Integer.parseInt(index[0]) - 1 + word.length() >= 15) {
+                System.out.println("Word won't fit vertically");
+                return;
+            }
+
             tilesAbused = true;
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
                 if (!tilesUsed.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
@@ -216,13 +225,17 @@ public class Move {
 
         //Check if cells are available
         if (!vertical) {
+
+            if (Integer.parseInt(index[1]) + word.length()  - 1 >= 15) {
+                System.out.println("Word won't fit horizontally");
+                return;
+            }
+
             tilesAbused = true;
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
                 if (!tilesUsed.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
                     tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
-                        System.out.println(board.getSquare(Integer.parseInt(index[0]), i).getType());
-                        System.out.println(board.getSquare(Integer.parseInt(index[0]), i).getTile().getLetter());
                         moveMade = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
@@ -275,11 +288,11 @@ public class Move {
                         i++;
                     }
                 }
-                if (doubleWord) {
-                    score *= 2;
+                if (doubleWord != 0) {
+                    score *= 2 * doubleWord;
                 }
-                if (tripleWord) {
-                    score *= 3;
+                if (tripleWord != 0) {
+                    score *= 3 * tripleWord;
                 }
             }
 
@@ -296,11 +309,11 @@ public class Move {
 //                        calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  boardCopy);
                         i++;
                     }
-                    if (doubleWord) {
-                        score *= 2;
+                    if (doubleWord != 0) {
+                        score *= 2 * doubleWord;
                     }
-                    if (tripleWord) {
-                        score *= 3;
+                    if (tripleWord != 0) {
+                        score *= 3 * tripleWord;
                     }
                 }
 
@@ -330,11 +343,11 @@ public class Move {
                         i++;
                     }
                 }
-                if (doubleWord) {
-                    score *= 2;
+                if (doubleWord != 0) {
+                    score *= 2 * doubleWord;
                 }
-                if (tripleWord) {
-                    score *= 3;
+                if (tripleWord != 0) {
+                    score *= 3 * tripleWord;
                 }
             }
 
@@ -351,11 +364,11 @@ public class Move {
                         calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  board);
                         i++;
                     }
-                    if (doubleWord) {
-                        score *= 2;
+                    if (doubleWord != 0) {
+                        score *= 2 * doubleWord;
                     }
-                    if (tripleWord) {
-                        score *= 3;
+                    if (tripleWord != 0) {
+                        score *= 3 * tripleWord;
                     }
                 }
 
@@ -467,11 +480,11 @@ public class Move {
             case DOUBLE_WORD:
             case CENTER:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
-                doubleWord = true;
+                doubleWord += 1;
                 break;
             case TRIPLE_WORD:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
-                tripleWord = true;
+                tripleWord += 1;
                 break;
             default:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
