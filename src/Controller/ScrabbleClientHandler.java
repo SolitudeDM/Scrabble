@@ -3,7 +3,7 @@ package Controller;
 import java.io.*;
 import java.net.Socket;
 
-public class ScrabbleClientHandler {
+public class ScrabbleClientHandler implements Runnable{
     /** Input and output streams + the socket*/
     private BufferedReader in;
     private BufferedWriter out;
@@ -27,6 +27,7 @@ public class ScrabbleClientHandler {
         }
     }
 
+    @Override
     public void run(){
         String message;
         try{
@@ -44,7 +45,10 @@ public class ScrabbleClientHandler {
     }
 
     private void handleCommand(String message) throws IOException{
-        //to be implemented
+        switch(message){
+            case "Hello":
+                out.write(server.getHello(message));
+        }
     }
 
     public void shutdown(){
