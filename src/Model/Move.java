@@ -28,10 +28,15 @@ public class Move {
     private int tripleWord;
     private boolean bingo;
     private boolean moveMade;
+    private boolean requestAnother;
 
     public Move(Game game, Player player) {
         this.game = game;
         this.player = player;
+    }
+
+    public boolean isMoveMade() {
+        return moveMade;
     }
 
     /**
@@ -44,7 +49,7 @@ public class Move {
     public void options(String choice) throws EmptyCommandException, WrongOrientationException, InvalidCommandException {
         moveMade = false;
 
-        while (!moveMade) {
+        while (!moveMade && !requestAnother) {
             String[] splittedChoice = choice.split("; ");
 
             if (splittedChoice.length < 1) {
@@ -70,7 +75,7 @@ public class Move {
                     } catch (SquareNotEmptyException e) {
                         e.printStackTrace();
                     }
-                    moveMade = true;
+//                    moveMade = true;
 //FORMAT --> PLACE; H8; V; WORD
                     break;
 
@@ -198,6 +203,7 @@ public class Move {
         //Check if rigged correctly
         if (!checkRig(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical)) {
             System.out.println("Invalid placement!");
+            requestAnother = true;
             return;
         }
 
@@ -207,6 +213,7 @@ public class Move {
 
             if (Integer.parseInt(index[0]) - 1 + word.length() >= 15) {
                 System.out.println("Word won't fit vertically");
+                requestAnother = true;
                 return;
             }
 
@@ -215,7 +222,7 @@ public class Move {
                 if (!tilesUsed.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
                     tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[1])))) {
-                        moveMade = true;
+                        requestAnother = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
@@ -236,7 +243,7 @@ public class Move {
                 if (!tilesUsed.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
                     tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
-                        moveMade = true;
+                        requestAnother = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
@@ -246,6 +253,7 @@ public class Move {
 
         if (tilesAbused) {
             System.out.println("Заабузел B)");
+            requestAnother = true;
             return;
         }
 
@@ -323,7 +331,7 @@ public class Move {
 
 
         neighboursCheck(boardCopy, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
-        if (moveMade){
+        if (moveMade || requestAnother){
             return;
         }
 
@@ -452,6 +460,7 @@ public class Move {
 
         player.setScore(player.getScore() + score);
         System.out.println(score);
+        moveMade = true;
     }
 
 
@@ -580,11 +589,11 @@ public class Move {
             if(col != 0 && board.getSquare(row, col - 1 ).getTile() != null) {
 
                 System.out.println("Please, write the whole word in one line");
-                moveMade = true;
+                requestAnother = true;
             } else if ( col + word.length() < 15 && board.getSquare(row, col + word.length() + 1 ).getTile() != null) {
 
                 System.out.println("Please, write the whole word in one line");
-                moveMade = true;
+                requestAnother = true;
             }
 
             for (int i = col; i < col + word.length(); i++) {
@@ -660,11 +669,11 @@ public class Move {
                 if(row != 0 && board.getSquare(row - 1, col).getTile() != null) {
 
                     System.out.println("Please, write the whole word in one vertical line");
-                    moveMade = true;
+                    requestAnother = true;
                 } else if(row + word.length() < 15 && board.getSquare(row + word.length() + 1, col).getTile() != null) {
 
                     System.out.println("Please, write the whole word in one line");
-                    moveMade = true;
+                    requestAnother = true;
                 }
 
                 for (int i = row; i < row + word.length(); i++) {

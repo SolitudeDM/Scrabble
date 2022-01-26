@@ -304,11 +304,14 @@ public class Game {
         while (!game.isFinished()) {
             int currentPlayer = 0;
 
-            for (currentPlayer = 0; currentPlayer < players.size(); currentPlayer++) {
+            for (currentPlayer = 0; currentPlayer < players.size();) {
                 game.showTiles(players.get(currentPlayer));
                 players.get(currentPlayer).setMove(new Move(game, players.get(currentPlayer)));
                 players.get(currentPlayer).getMove().options(players.get(currentPlayer).determineMove(board));
                 board.showBoard();
+                if (players.get(currentPlayer).getMove().isMoveMade()) {
+                    currentPlayer++;
+                }
 //                players.get(currentPlayer).getMove().calculateScore();
                 game.handOut();
                 if(game.isFinished()){
