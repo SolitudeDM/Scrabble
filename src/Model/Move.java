@@ -107,6 +107,13 @@ public class Move {
                         }
                     }
 
+                    if (tilesToSwap > game.getTileSack().size()) {
+                        System.out.println("There is only " + game.getTileSack().size() + " tiles left in the sack");
+                        requestAnother = true;
+                        return;
+                    }
+
+
                     List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
                     newHand.addAll(newTiles);
 
