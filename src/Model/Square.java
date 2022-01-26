@@ -3,7 +3,7 @@ package Model;
 /**
  * Represents a square on the board in the scrabble game
  * @author Mark Zhitchenko and Dani Mahaini*/
-public class Square {
+public class Square implements Cloneable{
 
     /**
      * Variables of a square*/
@@ -76,5 +76,11 @@ public class Square {
         }
 
         return ("░░");
+    }
+
+    public Square clone() {
+
+//        Square result = new Square(square.column, square.row);
+        return new Square(this.column, this.row);
     }
 }

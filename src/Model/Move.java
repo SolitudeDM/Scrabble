@@ -8,7 +8,10 @@ import Model.players.Player;
 import main.java.InMemoryScrabbleWordChecker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static Model.Board.RESOLUTION;
 
 /**
  * This class represents a move in Scrabble game
@@ -185,10 +188,10 @@ public class Move {
 
 
         //Check if rigged correctly
-//        if (!checkRig(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical)) {
-//            System.out.println("Invalid placement!");
-//            return;
-//        }
+        if (!checkRig(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical)) {
+            System.out.println("Invalid placement!");
+            return;
+        }
 
         //Check if cells are available
         if (vertical) {
@@ -248,8 +251,64 @@ public class Move {
         }
 
 
+        Board boardCopy = board.clone();
 
         //ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
+        if (player.searchHand(tilesUsed)) {
+            if (vertical) {
+                int i = 0;
+                while (i < word.length()) {
+                    for (Tile tile : tilesUsedCopy) {
+                        boardCopy.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
+
+//                        int temp = Integer.parseInt(index[0]) + i;
+
+//                        game.getUsedCoordinates().add(temp + ", " + index[1]);
+
+//                        calculate(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), boardCopy);
+                        i++;
+                    }
+                }
+                if (doubleWord) {
+                    score *= 2;
+                }
+                if (tripleWord) {
+                    score *= 3;
+                }
+            }
+
+            if (!vertical) {
+                int i = 0;
+                while (i < word.length()) {
+                    for (Tile tile : tilesUsedCopy) {
+                        boardCopy.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
+
+//                        int temp = Integer.parseInt(index[1]) + i;
+//
+//                        game.getUsedCoordinates().add(index[0] + ", " + (temp));
+
+//                        calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  boardCopy);
+                        i++;
+                    }
+                    if (doubleWord) {
+                        score *= 2;
+                    }
+                    if (tripleWord) {
+                        score *= 3;
+                    }
+                }
+
+//                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
+            }
+        }
+
+
+        neighboursCheck(boardCopy, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
+        if (moveMade){
+            return;
+        }
+
+//ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (player.searchHand(tilesUsed)) {
             if (vertical) {
                 int i = 0;
@@ -283,7 +342,7 @@ public class Move {
 //
 //                        game.getUsedCoordinates().add(index[0] + ", " + (temp));
 
-                        calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, board);
+                        calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  board);
                         i++;
                     }
                     if (doubleWord) {
@@ -297,9 +356,6 @@ public class Move {
 //                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
-
-
-        neighboursCheck(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
 
         if (player.searchHandDelete(tilesUsed)) {
             if (vertical) {
@@ -388,7 +444,7 @@ public class Move {
      * @ensures to calculate the right score of a move and set it to the variable score
      */
     public void calculate(int row, int col, Board board) {
-        switch (board.getSquare(row, col).getType()) {
+        switch (game.getBoard().getSquare(row, col).getType()) {
             case NORMAL:
                 score += board.getSquare(row, col).getTile().getLetterPoints();
                 break;
@@ -456,7 +512,7 @@ public class Move {
             //Check if cells are available
             if (vertical) {
                 for (int i = row; i < word.length() + row; i++) {
-                    if (board.getSquare(i, col).getTile() != null) {
+                    if (board.getSquare(i, col).getTile() != null || board.getSquare(i + 1, col).getTile() != null || board.getSquare(i - 1, col).getTile() != null || board.getSquare(i, col + 1).getTile() != null || board.getSquare(i, col - 1).getTile() != null) {
                         return true;
                     }
                 }
@@ -464,13 +520,15 @@ public class Move {
             //Check if cells are available
             if (!vertical) {
                 for (int i = col; i < word.length() + col; i++) {
-                    if (board.getSquare(row, i).getTile() != null) {
+                    if (board.getSquare(row, i).getTile() != null || board.getSquare(row, i + 1).getTile() != null || board.getSquare(row, i - 1).getTile() != null || board.getSquare(row + 1, i).getTile() != null || board.getSquare(row - 1, i).getTile() != null) {
                         return true;
                     }
                 }
             }
 
         }
+
+
 
         return false;
     }
@@ -494,6 +552,7 @@ public class Move {
         String wordToCheck = "";
         int[] coordinates = {-1, -1};
         if (!vertical) {
+
             for (int i = col; i < col + word.length(); i++) {
 
                 if (!game.getUsedCoordinates().contains(row + ", " + i)) {
@@ -623,5 +682,16 @@ public class Move {
                 }
 
         }
+
+//    public static Square[][] deepCopyIntMatrix(Square[][] input) {
+//        if (input == null)
+//            return null;
+//        Square[][] result = new Square[input.length][];
+//        for (int r = 0; r < input.length; r++) {
+//            result[r] = input[r].clone();
+//        }
+//        return result;
+//    }
+
     }
 

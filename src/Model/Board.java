@@ -8,15 +8,19 @@ import View.utils.ANSI;
 public class Board {
 
     /**
-     * Resolution of our board*/
+     * Resolution of our board
+     */
     public static final int RESOLUTION = 15;
 
     /**
      * squares is our two-dimensional array
-     * @invariant there are always RESOLUTION * RESOLUTION squares on a board*/
+     *
+     * @invariant there are always RESOLUTION * RESOLUTION squares on a board
+     */
     private Square[][] squares;
     /**
-     * This two-dimensional array represents the pattern of squares on the board*/
+     * This two-dimensional array represents the pattern of squares on the board
+     */
     //add a custom pattern later
     private String[][] pattern = {
             {"3W", "NO", "NO", "2L", "NO", "NO", "NO", "3W", "NO", "NO", "NO", "2L", "NO", "NO", "3W"},
@@ -34,22 +38,23 @@ public class Board {
             {"NO", "NO", "2W", "NO", "NO", "NO", "2L", "NO", "2L", "NO", "NO", "NO", "2W", "NO", "NO"},
             {"NO", "2W", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "2W", "NO"},
             {"3W", "NO", "NO", "2L", "NO", "NO", "NO", "3W", "NO", "NO", "NO", "2L", "NO", "NO", "3W"},
-     };
-
+    };
 
 
     /**
-     * Model.Board constructor creates a new board with a two-dimensional array of squares*/
+     * Model.Board constructor creates a new board with a two-dimensional array of squares
+     */
     public Board(Square[][] squares) {
         this.squares = squares;
     }
 
     /**
-     * This method sets the board with the required squares on the right places, using the pattern array*/
+     * This method sets the board with the required squares on the right places, using the pattern array
+     */
     public void setBoard() {
         for (int i = 0; i < RESOLUTION; i++) {
             for (int j = 0; j < RESOLUTION; j++) {
-                    squares[i][j] = new Square(j,i);
+                squares[i][j] = new Square(j, i);
                 if (pattern[i][j].equals("NO")) {
                     setSquare(i, j, Type.NORMAL);
                 }
@@ -72,8 +77,13 @@ public class Board {
         }
     }
 
+    public Square[][] getSquares() {
+        return squares;
+    }
+
     /**
-     * This method prints the board to the console*/
+     * This method prints the board to the console
+     */
     public void showBoard() {
         System.out.print(ANSI.PURPLE);
         System.out.print("╔═════════════════════");
@@ -180,11 +190,13 @@ public class Board {
         System.out.println("╚══════════════╦════════════════════╦══════════════╝");
         System.out.print(ANSI.RESET);
     }
+
     /**
+     * @param row  is the row index
+     * @param col  is the column index
+     * @param type is the type that a square will be set to
      * @ensures to set a given square to a given type
-     * @param row is the row index
-     * @param col is the column index
-     * @param type is the type that a square will be set to*/
+     */
     public void setSquare(int row, int col, Type type) {
         this.squares[row][col].setRow(row);
         this.squares[row][col].setColumn(col);
@@ -192,32 +204,33 @@ public class Board {
     }
 
     /**
+     * @param row  is the row index of the square
+     * @param col  is the column index of the square
+     * @param tile is the tile that will be set on the square
      * @ensures to set a tile on a given square
-     * @param row is the row index of the square
-     * @param col is the column index of the square
-     * @param tile is the tile that will be set on the square*/
+     */
     public void setTile(int row, int col, Tile tile) {
         this.squares[row][col].setTile(tile);
 //        showBoard();
     }
 
     /**
-     * @requires the required square to be within the bounds
      * @param row is the row index
      * @param col is the column index
-     * @ensures to return a square with the given indexes
      * @return the required square
+     * @requires the required square to be within the bounds
+     * @ensures to return a square with the given indexes
      */
     public Square getSquare(int row, int col) {
         assert ((row < RESOLUTION) && (col < RESOLUTION) && (row >= 0) && (col >= 0));
         return this.squares[row][col];
     }
 
-    public boolean isEmptySquare(Square square){
+    public boolean isEmptySquare(Square square) {
         return square.getTile() == null;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
 
         for (int row = 0; row < squares.length; row++) {
             for (int col = 0; col < squares[row].length; col++) {
@@ -229,4 +242,18 @@ public class Board {
         return true;
     }
 
+    public Board clone() {
+        Square[][] newSquares = new Square[RESOLUTION][RESOLUTION];
+
+        for (int x = 0; x < RESOLUTION; x++) {
+            for (int y = 0; y < RESOLUTION; y++) {
+                newSquares[x][y] = squares[x][y].clone();
+                newSquares[x][y].setTile(squares[x][y].getTile());
+            }
+        }
+        return new Board(newSquares);
+    }
+
 }
+
+
