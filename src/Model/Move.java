@@ -143,6 +143,7 @@ public class Move {
     public void place(String coordinates, boolean vertical, String word, Board board) throws SquareNotEmptyException {
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
         boolean tilesAbused = false;
+        boolean bingo = false;
 
 
         //  Check if word exists
@@ -177,6 +178,11 @@ public class Move {
         for (String letter : lettersUsed) {
 
             tilesUsed.add(player.getGame().getTile(letter.charAt(0)));
+
+        }
+
+        if (tilesUsed.size() >= 7) {
+            bingo = true;
         }
 
         ArrayList<Tile> tilesUsedCopy = new ArrayList<>(tilesUsed);
@@ -427,6 +433,10 @@ public class Move {
 //            }
 //        }
 
+        if (bingo) {
+            score += 50;
+        }
+
         player.setScore(player.getScore() + score);
         System.out.println(score);
     }
@@ -553,6 +563,16 @@ public class Move {
         int[] coordinates = {-1, -1};
         if (!vertical) {
 
+            if(col != 0 && board.getSquare(row, col - 1 ).getTile() != null) {
+
+                System.out.println("Please, write the whole word in one line");
+                moveMade = true;
+            } else if ( col + word.length() < 15 && board.getSquare(row, col + word.length() + 1 ).getTile() != null) {
+
+                System.out.println("Please, write the whole word in one line");
+                moveMade = true;
+            }
+
             for (int i = col; i < col + word.length(); i++) {
 
                 if (!game.getUsedCoordinates().contains(row + ", " + i)) {
@@ -622,6 +642,17 @@ public class Move {
         }
 
             if (vertical) {
+
+                if(row != 0 && board.getSquare(row - 1, col).getTile() != null) {
+
+                    System.out.println("Please, write the whole word in one vertical line");
+                    moveMade = true;
+                } else if(row + word.length() < 15 && board.getSquare(row + word.length() + 1, col).getTile() != null) {
+
+                    System.out.println("Please, write the whole word in one line");
+                    moveMade = true;
+                }
+
                 for (int i = row; i < row + word.length(); i++) {
                      if (!game.getUsedCoordinates().contains(i + ", " + col)) {
                      if (col != 0) {
