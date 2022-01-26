@@ -535,7 +535,8 @@ public class Move {
             //Check if cells are available
             if (vertical) {
                 for (int i = row; i < word.length() + row; i++) {
-                    if (board.getSquare(i, col).getTile() != null || board.getSquare(i + 1, col).getTile() != null || board.getSquare(i - 1, col).getTile() != null || board.getSquare(i, col + 1).getTile() != null || board.getSquare(i, col - 1).getTile() != null) {
+
+                    if (board.getSquare(i, col).getTile() != null || (i != 14 && board.getSquare(i + 1, col).getTile() != null) || ( i != 0 && board.getSquare(i - 1, col).getTile() != null) ||( col != 14 &&  board.getSquare(i, col + 1).getTile() != null) || (col != 0 && board.getSquare(i, col - 1).getTile() != null)) {
                         return true;
                     }
                 }
@@ -543,7 +544,7 @@ public class Move {
             //Check if cells are available
             if (!vertical) {
                 for (int i = col; i < word.length() + col; i++) {
-                    if (board.getSquare(row, i).getTile() != null || board.getSquare(row, i + 1).getTile() != null || board.getSquare(row, i - 1).getTile() != null || board.getSquare(row + 1, i).getTile() != null || board.getSquare(row - 1, i).getTile() != null) {
+                    if (board.getSquare(row, i).getTile() != null || (i != 14 &&  board.getSquare(row, i + 1).getTile() != null) || (i != 0 && board.getSquare(row, i - 1).getTile() != null) ||( row != 14 && board.getSquare(row + 1, i).getTile() != null) || ( row != 0 && board.getSquare(row - 1, i).getTile() != null)) {
                         return true;
                     }
                 }
