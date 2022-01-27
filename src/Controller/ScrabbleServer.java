@@ -34,7 +34,7 @@ public class ScrabbleServer implements ServerProtocol {
     }
 
     public void setUp(){
-        setUpGame();
+//        setUpGame();
         ssock = null;
         while(ssock == null){
             int port = 8888;
@@ -51,7 +51,7 @@ public class ScrabbleServer implements ServerProtocol {
         while(openNewSock){
             try{
                 setUp();
-                while(true){
+                while(players.size() < 2){
 //                    System.out.println("Server is waiting for the connection...");
                     String name = "Player";  //change this in the future
                     Socket sock = ssock.accept();
@@ -59,6 +59,8 @@ public class ScrabbleServer implements ServerProtocol {
                     new Thread(handler).start();
                     clients.add(handler);
                 }
+                System.out.println("Opponent found, starting game...");
+                setUpGame();
             }catch(IOException e){
                 System.out.println("Poshel naxyi");
             }
@@ -100,10 +102,6 @@ public class ScrabbleServer implements ServerProtocol {
         }
     }
 
-    public static void main(String[] args) {
-        new ScrabbleServer().start();
-    }
-
     @Override
     public String handleConnection(String playerName) {
         if(playerName == null){
@@ -135,5 +133,9 @@ public class ScrabbleServer implements ServerProtocol {
     @Override
     public String handleExit() {
         return null;
+    }
+
+    public static void main(String[] args) {
+        new ScrabbleServer().start();
     }
 }
