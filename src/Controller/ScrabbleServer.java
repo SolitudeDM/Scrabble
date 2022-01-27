@@ -9,7 +9,6 @@ import Model.players.Player;
 import View.utils.ANSI;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,7 +34,7 @@ public class ScrabbleServer implements ServerProtocol {
     }
 
     public void setUp(){
-        //setUpGame();
+        setUpGame();
         ssock = null;
         while(ssock == null){
             int port = 8888;
@@ -113,6 +112,7 @@ public class ScrabbleServer implements ServerProtocol {
         else{
             Player clientPlayer = new HumanPlayer_v3(playerName, game);
             players.add(clientPlayer);
+            System.out.println(players.size());
             return "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server";
         }
     }
