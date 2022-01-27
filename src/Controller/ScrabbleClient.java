@@ -15,6 +15,9 @@ public class ScrabbleClient implements ClientProtocol {
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
+    private String playerReference;
+
+    
 
     private boolean playerMade = false;
 
@@ -140,6 +143,7 @@ public class ScrabbleClient implements ClientProtocol {
 //      sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
         String result = readLineFromServer();
         if (result.contains("connected to the server")) {
+            playerReference = playerName;
             playerMade = true;
         } else {
             playerMade = false;

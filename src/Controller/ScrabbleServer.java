@@ -49,23 +49,40 @@ public class ScrabbleServer implements ServerProtocol {
     public void run(){
         boolean openNewSock = true;
         while(openNewSock){
-            try{
+            try {
                 setUp();
-                while(clients.size() < 2){
+                while(clients.size() < 2) {
+
 //                    System.out.println("Server is waiting for the connection...");
                     String name = "Player";  //change this in the future
                     Socket sock = ssock.accept();
                     ScrabbleClientHandler handler = new ScrabbleClientHandler(sock, this, name);
                     new Thread(handler).start();
                     clients.add(handler);
+
                 }
+
                 openNewSock = false;
-            }catch(IOException e){
+            } catch(IOException e) {
                 System.out.println("Poshel naxyi");
             }
         }
+
         sendMessageToAll(clients.size() + " clients active, waiting for player's connections...");
         setUpGame();
+
+
+        for (int i = 0; i < players.size(); i++) {
+            for (int j = 0; j < clients.size(); j ++) {
+                if (clients.get(j).getName().equals(players.get(i).getName())) {
+                    sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
+//                    clients.get(j).sendMessage(game.getBoard().showBoard());
+//                    clients.get(j).sendMessage(game.showTiles(players.get(i)));
+                    clients.get(j).sendMessage("Please make turn");
+                }
+            }
+        }
+
     }
 
     public String getHello(String message){
@@ -96,13 +113,10 @@ public class ScrabbleServer implements ServerProtocol {
         this.clients.remove(client);
     }
 
-    public Player currentPlayer(){
-        Player currentPlayer = players.get(0);
-        if(currentPlayer.getMove().isMoveMade()){
-            currentPlayer = players.get(1);
-        }
-        return currentPlayer;
-    }
+//    public Player currentClient(Player currentPlayer){
+//
+//        //return player owner (client)
+//    }
 
 //    public void start(){
 //        boolean run = true;
@@ -120,6 +134,7 @@ public class ScrabbleServer implements ServerProtocol {
             Player clientPlayer = new HumanPlayer_v3(playerName, game);
             players.add(clientPlayer);
             System.out.println(players.size());
+
             return "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server";
         }
     }

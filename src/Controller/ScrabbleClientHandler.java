@@ -19,6 +19,8 @@ public class ScrabbleClientHandler implements Runnable{
     /** Name of the clientHandler*/
     private String name;
 
+
+
     public ScrabbleClientHandler(Socket sock, ScrabbleServer server, String name){
         try{
 //            printWriter = new PrintWriter(sock.getOutputStream(), true);
@@ -30,6 +32,10 @@ public class ScrabbleClientHandler implements Runnable{
         } catch(IOException e){
             shutdown();
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
