@@ -119,6 +119,8 @@ public class ScrabbleClient implements ClientProtocol {
                 sendMessage(message);
                 doHandshake();
                 break;
+            case ProtocolMessages.MAKE_PLACE:
+
         }
     }
 
@@ -126,14 +128,14 @@ public class ScrabbleClient implements ClientProtocol {
 
     @Override
     public void doConnect(String playerName) {
-//            sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
-            String result = readLineFromServer();
-            if (result.contains("connected to the server")) {
-                playerMade = true;
-            } else {
-                playerMade = false;
-            }
-            System.out.println(result);
+//      sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
+        String result = readLineFromServer();
+        if (result.contains("connected to the server")) {
+            playerMade = true;
+        } else {
+            playerMade = false;
+        }
+        System.out.println(result);
     }
 
     @Override
