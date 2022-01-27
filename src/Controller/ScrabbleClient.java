@@ -4,6 +4,7 @@ import Controller.Protocols.ClientProtocol;
 import Controller.Protocols.ProtocolMessages;
 import Model.players.HumanPlayer_v3;
 import Model.players.Player;
+import View.utils.ANSI;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -120,9 +121,22 @@ public class ScrabbleClient implements ClientProtocol {
 
     @Override
     public void doConnect(String playerName) {
-        sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
-        System.out.println(readLineFromServer());
-        playerMade = true;
+        if (!playerMade) {
+            sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
+            String result = readLineFromServer();
+
+            if (result.contains("connected to the server")) {
+                playerMade = true;
+            } else {
+                playerMade = false;
+            }
+
+            System.out.println(result);
+            return;
+        }
+
+        System.out.println("Sorry, the player is already created, so please stop it, seriously...");
+
     }
 
     @Override
