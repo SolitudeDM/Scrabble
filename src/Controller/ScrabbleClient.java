@@ -92,11 +92,11 @@ public class ScrabbleClient implements ClientProtocol {
             e.printStackTrace();
         }
     }
+
     public void start(){
         boolean run = true;
         createConnection();
         while (run) {
-            doHandshake();
             clientCommands();
         }
     }
@@ -109,6 +109,9 @@ public class ScrabbleClient implements ClientProtocol {
         switch(splitMsg[0]) {
             case ProtocolMessages.CONNECT:
                 doConnect(splitMsg[1]);
+                break;
+            case "Hello":
+                doHandshake();
                 break;
         }
     }

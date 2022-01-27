@@ -1,9 +1,12 @@
 package Controller;
 
 import Controller.Protocols.ServerProtocol;
+import Model.Board;
 import Model.Game;
+import Model.Square;
 import Model.players.HumanPlayer_v3;
 import Model.players.Player;
+import View.utils.ANSI;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +19,7 @@ import java.util.List;
 public class ScrabbleServer implements ServerProtocol {
     private ServerSocket ssock;
     private List<ScrabbleClientHandler> clients;
-    private Player clientPlayer;
+//    private Player clientPlayer;
     private ArrayList<Player> players;
 //
 //    private PrintWriter printWriter;
@@ -27,6 +30,7 @@ public class ScrabbleServer implements ServerProtocol {
     public ScrabbleServer(){
 
         this.clients = new ArrayList<>();
+        this.players = new ArrayList<Player>();
         //not sure what to add next
     }
 
@@ -71,7 +75,19 @@ public class ScrabbleServer implements ServerProtocol {
 
 
     public void setUpGame(){
-        this.game = new Game();
+
+        Square[][] squares = new Square[15][15];
+        Board board = new Board(squares);
+        board.setBoard();
+//        board.showBoard();
+
+        this.game = new Game(players, board);
+
+//        game.setPlayers(players);
+
+        game.handOut();
+
+
     }
 
     public void removeClient(ScrabbleClientHandler client) {
@@ -95,8 +111,9 @@ public class ScrabbleServer implements ServerProtocol {
             return "No entered name";
         }
         else{
-            clientPlayer = new HumanPlayer_v3()
-            return "Player" + playerName + " connected to the server";
+            Player clientPlayer = new HumanPlayer_v3(playerName, game);
+            players.add(clientPlayer);
+            return "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server";
         }
     }
 
