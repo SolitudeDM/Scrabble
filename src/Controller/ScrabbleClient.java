@@ -120,6 +120,15 @@ public class ScrabbleClient implements ClientProtocol {
                 doHandshake();
                 break;
             case ProtocolMessages.MAKE_PLACE:
+                boolean vertical = false;
+                sendMessage(message);
+                if (splitMsg[2].equals("V")) {
+                    vertical = true;
+                } else if (splitMsg[2].equals("H")) {
+                    vertical = false;
+                }
+
+                doPlace(splitMsg[1], vertical, splitMsg[3]);
 
         }
     }
@@ -140,6 +149,7 @@ public class ScrabbleClient implements ClientProtocol {
 
     @Override
     public void doPlace(String coordinates, boolean orientation, String word) {
+
 
     }
 
