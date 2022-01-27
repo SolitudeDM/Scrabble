@@ -15,7 +15,7 @@ public class ScrabbleClient implements ClientProtocol {
     private BufferedReader in;
     private BufferedWriter out;
 
-    private boolean stop = false;
+    private boolean playerMade = false;
 
 
     public void createConnection(){
@@ -122,6 +122,7 @@ public class ScrabbleClient implements ClientProtocol {
     public void doConnect(String playerName) {
         sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
         System.out.println(readLineFromServer());
+        playerMade = true;
     }
 
     @Override

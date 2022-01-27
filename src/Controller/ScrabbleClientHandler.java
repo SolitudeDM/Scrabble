@@ -37,8 +37,12 @@ public class ScrabbleClientHandler implements Runnable{
         String message;
         try{
             message = in.readLine();
+            String messageCopy = "";
             while(message != null){
-                handleCommand(message);
+                if(!messageCopy.equals(message)) {
+                    handleCommand(message);
+                }
+                messageCopy = message;
                 out.newLine();
                 out.flush();
                 message = in.readLine();
