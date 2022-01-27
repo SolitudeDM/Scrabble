@@ -65,10 +65,19 @@ public class ScrabbleServer {
 //        this.game = new Game();
 //    }
 
-
-
-
     public void removeClient(ScrabbleClientHandler client) {
         this.clients.remove(client);
     }
+
+    public void start(){
+        boolean run = true;
+        while(run){
+            run();
+        }
+    }
+
+    public static void main(String[] args) {
+        new ScrabbleServer().start();
+    }
+
 }

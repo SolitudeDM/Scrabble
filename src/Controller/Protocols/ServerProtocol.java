@@ -1,20 +1,25 @@
-//package Controller.Protocols;
-//
-//import java.net.Socket;
-//
-//public interface ServerProtocol {
-//    /**
-//     * Called when new connection is established
-//     * @ensures it create a new ClientHandler
-//     */
-//    public void register(String client_id, Socket socket);
-//
+package Controller.Protocols;
+
+import java.net.Socket;
+
+public interface ServerProtocol {
+    /**
+     * Called when new connection is established
+     * @ensures it create a new ClientHandler
+     */
+    public String handleConnection(String playerName);
+
+
+    /**
+     * Called when */
+    public String handleMove(String coordinates, boolean orientation, String word);
+
 //    /**
 //     * Called when a new room is being created
 //     * @return a room id that the person just created
 //     */
 //    public String doCreateRoom(String player_number) ;
-//
+
 //    /**
 //     * Sends
 //     * @send the table info, player_list with their associated client ids
@@ -58,4 +63,4 @@
 //     * @ensures it is synchronized
 //     */
 //    public void doFinish(IRoom room, String best_player, int score);
-//}
+}

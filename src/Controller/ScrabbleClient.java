@@ -12,6 +12,8 @@ public class ScrabbleClient {
     private BufferedReader in;
     private BufferedWriter out;
 
+    private boolean stop = false;
+
     public void setClientPlayer(Player player) {
         this.clientPlayer = player;
     }
@@ -71,9 +73,11 @@ public class ScrabbleClient {
 
     public void doHandshake(){
         sendMessage("Hello");
-        if(readLineFromServer().equals("Hello")){
+        if(readLineFromServer().equals("Hello") && !stop){
             System.out.println("Connection established");
+            stop = true;
         }
+
     }
 
     public void clearConnection(){
@@ -90,5 +94,16 @@ public class ScrabbleClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void start(){
+        boolean run = true;
+        while(run){
+            createConnection();
+
+        }
+    }
+
+    public static void main(String[] args) {
+        new ScrabbleClient().start();
     }
 }
