@@ -267,6 +267,212 @@ public class Board {
         return new Board(newSquares);
     }
 
+    @Override
+    public String toString() {
+    String board ="";
+//        String board = "" + ANSI.PURPLE + "╔═════════════════════" + ANSI.PURPLE_BACKGROUND + ANSI.WHITE_BOLD_BRIGHT + "Scrabble" + ANSI.RESET + ANSI.PURPLE + "═════════════════════╗\n" +
+//                "║" + ANSI.PURPLE_BOLD_BRIGHT + "    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O   " + ANSI.PURPLE + "║\n" + ANSI.RESET + ANSI.PURPLE + "  ║";
+//
+//
+//        for (int i = 0; i < RESOLUTION; i++) {
+//            if (i + 1 < 10) {
+//                System.out.println(board);
+//                board += (ANSI.PURPLE);
+//                board +=(ANSI.RESET);
+//                board +=(ANSI.PURPLE_BOLD_BRIGHT);
+//                board += ((i + 1) + "  ");
+//            } else {
+//                board +=(ANSI.PURPLE);
+//                board +=(ANSI.RESET);
+//                board +=(ANSI.PURPLE_BOLD_BRIGHT);
+//                board +=(i + 1 + " ");
+//            }
+//
+//            for (int j = 0; j < RESOLUTION; j++) {
+//                board +=(ANSI.WHITE);
+//                if (isEmptySquare(squares[i][j])) {
+//
+//                    switch (squares[i][j].getType()) {
+//                        case CENTER:
+//                            board +=(ANSI.RED_BACKGROUND);
+//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
+//                            board +=(squares[i][j].toString());
+//                            board +=(ANSI.RESET);
+//                            break;
+//                        case DOUBLE_LETTER:
+//                            board +=(ANSI.BLUE_BACKGROUND);
+//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
+//                            board +=(squares[i][j].toString());
+//                            board +=(ANSI.RESET);
+//                            break;
+//                        case TRIPLE_LETTER:
+//                            board +=(ANSI.BLUE_BACKGROUND_BRIGHT);
+//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
+//                            board +=(squares[i][j].toString());
+//                            board +=(ANSI.RESET);
+//                            break;
+//                        case DOUBLE_WORD:
+//                            board +=(ANSI.PURPLE_BACKGROUND);
+//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
+//                            board +=(squares[i][j].toString());
+//                            board +=(ANSI.RESET);
+//                            break;
+//                        case TRIPLE_WORD:
+//                            board +=(ANSI.PURPLE_BACKGROUND_BRIGHT);
+//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
+//                            board +=(squares[i][j].toString());
+//                            board +=(ANSI.RESET);
+//                            break;
+//                        default:
+//                            board +=(ANSI.RESET);
+//                            board +=(ANSI.WHITE);
+//                            board +=(squares[i][j].toString());
+//                            board +=(ANSI.RESET);
+//                            break;
+//                    }
+//
+////                    System.out.print(squares[i][j].toString());
+////                    System.out.print(ANSI.RESET);
+//                    board +=(" ");
+//                } else {
+//                    board +=(ANSI.YELLOW_BACKGROUND_BRIGHT);
+//                    board +=(ANSI.BLACK_BOLD);
+//                    board +=(squares[i][j].getTile().getLetter());
+//                    board +=(" ");
+//                    board +=(ANSI.RESET);
+//                    board +=(" ");
+//                }
+//            }
+//            board +=(ANSI.PURPLE);
+//            board += "\n";
+//            board +=("  ║");
+//            board +=(ANSI.RESET);
+//        }
+//        board +=(ANSI.PURPLE);
+////        System.out.println();
+//        board +=("║  ░▒▓");
+//        board +=(ANSI.WHITE_BRIGHT);
+//        board +=(ANSI.PURPLE_BACKGROUND);
+//        board +=("Made by: Mark Zhitchenko && Dani Mahaini");
+//        board +=(ANSI.RESET);
+//        board +=(ANSI.PURPLE);
+//        board += "\n";
+//        board +=("▓▒░  ║");
+//        board += "\n";
+//        board +=("╚══════════════╦════════════════════╦══════════════╝");
+//        board +=(ANSI.RESET);
+//
+
+        board+=(ANSI.PURPLE);
+        board+=("╔═════════════════════");
+        board+=(ANSI.PURPLE_BACKGROUND);
+        board+=(ANSI.WHITE_BOLD_BRIGHT);
+        board+=("Scrabble");
+        board+=(ANSI.RESET);
+        board+=(ANSI.PURPLE);
+        board+=("═════════════════════╗");
+        board+= "\n";
+        board+=("║");
+        board+=(ANSI.PURPLE_BOLD_BRIGHT);
+        board+=("    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  ");
+
+        board+=(ANSI.PURPLE);
+        board+=(" ║");
+        board+=(ANSI.RESET);
+
+        board+=(ANSI.PURPLE);
+        board+="\n";
+        for (int i = 0; i < RESOLUTION; i++) {
+            if (i + 1 < 10) {
+                board+=(ANSI.PURPLE);
+                board+=("║");
+                board+=(ANSI.RESET);
+                board+=(ANSI.PURPLE_BOLD_BRIGHT);
+                board+=((i + 1) + "  ");
+            } else {
+                board+=(ANSI.PURPLE);
+                board+=("║");
+                board+=(ANSI.RESET);
+                board+=(ANSI.PURPLE_BOLD_BRIGHT);
+                board+=(i + 1 + " ");
+            }
+
+            for (int j = 0; j < RESOLUTION; j++) {
+                board+=(ANSI.WHITE);
+                if (isEmptySquare(squares[i][j])) {
+
+                    switch (squares[i][j].getType()) {
+                        case CENTER:
+                            board+=(ANSI.RED_BACKGROUND);
+                            board+=(ANSI.WHITE_BOLD_BRIGHT);
+                            board+=(squares[i][j].toString());
+                            board+=(ANSI.RESET);
+                            break;
+                        case DOUBLE_LETTER:
+                            board+=(ANSI.BLUE_BACKGROUND);
+                            board+=(ANSI.WHITE_BOLD_BRIGHT);
+                            board+=(squares[i][j].toString());
+                            board+=(ANSI.RESET);
+                            break;
+                        case TRIPLE_LETTER:
+                            board+=(ANSI.BLUE_BACKGROUND_BRIGHT);
+                            board+=(ANSI.WHITE_BOLD_BRIGHT);
+                            board+=(squares[i][j].toString());
+                            board+=(ANSI.RESET);
+                            break;
+                        case DOUBLE_WORD:
+                            board+=(ANSI.PURPLE_BACKGROUND);
+                            board+=(ANSI.WHITE_BOLD_BRIGHT);
+                            board+=(squares[i][j].toString());
+                            board+=(ANSI.RESET);
+                            break;
+                        case TRIPLE_WORD:
+                            board+=(ANSI.PURPLE_BACKGROUND_BRIGHT);
+                            board+=(ANSI.WHITE_BOLD_BRIGHT);
+                            board+=(squares[i][j].toString());
+                            board+=(ANSI.RESET);
+                            break;
+                        default:
+                            board+=(ANSI.RESET);
+                            board+=(ANSI.WHITE);
+                            board+=(squares[i][j].toString());
+                            board+=(ANSI.RESET);
+                            break;
+                    }
+
+//                    System.out.print(squares[i][j].toString());
+//                    System.out.print(ANSI.RESET);
+                    board+=" ";
+                } else {
+                    board+=(ANSI.YELLOW_BACKGROUND_BRIGHT);
+                    board+=(ANSI.BLACK_BOLD);
+                    board+=(squares[i][j].getTile().getLetter());
+                    board+=(" ");
+                    board+=(ANSI.RESET);
+                    board+=(" ");
+                }
+            }
+            board+=(ANSI.PURPLE);
+            board+=("  ║");
+            board+="\n";
+            board+=(ANSI.RESET);
+        }
+        board+=(ANSI.PURPLE);
+//        System.out.println();
+        board+=("║  ░▒▓");
+        board+=(ANSI.WHITE_BRIGHT);
+        board+=(ANSI.PURPLE_BACKGROUND);
+        board+=("Made by: Mark Zhitchenko && Dani Mahaini");
+        board+=(ANSI.RESET);
+        board+=(ANSI.PURPLE);
+        board+=("▓▒░  ║");
+        board+="\n";
+        board+=("╚══════════════╦════════════════════╦══════════════╝");
+        board+=(ANSI.RESET);
+
+        return (board);
+    }
+
 }
 
 

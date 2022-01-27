@@ -286,6 +286,55 @@ public class Game {
             }
         }
 
+        public String tilesToString(Player player) {
+            assert player != null;
+            ArrayList<Tile> hand = player.getHand();
+
+            String handString = "";
+            handString += (ANSI.BLUE_BOLD_BRIGHT);
+            handString += (player.getName());
+            for (int i = 0; i < 15 - player.getName().length(); i++) {
+                handString +=(" ");
+            }
+            handString +=(ANSI.PURPLE);
+            handString +=("║");
+            handString +=(ANSI.RESET);
+            for (int i = 0; i < hand.size(); i++) {
+                handString +=(ANSI.YELLOW_BACKGROUND_BRIGHT);
+                handString +=(ANSI.BLACK_BOLD);
+                handString +=(hand.get(i).getLetter() + " ");
+                handString +=(ANSI.RESET);
+                if (i != 6) {
+                    handString +=(" ");
+                }
+            }
+
+            handString +=(ANSI.PURPLE);
+            handString +=("║");
+
+            handString +=(ANSI.BLUE_BOLD_BRIGHT);
+
+            handString +=("    Score:");
+
+            handString +=(player.getScore());
+            handString +=(ANSI.PURPLE);
+
+            handString += "\n";
+            handString +=("               ╚═════");
+
+            handString +=(ANSI.PURPLE_UNDERLINED);
+
+            handString +=("Your Tiles");
+            handString +=(ANSI.RESET);
+            handString +=(ANSI.PURPLE);
+            handString +=("═════╝");
+            handString += "\n";
+            handString +=(ANSI.RESET);
+
+            return handString;
+        }
+
+
     public static void main(String[] args) throws EmptyCommandException, InvalidCommandException, WrongOrientationException {
 
         //Here we checked if the board will be printed properly, using the setBoard() and showBoard() methods
@@ -322,6 +371,7 @@ public class Game {
                 }
 
                 board.showBoard();
+
                 if (players.get(currentPlayer).getMove().isMoveMade()) {
                     currentPlayer++;
                 }
@@ -336,6 +386,7 @@ public class Game {
 
 
         game.determineWinner();
+
 
 //        game.showTiles(player1);
 //
