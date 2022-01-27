@@ -1,5 +1,8 @@
 package Controller;
 
+import Controller.Protocols.ClientProtocol;
+import Controller.Protocols.ProtocolMessages;
+import Model.players.HumanPlayer_v3;
 import Model.players.Player;
 
 import java.io.*;
@@ -7,21 +10,13 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ScrabbleClient {
-    private Player clientPlayer;
+public class ScrabbleClient implements ClientProtocol {
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
 
     private boolean stop = false;
 
-    public void setClientPlayer(Player player) {
-        this.clientPlayer = player;
-    }
-
-    public Player getClientPlayer() {
-        return clientPlayer;
-    }
 
     public void createConnection(){
         clearConnection();
@@ -100,12 +95,50 @@ public class ScrabbleClient {
     public void start(){
         boolean run = true;
         createConnection();
-        Scanner sc = new Scanner(System.in);
         while (run) {
+            doHandshake();
+            clientCommands();
+        }
+    }
+
+    public void clientCommands(){
+        Scanner sc = new Scanner(System.in);
         String message = sc.nextLine();
         sendMessage(message);
-        doHandshake();
+        String[] splitMsg = message.split(ProtocolMessages.DELIMITER);
+        switch(splitMsg[0]) {
+            case ProtocolMessages.CONNECT:
+                doConnect(splitMsg[1]);
+                break;
         }
+    }
+
+
+
+    @Override
+    public void doConnect(String playerName) {
+        sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
+        System.out.println(readLineFromServer());
+    }
+
+    @Override
+    public void doPlace(String coordinates, boolean orientation, String word) {
+
+    }
+
+    @Override
+    public void doSkip() {
+
+    }
+
+    @Override
+    public void doSwap(String tiles) {
+
+    }
+
+    @Override
+    public void doExit() {
+
     }
 
     public static void main(String[] args) {

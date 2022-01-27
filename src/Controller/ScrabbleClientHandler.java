@@ -1,5 +1,7 @@
 package Controller;
 
+import Controller.Protocols.ProtocolMessages;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -48,11 +50,17 @@ public class ScrabbleClientHandler implements Runnable{
     }
 
     private void handleCommand(String message) throws IOException{
-        switch(message){
+        String[] splittedMsg = message.split(ProtocolMessages.DELIMITER);
+        switch(splittedMsg[0]){
             case "Hello":
 //                printWriter.println(server.getHello(message));
                 out.write(server.getHello(message));
                 out.flush();
+                break;
+            case ProtocolMessages.CONNECT:
+                out.write(server.handleConnection(splittedMsg[1]));
+                out.flush();
+                this.name = splittedMsg[1];
                 break;
         }
     }

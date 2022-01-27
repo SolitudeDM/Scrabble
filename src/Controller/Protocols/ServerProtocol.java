@@ -6,7 +6,7 @@ public interface ServerProtocol {
     /**
      * Called when new connection is established
      * @ensures to connect a player
-     * @return "Player " + playerName + " added to the game"
+     * @return "Player" + playerName + " connected to the server"
      */
     public String handleConnection(String playerName);
 

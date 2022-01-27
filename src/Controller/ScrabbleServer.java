@@ -1,6 +1,9 @@
 package Controller;
 
+import Controller.Protocols.ServerProtocol;
 import Model.Game;
+import Model.players.HumanPlayer_v3;
+import Model.players.Player;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,13 +13,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrabbleServer {
+public class ScrabbleServer implements ServerProtocol {
     private ServerSocket ssock;
     private List<ScrabbleClientHandler> clients;
+    private Player clientPlayer;
+    private ArrayList<Player> players;
 //
 //    private PrintWriter printWriter;
 
-    private Game game;
+    protected Game game;
 
 
     public ScrabbleServer(){
@@ -65,9 +70,9 @@ public class ScrabbleServer {
     }
 
 
-//    public void setUpGame(){
-//        this.game = new Game();
-//    }
+    public void setUpGame(){
+        this.game = new Game();
+    }
 
     public void removeClient(ScrabbleClientHandler client) {
         this.clients.remove(client);
@@ -84,4 +89,34 @@ public class ScrabbleServer {
         new ScrabbleServer().start();
     }
 
+    @Override
+    public String handleConnection(String playerName) {
+        if(playerName == null){
+            return "No entered name";
+        }
+        else{
+            clientPlayer = new HumanPlayer_v3()
+            return "Player" + playerName + " connected to the server";
+        }
+    }
+
+    @Override
+    public String handlePlace(String coordinates, boolean orientation, String word) {
+        return null;
+    }
+
+    @Override
+    public String handleSkip() {
+        return null;
+    }
+
+    @Override
+    public String handleSwap(String tiles) {
+        return null;
+    }
+
+    @Override
+    public String handleExit() {
+        return null;
+    }
 }
