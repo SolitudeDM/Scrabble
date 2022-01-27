@@ -66,6 +66,16 @@ public class ScrabbleClientHandler implements Runnable{
                 out.flush();
                 this.name = splittedMsg[1];
                 break;
+            case ProtocolMessages.MAKE_PLACE:
+                boolean vertical = false;
+                if (splittedMsg[2].equals("V")) {
+                    vertical = true;
+                } else if (splittedMsg[2].equals("H")) {
+                    vertical = false;
+                }
+                out.write(server.handlePlace(splittedMsg[1], vertical, splittedMsg[3]));
+                out.flush();
+                break;
         }
     }
 
