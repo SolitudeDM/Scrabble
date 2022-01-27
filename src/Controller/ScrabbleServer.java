@@ -48,21 +48,23 @@ public class ScrabbleServer implements ServerProtocol {
 
     public void run(){
         boolean openNewSock = true;
-        int playerNo = 1;
         while(openNewSock){
             try {
                 setUp();
                 while(clients.size() < 2) {
 
 //                  System.out.println("Server is waiting for the connection...");
-                    String name = "Player" + playerNo;  //change this in the future
+                    String name = "Player";  //change this in the future
                     Socket sock = ssock.accept();
                     ScrabbleClientHandler handler = new ScrabbleClientHandler(sock, this, name);
                     new Thread(handler).start();
 
 
-                    clients.add(handler);
-                    playerNo++;
+                    if (!handler.getName().equals("Player")) {
+                        clients.add(handler);
+                        System.out.println(handler.getName());
+                    }
+
 
                 }
 
@@ -74,29 +76,14 @@ public class ScrabbleServer implements ServerProtocol {
 
 
         sendMessageToAll(clients.size() + " clients active, waiting for player's connections...");
-        setUpGame();
 
-        while (true) {
-            for (int i = 0; i < 3; i++) {
-                System.out.println( " {Players index '" + clients.get(i).getName() + "'}");
 
-            }
+        if (players.size() >= 2) {
+            setUpGame();
         }
 
-//        for (int i = 0; i < players.size(); i++) {
-//            for (int j = 0; j < clients.size(); j ++) {
-//                System.out.println(clients.get(j).getName());
-//                if (clients.get(j).getName().equals(players.get(i).getName())) {
-//                    sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
-////                    clients.get(j).sendMessage(game.getBoard().showBoard());
-////                    clients.get(j).sendMessage(game.showTiles(players.get(i)));
-//                    clients.get(j).sendMessage("Please make turn");
-//
-//                }
-//            }
-//        }
-
     }
+
 
     public String getHello(String message){
             System.out.println("Hello");
@@ -107,6 +94,24 @@ public class ScrabbleServer implements ServerProtocol {
 
 
     public void setUpGame(){
+
+        if (players.size() == 2){
+            setUpGame();
+
+
+            for (int i = 0; i < players.size(); i++) {
+                for (int j = 0; j < clients.size(); j ++) {
+                    System.out.println(clients.get(j).getName());
+                    if (clients.get(j).getName().equals(players.get(i).getName())) {
+                        sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
+//                      clients.get(j).sendMessage(game.getBoard().showBoard());
+//                      clients.get(j).sendMessage(game.showTiles(players.get(i)));
+                        clients.get(j).sendMessage("Please make turn");
+
+                    }
+                }
+            }
+        }
 
         Square[][] squares = new Square[15][15];
         Board board = new Board(squares);
