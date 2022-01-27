@@ -37,6 +37,9 @@ public class ScrabbleClientHandler implements Runnable{
     public String getName() {
         return name;
     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public void run(){
@@ -70,7 +73,7 @@ public class ScrabbleClientHandler implements Runnable{
             case ProtocolMessages.CONNECT:
                 out.write(server.handleConnection(splittedMsg[1]));
                 out.flush();
-                this.name = splittedMsg[1];
+//                this.name = splittedMsg[1];
                 break;
             case ProtocolMessages.MAKE_PLACE:
                 boolean vertical = false;
