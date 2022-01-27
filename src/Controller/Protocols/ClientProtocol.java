@@ -44,7 +44,7 @@ public interface ClientProtocol {
     public void doSwap(String tiles);
 
     /**
-     * Called when a player disconnects from the server
+     * Called when a player wants to exit the game
      */
-    public void doDisconnect();
+    public void doExit();
 }

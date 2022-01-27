@@ -5,15 +5,34 @@ import java.net.Socket;
 public interface ServerProtocol {
     /**
      * Called when new connection is established
-     * @ensures it create a new ClientHandler
+     * @ensures to connect a player
+     * @return "Player " + playerName + " added to the game"
      */
     public String handleConnection(String playerName);
 
 
     /**
-     * Called when */
-    public String handleMove(String coordinates, boolean orientation, String word);
+     * Called when client wants to place tiles
+     * @param coordinates
+     * @param orientation
+     * @param word
+     * @return updated board with placed tiles
+     */
+    public String handlePlace(String coordinates, boolean orientation, String word);
 
+    /**
+     * Called when client wants to skip turn
+     * @return "Turn skipped" */
+    public String handleSkip();
+
+    /**
+     * Called when client wants to swap tiles
+     * @return swapped tiles???*/
+    public String handleSwap(String tiles);
+
+    /**
+     * Called when client wants to exit the game*/
+    public String handleExit();
 //    /**
 //     * Called when a new room is being created
 //     * @return a room id that the person just created
