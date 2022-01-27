@@ -9,6 +9,8 @@ public class ScrabbleClientHandler implements Runnable{
     private BufferedWriter out;
     private Socket sock;
 
+
+
     /** the connected ScrabbleServer*/
     private ScrabbleServer server;
 
@@ -17,6 +19,7 @@ public class ScrabbleClientHandler implements Runnable{
 
     public ScrabbleClientHandler(Socket sock, ScrabbleServer server, String name){
         try{
+//            printWriter = new PrintWriter(sock.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
             this.sock = sock;
@@ -47,7 +50,10 @@ public class ScrabbleClientHandler implements Runnable{
     private void handleCommand(String message) throws IOException{
         switch(message){
             case "Hello":
+//                printWriter.println(server.getHello(message));
                 out.write(server.getHello(message));
+                out.flush();
+                break;
         }
     }
 

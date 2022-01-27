@@ -52,7 +52,7 @@ public class Move {
         while (!moveMade && !requestAnother) {
             String[] splittedChoice = choice.split("; ");
 
-            if (splittedChoice.length < 1) {
+            if (choice.isEmpty()) {
                 throw new EmptyCommandException("Command is empty!");
             }
 

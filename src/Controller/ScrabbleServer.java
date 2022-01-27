@@ -3,6 +3,7 @@ package Controller;
 import Model.Game;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,10 +13,14 @@ import java.util.List;
 public class ScrabbleServer {
     private ServerSocket ssock;
     private List<ScrabbleClientHandler> clients;
+//
+//    private PrintWriter printWriter;
 
     private Game game;
 
+
     public ScrabbleServer(){
+
         this.clients = new ArrayList<>();
         //not sure what to add next
     }
@@ -39,6 +44,7 @@ public class ScrabbleServer {
             try{
                 setUp();
                 while(true){
+//                    System.out.println("Server is waiting for the connection...");
                     String name = "Player";  //change this in the future
                     Socket sock = ssock.accept();
                     ScrabbleClientHandler handler = new ScrabbleClientHandler(sock, this, name);
@@ -52,12 +58,10 @@ public class ScrabbleServer {
     }
 
     public String getHello(String message){
-        if(message.equals("Hello")){
-            return "Hello";
-        }
-        else{
-            return "Wrong handshake message";
-        }
+            System.out.println("Hello");
+//        printWriter.println((message));
+
+        return "Hello";
     }
 
 

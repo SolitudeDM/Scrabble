@@ -314,7 +314,13 @@ public class Game {
             for (currentPlayer = 0; currentPlayer < players.size();) {
                 game.showTiles(players.get(currentPlayer));
                 players.get(currentPlayer).setMove(new Move(game, players.get(currentPlayer)));
-                players.get(currentPlayer).getMove().options(players.get(currentPlayer).determineMove(board));
+
+                try {
+                    players.get(currentPlayer).getMove().options(players.get(currentPlayer).determineMove(board));
+                } catch (EmptyCommandException | WrongOrientationException | InvalidCommandException e) {
+                    System.out.println(e.getMessage());
+                }
+
                 board.showBoard();
                 if (players.get(currentPlayer).getMove().isMoveMade()) {
                     currentPlayer++;

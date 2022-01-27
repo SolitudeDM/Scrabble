@@ -5,6 +5,7 @@ import Model.players.Player;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ScrabbleClient {
     private Player clientPlayer;
@@ -28,8 +29,10 @@ public class ScrabbleClient {
             String host = "localhost";
             int port = 8888;
             try{
+
                 InetAddress addr = InetAddress.getByName(host);
                 socket = new Socket(addr, port);
+
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             }catch(IOException e){
@@ -72,10 +75,9 @@ public class ScrabbleClient {
     }
 
     public void doHandshake(){
-        sendMessage("Hello");
-        if(readLineFromServer().equals("Hello") && !stop){
+//        sendMessage("Hello");
+        if(readLineFromServer().equals("Hello")){
             System.out.println("Connection established");
-            stop = true;
         }
 
     }
@@ -97,9 +99,12 @@ public class ScrabbleClient {
     }
     public void start(){
         boolean run = true;
-        while(run){
-            createConnection();
-
+        createConnection();
+        Scanner sc = new Scanner(System.in);
+        while (run) {
+        String message = sc.nextLine();
+        sendMessage(message);
+        doHandshake();
         }
     }
 
