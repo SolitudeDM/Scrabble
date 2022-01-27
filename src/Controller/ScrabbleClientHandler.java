@@ -89,4 +89,18 @@ public class ScrabbleClientHandler implements Runnable{
         }
         server.removeClient(this);
     }
+
+    public synchronized void sendMessage(String msg) {
+        if (out != null) {
+            try {
+                out.write(msg);
+                out.newLine();
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Could not write to server!");
+        }
+    }
 }

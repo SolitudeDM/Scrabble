@@ -51,7 +51,7 @@ public class ScrabbleServer implements ServerProtocol {
         while(openNewSock){
             try{
                 setUp();
-                while(players.size() < 2){
+                while(clients.size() < 2){
 //                    System.out.println("Server is waiting for the connection...");
                     String name = "Player";  //change this in the future
                     Socket sock = ssock.accept();
@@ -59,12 +59,13 @@ public class ScrabbleServer implements ServerProtocol {
                     new Thread(handler).start();
                     clients.add(handler);
                 }
-                System.out.println("Opponent found, starting game...");
-                setUpGame();
+                openNewSock = false;
             }catch(IOException e){
                 System.out.println("Poshel naxyi");
             }
         }
+        sendMessageToAll(clients.size() + " clients active, waiting for player's connections...");
+        setUpGame();
     }
 
     public String getHello(String message){
@@ -95,12 +96,20 @@ public class ScrabbleServer implements ServerProtocol {
         this.clients.remove(client);
     }
 
-    public void start(){
-        boolean run = true;
-        while(run){
-            run();
+    public Player currentPlayer(){
+        Player currentPlayer = players.get(0);
+        if(currentPlayer.getMove().isMoveMade()){
+            currentPlayer = players.get(1);
         }
+        return currentPlayer;
     }
+
+//    public void start(){
+//        boolean run = true;
+//        while(run){
+//            run();
+//        }
+//    }
 
     @Override
     public String handleConnection(String playerName) {
@@ -135,7 +144,13 @@ public class ScrabbleServer implements ServerProtocol {
         return null;
     }
 
+    public void sendMessageToAll(String msg){
+        for(ScrabbleClientHandler h : clients){
+            h.sendMessage(msg);
+        }
+    }
+
     public static void main(String[] args) {
-        new ScrabbleServer().start();
+        new ScrabbleServer().run();
     }
 }
