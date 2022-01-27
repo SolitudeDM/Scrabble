@@ -1,8 +1,13 @@
 package Controller;
 
 import Controller.Protocols.ServerProtocol;
+import Exceptions.EmptyCommandException;
+import Exceptions.InvalidCommandException;
+import Exceptions.SquareNotEmptyException;
+import Exceptions.WrongOrientationException;
 import Model.Board;
 import Model.Game;
+import Model.Move;
 import Model.Square;
 import Model.players.HumanPlayer_v3;
 import Model.players.Player;
@@ -23,7 +28,9 @@ public class ScrabbleServer implements ServerProtocol {
 //
 //    private PrintWriter printWriter;
 
-    protected Game game;
+    private Game game;
+
+    private Player currentPlayer;
 
 
     public ScrabbleServer(){
@@ -31,6 +38,10 @@ public class ScrabbleServer implements ServerProtocol {
         this.clients = new ArrayList<>();
         this.players = new ArrayList<Player>();
         //not sure what to add next
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public void setUp(){
@@ -134,6 +145,7 @@ public class ScrabbleServer implements ServerProtocol {
 //            clients.
             players.add(clientPlayer);
             System.out.println(players.size());
+            setCurrentPlayer(clientPlayer);
 
             return "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server";
         }
@@ -141,24 +153,47 @@ public class ScrabbleServer implements ServerProtocol {
 
     @Override
     public String handlePlace(String coordinates, boolean orientation, String word) {
-        return null;
+        if(currentPlayer.equals(players.get(0))){
+            currentPlayer.setMove(new Move(game, currentPlayer));
+            try {
+                players.get(0).getMove().place(coordinates, orientation, word, game.getBoard());
+            } catch (SquareNotEmptyException e) {
+                System.out.println(e.getMessage());
+            }
+            setCurrentPlayer(players.get(1));
+        } else{
+            currentPlayer.setMove(new Move(game, currentPlayer));
+            try {
+                players.get(1).getMove().place(coordinates, orientation, word, game.getBoard());
+            } catch (SquareNotEmptyException e) {
+                System.out.println(e.getMessage());
+            }
+            setCurrentPlayer(players.get(0));
+        }
+        return "Updated Board" + "\n" + game.getBoard().toString();
     }
 
-    @Override
-    public String handleInitiateGame() {
-        setUpGame();
+//    public String rotation(){
 //        for (int i = 0; i < players.size(); i++) {
 //            for (int j = 0; j < clients.size(); j ++) {
 //                System.out.println(clients.get(j).getName());
 //                if (clients.get(j).getName().equals(players.get(i).getName())) {
 //                    sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
-////                      clients.get(j).sendMessage(game.getBoard().showBoard());
-////                      clients.get(j).sendMessage(game.showTiles(players.get(i)));
+//                    clients.get(j).sendMessage(game.getBoard().toString());
+//                    clients.get(j).sendMessage(game.tilesToString(players.get(i)));
 //                    clients.get(j).sendMessage("Please make turn");
+//
+//                    return "Its " + players.get(i).getName() + "'s turn";
 //
 //                }
 //            }
 //        }
+//        return null;
+//    }
+
+    @Override
+    public String handleInitiateGame() {
+        setUpGame();
         return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(0));
     }
 

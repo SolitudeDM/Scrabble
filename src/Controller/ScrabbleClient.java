@@ -182,7 +182,7 @@ public class ScrabbleClient implements ClientProtocol {
 
     @Override
     public void doPlace(String coordinates, boolean orientation, String word) {
-        //ask the controller for a move
+        System.out.println(readMultipleLinesFromServer());
 
     }
 
