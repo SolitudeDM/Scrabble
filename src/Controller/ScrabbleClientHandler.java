@@ -85,6 +85,10 @@ public class ScrabbleClientHandler implements Runnable{
                 out.write(server.handlePlace(splittedMsg[1], vertical, splittedMsg[3]));
                 out.flush();
                 break;
+            case ProtocolMessages.INITIATE_GAME:
+                out.write(server.handleInitiateGame());
+                out.flush();
+                break;
         }
     }
 

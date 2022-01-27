@@ -21,6 +21,10 @@ public interface ServerProtocol {
     public String handlePlace(String coordinates, boolean orientation, String word);
 
     /**
+     * Called when client wants to initiate game*/
+    public String handleInitiateGame();
+
+    /**
      * Called when client wants to skip turn
      * @return "Turn skipped" */
     public String handleSkip();

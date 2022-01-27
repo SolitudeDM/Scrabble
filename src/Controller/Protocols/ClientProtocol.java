@@ -31,6 +31,10 @@ public interface ClientProtocol {
     public void doPlace(String coordinates, boolean orientation, String word);
 
     /**
+     * called when the players connected and ready to start the game*/
+    public void doInitiateGame();
+
+    /**
      * Called when a player want to skip his turn
      * @return if skipping is accepted
      */

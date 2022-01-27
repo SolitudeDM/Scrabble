@@ -9,6 +9,7 @@ import View.utils.ANSI;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ScrabbleClient implements ClientProtocol {
@@ -72,6 +73,29 @@ public class ScrabbleClient implements ClientProtocol {
         }
         return null;
     }
+    public String readMultipleLinesFromServer() {
+        if (in != null) {
+            try {
+                // Read and return answer from Server
+                StringBuilder sb = new StringBuilder();
+                String line = "";
+                while (true){
+                    if(Objects.equals(line, "\u001B[0m")){
+                        return sb.toString();
+                    }
+                    line = in.readLine();
+                    sb.append(line + System.lineSeparator());
+                }
+//                return sb.toString();
+            } catch (IOException e) {
+                System.out.println("Could not read from server!");
+            }
+        } else {
+            System.out.println("Could not read from server!");
+
+        }
+        return null;
+    }
 
     public void doHandshake(){
 //        sendMessage("Hello");
@@ -132,6 +156,11 @@ public class ScrabbleClient implements ClientProtocol {
                 }
 
                 doPlace(splitMsg[1], vertical, splitMsg[3]);
+                break;
+            case ProtocolMessages.INITIATE_GAME:
+                sendMessage(message);
+                doInitiateGame();
+                break;
 
         }
     }
@@ -155,6 +184,11 @@ public class ScrabbleClient implements ClientProtocol {
     public void doPlace(String coordinates, boolean orientation, String word) {
         //ask the controller for a move
 
+    }
+
+    @Override
+    public void doInitiateGame() {
+        System.out.println(readMultipleLinesFromServer());
     }
 
     @Override

@@ -13,8 +13,8 @@ public class ProtocolMessages {
 //    /** <b> Usage:</b> "cr;[number_player]", <b> Example:</b> "cr; 2" */
 //    public static final String CREATE_ROOM = "cr";
 
-//    /** <b> Usage:</b> "ig;[table];[player_name#player_number],[player_name#player_number],...", <b> Example:</b> "ig; , ,t, // , ,e, //t,e,s,t// , ,t, ;PlayerA#1,PlayerB#2" */
-//    public static final String INITIATE_GAME = "ig";
+    /** <b> Usage:</b> "ig;[table];[player_name#player_number],[player_name#player_number],...", <b> Example:</b> "ig; , ,t, // , ,e, //t,e,s,t// , ,t, ;PlayerA#1,PlayerB#2" */
+    public static final String INITIATE_GAME = "ig";
 
 //    /** <b> Usage:</b> "rp;[player_name#player_number]", <b> Example:</b> "rp; PlayerC#3" */
 //    public static final String ADD_OR_REMOVE_PLAYER = "rp";

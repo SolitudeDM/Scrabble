@@ -86,7 +86,7 @@ public class ScrabbleServer implements ServerProtocol {
 
 
     public String getHello(String message){
-            System.out.println("Hello");
+        System.out.println("Hello");
 //        printWriter.println((message));
 
         return "Hello";
@@ -94,25 +94,6 @@ public class ScrabbleServer implements ServerProtocol {
 
 
     public void setUpGame(){
-
-        if (players.size() == 2){
-            setUpGame();
-
-
-            for (int i = 0; i < players.size(); i++) {
-                for (int j = 0; j < clients.size(); j ++) {
-                    System.out.println(clients.get(j).getName());
-                    if (clients.get(j).getName().equals(players.get(i).getName())) {
-                        sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
-//                      clients.get(j).sendMessage(game.getBoard().showBoard());
-//                      clients.get(j).sendMessage(game.showTiles(players.get(i)));
-                        clients.get(j).sendMessage("Please make turn");
-
-                    }
-                }
-            }
-        }
-
         Square[][] squares = new Square[15][15];
         Board board = new Board(squares);
         board.setBoard();
@@ -161,6 +142,24 @@ public class ScrabbleServer implements ServerProtocol {
     @Override
     public String handlePlace(String coordinates, boolean orientation, String word) {
         return null;
+    }
+
+    @Override
+    public String handleInitiateGame() {
+        setUpGame();
+//        for (int i = 0; i < players.size(); i++) {
+//            for (int j = 0; j < clients.size(); j ++) {
+//                System.out.println(clients.get(j).getName());
+//                if (clients.get(j).getName().equals(players.get(i).getName())) {
+//                    sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
+////                      clients.get(j).sendMessage(game.getBoard().showBoard());
+////                      clients.get(j).sendMessage(game.showTiles(players.get(i)));
+//                    clients.get(j).sendMessage("Please make turn");
+//
+//                }
+//            }
+//        }
+        return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(0));
     }
 
     @Override
