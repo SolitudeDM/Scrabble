@@ -105,13 +105,18 @@ public class ScrabbleClient implements ClientProtocol {
     public void clientCommands(){
         Scanner sc = new Scanner(System.in);
         String message = sc.nextLine();
-        sendMessage(message);
         String[] splitMsg = message.split(ProtocolMessages.DELIMITER);
         switch(splitMsg[0]) {
             case ProtocolMessages.CONNECT:
-                doConnect(splitMsg[1]);
+                if(!playerMade) {
+                    sendMessage(message);
+                    doConnect(splitMsg[1]);
+                } else{
+                    System.out.println("Sorry, the player is already created, so please stop it, seriously...");
+                }
                 break;
             case "Hello":
+                sendMessage(message);
                 doHandshake();
                 break;
         }
@@ -121,22 +126,14 @@ public class ScrabbleClient implements ClientProtocol {
 
     @Override
     public void doConnect(String playerName) {
-        if (!playerMade) {
-            sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
+//            sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
             String result = readLineFromServer();
-
             if (result.contains("connected to the server")) {
                 playerMade = true;
             } else {
                 playerMade = false;
             }
-
             System.out.println(result);
-            return;
-        }
-
-        System.out.println("Sorry, the player is already created, so please stop it, seriously...");
-
     }
 
     @Override
