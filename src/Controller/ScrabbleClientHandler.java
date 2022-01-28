@@ -81,6 +81,10 @@ public class ScrabbleClientHandler implements Runnable{
                     vertical = true;
                 } else if (splittedMsg[2].equals("H")) {
                     vertical = false;
+                } else {
+                    out.write("Orientation should be: H (horizontal) or V (vertical)!");
+                    out.flush();
+                    break;
                 }
                 out.write(server.handlePlace(splittedMsg[1], vertical, splittedMsg[3]));
                 out.flush();

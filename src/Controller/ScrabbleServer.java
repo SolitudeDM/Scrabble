@@ -62,26 +62,26 @@ public class ScrabbleServer implements ServerProtocol {
         while(openNewSock){
             try {
                 setUp();
-                while(clients.size() < 2) {
-
+                int PlayerIndex = 1;
+                while(true) {
 //                  System.out.println("Server is waiting for the connection...");
-                    String name = "Player";  //change this in the future
+                    String name = "Player" + PlayerIndex;  //change this in the future
                     Socket sock = ssock.accept();
                     ScrabbleClientHandler handler = new ScrabbleClientHandler(sock, this, name);
                     new Thread(handler).start();
-
 
                     if (!handler.getName().equals("Player")) {
                         clients.add(handler);
                         System.out.println(handler.getName());
                     }
 
+                    PlayerIndex++;
 
                 }
 
-                openNewSock = false;
             } catch(IOException e) {
                 System.out.println("Poshel naxyi");
+                openNewSock = false;
             }
         }
 
@@ -161,6 +161,8 @@ public class ScrabbleServer implements ServerProtocol {
                 System.out.println(e.getMessage());
             }
             setCurrentPlayer(players.get(1));
+
+            return "Updated Board: " + "\n" + game.getBoard().toString();
         } else{
             currentPlayer.setMove(new Move(game, currentPlayer));
             try {
@@ -169,8 +171,9 @@ public class ScrabbleServer implements ServerProtocol {
                 System.out.println(e.getMessage());
             }
             setCurrentPlayer(players.get(0));
+
+            return "Updated Board: " + "\n" + game.getBoard().toString() + game.tilesToString(currentPlayer);
         }
-        return "Updated Board" + "\n" + game.getBoard().toString();
     }
 
 //    public String rotation(){
@@ -194,7 +197,15 @@ public class ScrabbleServer implements ServerProtocol {
     @Override
     public String handleInitiateGame() {
         setUpGame();
-        return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(0));
+        for(Player p : players){
+            p.setGame(game);
+        }
+        if(currentPlayer.equals(players.get(0))) {
+            return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(0));
+        }
+        else{
+            return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(1));
+        }
     }
 
     @Override
