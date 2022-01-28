@@ -21,7 +21,6 @@ public class Move {
     private Game game;
     private Player player;
     private int score = 0;
-    private boolean valid;
 //    private boolean doubleWord;
 //    private boolean tripleWord;
     private int doubleWord;
