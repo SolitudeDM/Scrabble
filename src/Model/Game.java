@@ -346,8 +346,8 @@ public class Game {
         ArrayList<Player> players = new ArrayList<>();
 
         Game game = new Game(players, board);
-        HumanPlayer_v3 player1 = new HumanPlayer_v3("Chris Peacock", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Gabe Itch", game);
+        HumanPlayer_v3 player1 = new HumanPlayer_v3("Player 1", game);
+        HumanPlayer_v3 player2 = new HumanPlayer_v3("Player 2", game);
         players.add(player1);
         players.add(player2);
 
