@@ -470,7 +470,7 @@ public class Board {
         board+=("╚══════════════╦════════════════════╦══════════════╝");
         board+=(ANSI.RESET);
 
-        return (board);
+        return board;
     }
 
 }

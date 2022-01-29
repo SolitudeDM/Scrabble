@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.Protocols.ProtocolMessages;
+import View.utils.ANSI;
 
 import java.io.*;
 import java.net.Socket;
@@ -52,8 +53,6 @@ public class ScrabbleClientHandler implements Runnable{
                     handleCommand(message);
                 }
                 messageCopy = message;
-                out.newLine();
-                out.flush();
                 message = in.readLine();
             }
             shutdown();
@@ -63,35 +62,37 @@ public class ScrabbleClientHandler implements Runnable{
     }
 
     private void handleCommand(String message) throws IOException{
+        System.out.println(ANSI.RED + message + ANSI.RESET); //todo delete this later
         String[] splittedMsg = message.split(ProtocolMessages.DELIMITER);
         switch(splittedMsg[0]){
             case "Hello":
 //                printWriter.println(server.getHello(message));
-                out.write(server.getHello(message));
-                out.flush();
+                sendMessage(server.getHello(message));
                 break;
-            case ProtocolMessages.CONNECT:
-                out.write(server.handleConnection(splittedMsg[1]));
-                out.flush();
-//                this.name = splittedMsg[1];
+            case ProtocolMessages.CONNECT: //todo check that there are no same names
+                sendMessage(server.handleConnection(splittedMsg[1]));
+                this.name = splittedMsg[1];
                 break;
-            case ProtocolMessages.MAKE_PLACE:
+            case ProtocolMessages.MAKE_MOVE:
                 boolean vertical = false;
                 if (splittedMsg[2].equals("V")) {
                     vertical = true;
                 } else if (splittedMsg[2].equals("H")) {
                     vertical = false;
                 } else {
-                    out.write("Orientation should be: H (horizontal) or V (vertical)!");
-                    out.flush();
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Orientation should be: H (horizontal) or V (vertical)! \n");
                     break;
                 }
-                out.write(server.handlePlace(splittedMsg[1], vertical, splittedMsg[3]));
-                out.flush();
+                server.handlePlace(splittedMsg[1], vertical, splittedMsg[3], this);
                 break;
-            case ProtocolMessages.INITIATE_GAME:
-                out.write(server.handleInitiateGame());
-                out.flush();
+            case ProtocolMessages.FORCE_START:
+                server.handleForceStart();
+                break;
+            case ProtocolMessages.SKIP_TURN:
+                server.handleSkipAndSwap(this, null);
+                break;
+            case ProtocolMessages.REPLACE_TILES:
+                server.handleSkipAndSwap(this, splittedMsg[1]);
                 break;
         }
     }

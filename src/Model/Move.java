@@ -49,7 +49,7 @@ public class Move {
         moveMade = false;
 
         while (!moveMade && !requestAnother) {
-            String[] splittedChoice = choice.split("; ");
+            String[] splittedChoice = choice.split("; ", -1);
 
             if (choice.isEmpty()) {
                 throw new EmptyCommandException("Command is empty!");
@@ -80,49 +80,7 @@ public class Move {
 
                 case ("SWAP"):
 //FORMAT --> SWAP; A B C D
-                    ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
-                    String[] swap = splittedChoice[1].split(" ");
-                    ArrayList<Tile> swappedTiles = new ArrayList<>();
-                    int tilesToSwap = 0;
-                    boolean letterDoesNotBelong = true;
-
-                    for (String letter : swap) {
-                        letterDoesNotBelong = true;
-                        swappedTiles.add(game.getTile(letter.charAt(0)));
-
-                        for (int i = 0; i < player.getHand().size() && letterDoesNotBelong; i++) {
-                            if (!(player.getHand().get(i).getLetter() == letter.charAt(0))) {
-                                letterDoesNotBelong = true;
-                            } else {
-                                for (int j = 0; j < newHand.size(); j++) {
-                                    if (newHand.get(j).getLetter() == letter.charAt(0)) {
-                                        newHand.remove(j);
-                                    }
-                                }
-//                                newHand.remove(game.getTile(letter.charAt(0)));
-                                tilesToSwap++;
-                                letterDoesNotBelong = false;
-                            }
-                        }
-                    }
-
-                    if (tilesToSwap > game.getTileSack().size()) {
-                        System.out.println("There is only " + game.getTileSack().size() + " tiles left in the sack");
-                        requestAnother = true;
-                        return;
-                    }
-
-
-                    List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
-                    newHand.addAll(newTiles);
-
-                    ArrayList<Tile> tileSackCopy = new ArrayList<>(game.getTileSack());
-                    tileSackCopy.removeAll(newTiles);
-                    tileSackCopy.addAll(swappedTiles);
-                    game.setTileSack(tileSackCopy);
-
-                    player.setHand(newHand);
-
+                    swap(splittedChoice[1]);
                     moveMade = true;
                     break;
 
@@ -744,15 +702,58 @@ public class Move {
 
         }
 
-//    public static Square[][] deepCopyIntMatrix(Square[][] input) {
-//        if (input == null)
-//            return null;
-//        Square[][] result = new Square[input.length][];
-//        for (int r = 0; r < input.length; r++) {
-//            result[r] = input[r].clone();
-//        }
-//        return result;
-//    }
+    /**
+     * This method is responsible for swapping tiles and skipping turn.
+     * @param tiles are the tiles the player wants to swap. If tiles.isBlank() == true, the turn will be skipped
+     * @ensures to swap the tiles in player's hand or skip player's turn*/
+    public void swap(String tiles) {
+        //check if SWAP command is called without any tiles selected it will be equal to skip the turn
+        if (tiles.isBlank()) {
+            moveMade = true;
+        } else {
+            String[] splitInput = tiles.split(" ");
+            ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
+            ArrayList<Tile> swappedTiles = new ArrayList<>();
+            int tilesToSwap = 0;
+            boolean letterDoesNotBelong = true;
 
+            for (String letter : splitInput) {
+                letterDoesNotBelong = true;
+                swappedTiles.add(game.getTile(letter.charAt(0)));
+
+                for (int i = 0; i < player.getHand().size() && letterDoesNotBelong; i++) {
+                    if (!(player.getHand().get(i).getLetter() == letter.charAt(0))) {
+                        letterDoesNotBelong = true;
+                    } else {
+                        for (int j = 0; j < newHand.size(); j++) {
+                            if (newHand.get(j).getLetter() == letter.charAt(0)) {
+                                newHand.remove(j);
+                            }
+                        }
+                        tilesToSwap++;
+                        letterDoesNotBelong = false;
+                    }
+                }
+            }
+
+            if (tilesToSwap > game.getTileSack().size()) {
+                System.out.println("There is only " + game.getTileSack().size() + " tiles left in the sack");
+                requestAnother = true;
+                return;
+            }
+
+
+            List<Tile> newTiles = game.getTileSack().subList(0, tilesToSwap);
+            newHand.addAll(newTiles);
+
+            ArrayList<Tile> tileSackCopy = new ArrayList<>(game.getTileSack());
+            tileSackCopy.removeAll(newTiles);
+            tileSackCopy.addAll(swappedTiles);
+            game.setTileSack(tileSackCopy);
+
+            player.setHand(newHand);
+        }
     }
+
+}
 

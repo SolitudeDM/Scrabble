@@ -2,14 +2,12 @@ package Controller;
 
 import Controller.Protocols.ClientProtocol;
 import Controller.Protocols.ProtocolMessages;
-import Model.players.HumanPlayer_v3;
-import Model.players.Player;
 import View.utils.ANSI;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Objects;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ScrabbleClient implements ClientProtocol {
@@ -17,8 +15,6 @@ public class ScrabbleClient implements ClientProtocol {
     private BufferedReader in;
     private BufferedWriter out;
     private String playerReference;
-
-    
 
     private boolean playerMade = false;
 
@@ -35,9 +31,22 @@ public class ScrabbleClient implements ClientProtocol {
 
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            }catch(IOException e){
+            }catch(IOException e) {
                 System.out.println("ERROR: could not create a socket on "
                         + host + " and port " + port + ".");
+                while (true) {
+                    System.out.println("Want to connect again?(true/false)");
+                    Scanner in = new Scanner(System.in);
+                    try {
+                        if (in.nextBoolean()) {
+                            break;
+                        } else {
+                            System.exit(0);
+                        }
+                    }catch(InputMismatchException ignored){
+
+                    }
+                }
             }
         }
     }
@@ -78,15 +87,13 @@ public class ScrabbleClient implements ClientProtocol {
             try {
                 // Read and return answer from Server
                 StringBuilder sb = new StringBuilder();
-                String line = "";
-                while (true){
-                    if(Objects.equals(line, "\u001B[0m")){
-                        return sb.toString();
-                    }
-                    line = in.readLine();
+                String line = in.readLine();
+                while (line != null && !line.isBlank()){
                     sb.append(line + System.lineSeparator());
+                    line = in.readLine();
                 }
-//                return sb.toString();
+                System.out.println(ANSI.RED + sb.toString() + ANSI.RESET); //todo delete this later
+                return sb.toString();
             } catch (IOException e) {
                 System.out.println("Could not read from server!");
             }
@@ -97,6 +104,8 @@ public class ScrabbleClient implements ClientProtocol {
         return null;
     }
 
+    /*we used this method in the beginning of the implementation to check whether the client connects to the server
+     for the handshake process we now use connect commands*/
     public void doHandshake(){
 //        sendMessage("Hello");
         if(readLineFromServer().equals("Hello")){
@@ -126,6 +135,7 @@ public class ScrabbleClient implements ClientProtocol {
         createConnection();
         while (run) {
             clientCommands();
+            receiveMessage();
         }
     }
 
@@ -137,7 +147,7 @@ public class ScrabbleClient implements ClientProtocol {
             case ProtocolMessages.CONNECT:
                 if(!playerMade) {
                     sendMessage(message);
-                    doConnect(splitMsg[1]);
+                    playerReference = splitMsg[1];
                 } else{
                     System.out.println("Sorry, the player is already created, so please stop it, seriously...");
                 }
@@ -146,7 +156,7 @@ public class ScrabbleClient implements ClientProtocol {
                 sendMessage(message);
                 doHandshake();
                 break;
-            case ProtocolMessages.MAKE_PLACE:
+            case ProtocolMessages.MAKE_MOVE:
                 boolean vertical = false;
                 sendMessage(message);
                 if (splitMsg[2].equals("V")) {
@@ -155,14 +165,52 @@ public class ScrabbleClient implements ClientProtocol {
                     vertical = false;
                 }
 
-                doPlace(splitMsg[1], vertical, splitMsg[3]);
+//                doPlace(splitMsg[1], vertical, splitMsg[3]);
                 break;
-            case ProtocolMessages.INITIATE_GAME:
+            case ProtocolMessages.FORCE_START:
                 sendMessage(message);
-                doInitiateGame();
+//                doForceStart();
                 break;
-
+            case ProtocolMessages.SKIP_TURN:
+                sendMessage(message);
+                break;
+            case ProtocolMessages.REPLACE_TILES:
+                sendMessage(message);
+                break;
         }
+    }
+
+    public void receiveMessage(){
+//        while(true){
+            String serverMsg = readMultipleLinesFromServer();
+            String[] split = serverMsg.split(ProtocolMessages.DELIMITER);
+            switch(split[0]){
+                case ProtocolMessages.INITIATE_GAME:
+                    System.out.println(split[1]);
+                    break;
+                case ProtocolMessages.CONFIRM_CONNECT:
+                    System.out.println(split[1]);
+                    if (split[1].contains("connected to the server")) {
+                        playerMade = true;
+                    } else {
+                        playerReference = null;
+                        playerMade = false;
+                    }
+                    break;
+                case ProtocolMessages.UPDATE_TABLE:
+                    System.out.println(split[1]);
+                    break;
+                case ProtocolMessages.FEEDBACK:
+                    System.out.println(split[1]);
+                    break;
+                case ProtocolMessages.GIVE_TILE:
+                    System.out.println(split[1]);
+                    break;
+                case ProtocolMessages.CUSTOM_EXCEPTION:
+                    System.out.println(split[1]);
+                    break;
+            }
+        //}
     }
 
 
@@ -187,7 +235,7 @@ public class ScrabbleClient implements ClientProtocol {
     }
 
     @Override
-    public void doInitiateGame() {
+    public void doForceStart() {
         System.out.println(readMultipleLinesFromServer());
     }
 

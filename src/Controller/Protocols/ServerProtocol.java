@@ -1,6 +1,6 @@
 package Controller.Protocols;
 
-import java.net.Socket;
+import Controller.ScrabbleClientHandler;
 
 public interface ServerProtocol {
     /**
@@ -18,21 +18,15 @@ public interface ServerProtocol {
      * @param word
      * @return updated board with placed tiles
      */
-    public String handlePlace(String coordinates, boolean orientation, String word);
+    public void handlePlace(String coordinates, boolean orientation, String word, ScrabbleClientHandler caller);
 
     /**
      * Called when client wants to initiate game*/
-    public String handleInitiateGame();
+    public void handleForceStart();
 
     /**
-     * Called when client wants to skip turn
-     * @return "Turn skipped" */
-    public String handleSkip();
-
-    /**
-     * Called when client wants to swap tiles
-     * @return swapped tiles???*/
-    public String handleSwap(String tiles);
+     * Called when client wants to skip turn */
+    public void handleSkipAndSwap(ScrabbleClientHandler caller, String tiles);
 
     /**
      * Called when client wants to exit the game*/

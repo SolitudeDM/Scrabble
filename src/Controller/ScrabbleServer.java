@@ -1,10 +1,8 @@
 package Controller;
 
+import Controller.Protocols.ProtocolMessages;
 import Controller.Protocols.ServerProtocol;
-import Exceptions.EmptyCommandException;
-import Exceptions.InvalidCommandException;
 import Exceptions.SquareNotEmptyException;
-import Exceptions.WrongOrientationException;
 import Model.Board;
 import Model.Game;
 import Model.Move;
@@ -31,6 +29,7 @@ public class ScrabbleServer implements ServerProtocol {
     private Game game;
 
     private Player currentPlayer;
+    private int currentPlayerIndex;
 
 
     public ScrabbleServer(){
@@ -40,9 +39,9 @@ public class ScrabbleServer implements ServerProtocol {
         //not sure what to add next
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
+//    public void setCurrentPlayer(Player currentPlayer) {
+//        this.currentPlayer = currentPlayer;
+//    }
 
     public void setUp(){
 //        setUpGame();
@@ -145,77 +144,90 @@ public class ScrabbleServer implements ServerProtocol {
 //            clients.
             players.add(clientPlayer);
             System.out.println(players.size());
-            setCurrentPlayer(clientPlayer);
+            currentPlayerIndex = players.size() - 1;
+            currentPlayer = players.get(currentPlayerIndex);
 
-            return "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server";
+            return ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server \n";
         }
     }
 
     @Override
-    public String handlePlace(String coordinates, boolean orientation, String word) {
-        if(currentPlayer.equals(players.get(0))){
+    public void handlePlace(String coordinates, boolean orientation, String word, ScrabbleClientHandler caller) {
+        if(currentPlayer.getName().equals(caller.getName())){
             currentPlayer.setMove(new Move(game, currentPlayer));
             try {
-                players.get(0).getMove().place(coordinates, orientation, word, game.getBoard());
+                currentPlayer.getMove().place(coordinates, orientation, word, game.getBoard());
             } catch (SquareNotEmptyException e) {
-                System.out.println(e.getMessage());
+                for(ScrabbleClientHandler h : clients){
+                    h.sendMessage(e.getMessage());
+                }
             }
-            setCurrentPlayer(players.get(1));
+            currentPlayerIndex++;
+            currentPlayerIndex %= players.size();
+            currentPlayer = players.get(currentPlayerIndex);
 
-            return "Updated Board: " + "\n" + game.getBoard().toString();
+            game.handOut();
+            for(Player p : players) {
+                for (ScrabbleClientHandler h : clients) {
+                    if (p.getName().equals(h.getName())) {
+                        h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
+                }
+            }
         } else{
-            currentPlayer.setMove(new Move(game, currentPlayer));
-            try {
-                players.get(1).getMove().place(coordinates, orientation, word, game.getBoard());
-            } catch (SquareNotEmptyException e) {
-                System.out.println(e.getMessage());
-            }
-            setCurrentPlayer(players.get(0));
-
-            return "Updated Board: " + "\n" + game.getBoard().toString() + game.tilesToString(currentPlayer);
+            caller.sendMessage("It is not your turn, mate! \n");
         }
     }
 
-//    public String rotation(){
-//        for (int i = 0; i < players.size(); i++) {
-//            for (int j = 0; j < clients.size(); j ++) {
-//                System.out.println(clients.get(j).getName());
-//                if (clients.get(j).getName().equals(players.get(i).getName())) {
-//                    sendMessageToAll("Its " + players.get(i).getName() + "'s turn");
-//                    clients.get(j).sendMessage(game.getBoard().toString());
-//                    clients.get(j).sendMessage(game.tilesToString(players.get(i)));
-//                    clients.get(j).sendMessage("Please make turn");
-//
-//                    return "Its " + players.get(i).getName() + "'s turn";
-//
-//                }
-//            }
-//        }
-//        return null;
-//    }
 
     @Override
-    public String handleInitiateGame() {
+    public void handleForceStart() {
         setUpGame();
-        for(Player p : players){
+        for(Player p : players) {
             p.setGame(game);
-        }
-        if(currentPlayer.equals(players.get(0))) {
-            return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(0));
-        }
-        else{
-            return "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(players.get(1));
+            for (ScrabbleClientHandler h : clients) {
+                if (p.getName().equals(h.getName())) {
+                    h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                    break;
+                }
+            }
         }
     }
 
     @Override
-    public String handleSkip() {
-        return null;
-    }
+    public void handleSkipAndSwap(ScrabbleClientHandler caller, String tiles) {
+        boolean swap = false;
 
-    @Override
-    public String handleSwap(String tiles) {
-        return null;
+        if(tiles != null){
+            swap = true;
+        }
+        if(currentPlayer.getName().equals(caller.getName())){
+            if(swap) {
+                currentPlayer.setMove(new Move(game, currentPlayer));
+                currentPlayer.getMove().swap(tiles);
+            }
+
+            currentPlayerIndex++;
+            currentPlayerIndex %= players.size();
+
+            for (ScrabbleClientHandler h : clients) {
+                if (currentPlayer.getName().equals(h.getName())) {
+                    if(swap) {
+                        h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n");
+                        break;
+                    }else{
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "You skipped your turn \n");
+                    }
+                }else{
+                    h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn \n");
+                }
+
+            }
+            currentPlayer = players.get(currentPlayerIndex);
+        } else{
+            caller.sendMessage("It is not your turn, mate! \n");
+        }
     }
 
     @Override

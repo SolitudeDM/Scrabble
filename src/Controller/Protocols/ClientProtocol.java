@@ -32,7 +32,7 @@ public interface ClientProtocol {
 
     /**
      * called when the players connected and ready to start the game*/
-    public void doInitiateGame();
+    public void doForceStart();
 
     /**
      * Called when a player want to skip his turn
