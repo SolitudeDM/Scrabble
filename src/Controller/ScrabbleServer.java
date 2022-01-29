@@ -176,7 +176,7 @@ public class ScrabbleServer implements ServerProtocol {
                 }
             }
         } else{
-            caller.sendMessage("It is not your turn, mate! \n");
+            caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
         }
     }
 
@@ -226,7 +226,7 @@ public class ScrabbleServer implements ServerProtocol {
             }
             currentPlayer = players.get(currentPlayerIndex);
         } else{
-            caller.sendMessage("It is not your turn, mate! \n");
+            caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
         }
     }
 
