@@ -162,19 +162,30 @@ public class ScrabbleServer implements ServerProtocol {
                     h.sendMessage(e.getMessage());
                 }
             }
+
+            game.handOut();
+            for (ScrabbleClientHandler h : clients) {
+                if (currentPlayer.getName().equals(h.getName())) {
+                    if (currentPlayer.getMove().isMoveMade()) {
+                        h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n");
+                        continue;
+                    } else{
+                        h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Your move is invalid, you lose your turn \n");
+                        continue;
+                    }
+                }
+                if (currentPlayer.getMove().isMoveMade()) {
+                    h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + "It's your turn!" + "\n");
+                } else{
+                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, your turn now! \n");
+                }
+            }
+
+
             currentPlayerIndex++;
             currentPlayerIndex %= players.size();
             currentPlayer = players.get(currentPlayerIndex);
 
-            game.handOut();
-            for(Player p : players) {
-                for (ScrabbleClientHandler h : clients) {
-                    if (p.getName().equals(h.getName())) {
-                        h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
-                        break;
-                    }
-                }
-            }
         } else{
             caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
         }

@@ -1,6 +1,5 @@
 package Controller;
 
-import Controller.Protocols.ClientProtocol;
 import Controller.Protocols.ProtocolMessages;
 import View.utils.ANSI;
 
@@ -10,7 +9,7 @@ import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ScrabbleClient implements ClientProtocol {
+public class ScrabbleClient {
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
@@ -211,47 +210,6 @@ public class ScrabbleClient implements ClientProtocol {
                     break;
             }
         //}
-    }
-
-
-
-    @Override
-    public void doConnect(String playerName) {
-//      sendMessage(ProtocolMessages.CONNECT + ProtocolMessages.DELIMITER + playerName);
-        String result = readLineFromServer();
-        if (result.contains("connected to the server")) {
-            playerReference = playerName;
-            playerMade = true;
-        } else {
-            playerMade = false;
-        }
-        System.out.println(result);
-    }
-
-    @Override
-    public void doPlace(String coordinates, boolean orientation, String word) {
-        System.out.println(readMultipleLinesFromServer());
-
-    }
-
-    @Override
-    public void doForceStart() {
-        System.out.println(readMultipleLinesFromServer());
-    }
-
-    @Override
-    public void doSkip() {
-
-    }
-
-    @Override
-    public void doSwap(String tiles) {
-
-    }
-
-    @Override
-    public void doExit() {
-
     }
 
     public static void main(String[] args) {
