@@ -64,16 +64,27 @@ public class ScrabbleClientHandler implements Runnable{
     private void handleCommand(String message) throws IOException{
         System.out.println(ANSI.RED + message + ANSI.RESET); //todo delete this later
         String[] splittedMsg = message.split(ProtocolMessages.DELIMITER);
+        outer:
         switch(splittedMsg[0]){
             case "Hello":
 //                printWriter.println(server.getHello(message));
                 sendMessage(server.getHello(message));
                 break;
-            case ProtocolMessages.CONNECT: //todo check that there are no same names
+            case ProtocolMessages.CONNECT:
+                for(ScrabbleClientHandler h : server.getClients()){
+                    if(h.getName().equalsIgnoreCase(splittedMsg[1])){
+                        sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "This name already exists, try another one! (upper cases won't help) \n");
+                        break outer;
+                    }
+                }
                 sendMessage(server.handleConnection(splittedMsg[1]));
-                this.name = splittedMsg[1];
+                this.name = splittedMsg[1]; //todo add if statements for checking splittedMsg.length
                 break;
             case ProtocolMessages.MAKE_MOVE:
+                if(splittedMsg.length != 4){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "The move command should be of type: m-coordinates-orientation-word! \n");
+                    break;
+                }
                 boolean vertical = false;
                 if (splittedMsg[2].equals("V")) {
                     vertical = true;
@@ -86,6 +97,10 @@ public class ScrabbleClientHandler implements Runnable{
                 server.handlePlace(splittedMsg[1], vertical, splittedMsg[3], this);
                 break;
             case ProtocolMessages.FORCE_START:
+                if(server.getClients().size() < 2){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You can't start the game without 2 players! \n");
+                    break;
+                }
                 server.handleForceStart();
                 break;
             case ProtocolMessages.SKIP_TURN:

@@ -130,6 +130,7 @@ public class ScrabbleClient {
     }
 
     public void start(){
+        System.out.println("Welcome to scrabble, connect to the server using command 'c'_'your name' ");
         boolean run = true;
         createConnection();
         while (run) {
@@ -141,11 +142,11 @@ public class ScrabbleClient {
     public void clientCommands(){
         Scanner sc = new Scanner(System.in);
         String message = sc.nextLine();
-        String[] splitMsg = message.split(ProtocolMessages.DELIMITER);
+        String[] splitMsg = message.split(" ");
         switch(splitMsg[0]) {
             case ProtocolMessages.CONNECT:
                 if(!playerMade) {
-                    sendMessage(message);
+                    sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
                     playerReference = splitMsg[1];
                 } else{
                     System.out.println("Sorry, the player is already created, so please stop it, seriously...");
@@ -156,25 +157,16 @@ public class ScrabbleClient {
                 doHandshake();
                 break;
             case ProtocolMessages.MAKE_MOVE:
-                boolean vertical = false;
-                sendMessage(message);
-                if (splitMsg[2].equals("V")) {
-                    vertical = true;
-                } else if (splitMsg[2].equals("H")) {
-                    vertical = false;
-                }
-
-//                doPlace(splitMsg[1], vertical, splitMsg[3]);
+                sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
                 break;
             case ProtocolMessages.FORCE_START:
-                sendMessage(message);
-//                doForceStart();
+                sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
                 break;
             case ProtocolMessages.SKIP_TURN:
-                sendMessage(message);
+                sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
                 break;
             case ProtocolMessages.REPLACE_TILES:
-                sendMessage(message);
+                sendMessage(ProtocolMessages.REPLACE_TILES + ProtocolMessages.DELIMITER + message.substring(message.indexOf(" ") + 1));
                 break;
         }
     }

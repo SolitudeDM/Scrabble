@@ -44,6 +44,10 @@ public class Game {
         usedCoordinates = new ArrayList<>();
     }
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
     public ArrayList<String> getUsedCoordinates() {
         return usedCoordinates;
     }
