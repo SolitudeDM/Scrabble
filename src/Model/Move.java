@@ -41,6 +41,9 @@ public class Move {
     public boolean isMoveMade() {
         return moveMade;
     }
+    public boolean isRequestAnother() {
+        return requestAnother;
+    }
 
     /**
      * This method is responsible for the options the player has for the turn
@@ -82,7 +85,6 @@ public class Move {
                         e.printStackTrace();
                     }
                     player.setSkips(0);
-//                    moveMade = true;
 //FORMAT --> PLACE; H8; V; WORD
                     break;
 

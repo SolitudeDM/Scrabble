@@ -80,9 +80,9 @@ public class ScrabbleClientHandler implements Runnable{
                     break;
                 }
                 boolean vertical = false;
-                if (splittedMsg[2].equals("V")) {
+                if (splittedMsg[2].equalsIgnoreCase("V")) {
                     vertical = true;
-                } else if (splittedMsg[2].equals("H")) {
+                } else if (splittedMsg[2].equalsIgnoreCase("H")) {
                     vertical = false;
                 } else {
                     sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Orientation should be: H (horizontal) or V (vertical)! \n");

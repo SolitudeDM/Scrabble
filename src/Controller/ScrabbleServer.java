@@ -152,35 +152,44 @@ public class ScrabbleServer implements ServerProtocol {
                 currentPlayer.getMove().place(coordinates, orientation, word, game.getBoard());
             } catch (SquareNotEmptyException e) {
                 for(ScrabbleClientHandler h : clients){
-                    h.sendMessage(e.getMessage());
+                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + e.getMessage() + "\n");
                 }
             }
 
             game.handOut();
             for (ScrabbleClientHandler h : clients) {
                 if (currentPlayer.getName().equals(h.getName())) {
-                    if (currentPlayer.getMove().isMoveMade()) {
-                        h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + "You made your move, its opponent's turn now! \n");
+                    if(currentPlayer.getMove().isRequestAnother()) {
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Invalid input, try one more time! (Type 'help' for help menu) \n");
                         continue;
-                    } else {
-                        h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Your move is invalid, you lose your turn \n");
-                        continue;
+                    }
+                    else {
+                        if(currentPlayer.getMove().isMoveMade()) {
+                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Your move is invalid, you lose your turn \n");
+                        }
+                        else if(!currentPlayer.getMove().isRequestAnother()){
+                            h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + "You made your move, its opponent's turn now! \n");
+                            continue;
+                        }
                     }
                 }
                 for (Player p : players) {
                     if(p.getName().equals(h.getName())) {
-                        if (currentPlayer.getMove().isMoveMade()) {
-                            h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + "It's your turn!" + "\n");
-                        } else {
-                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, your turn now! \n");
+                        if(!currentPlayer.getMove().isRequestAnother()) {
+                            if (currentPlayer.getMove().isMoveMade()) {
+                                h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + "It's your turn!" + "\n");
+                            } else {
+                                h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, your turn now! \n");
+                            }
                         }
                     }
                 }
             }
-
-            currentPlayerIndex++;
-            currentPlayerIndex %= players.size();
-            currentPlayer = players.get(currentPlayerIndex);
+            if(!currentPlayer.getMove().isRequestAnother()) {
+                currentPlayerIndex++;
+                currentPlayerIndex %= players.size();
+                currentPlayer = players.get(currentPlayerIndex);
+            }
 
         } else{
             caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
@@ -248,6 +257,9 @@ public class ScrabbleServer implements ServerProtocol {
             currentPlayer = players.get(currentPlayerIndex);
         } else{
             caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
+        }
+        if(game.isFinished()){
+            sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + game.determineWinner() + "\n");
         }
     }
 
