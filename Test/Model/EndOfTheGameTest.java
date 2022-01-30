@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class EndOfTheGameTest {
 
@@ -50,7 +49,7 @@ public class EndOfTheGameTest {
         player1.getHand().removeAll(player1.getHand());
         player2.getHand().removeAll(player1.getHand());
         game.getTileSack().removeAll(game.getTileSack());
-        assert(game.isFinished());
+        assertTrue(game.isFinished());
 
     }
 
@@ -75,11 +74,11 @@ public class EndOfTheGameTest {
 
         game.getPlayers().get(0).setSkips(3);
         game.getPlayers().get(1).setSkips(3);
-        assert(game.isFinished());
+        assertTrue(game.isFinished());
 
         game.getPlayers().get(0).setSkips(2);
         game.getPlayers().get(1).setSkips(2);
-        assert(game.isFinished());
+        assertTrue(game.isFinished());
     }
 
     @Test
@@ -105,7 +104,7 @@ public class EndOfTheGameTest {
                 squares[i][j].setTile(dummyTile);
             }
         }
-        assert(game.isFinished());
+        assertTrue(game.isFinished());
 
         squares[8][8].setTile(null);
         assertFalse(game.isFinished());
