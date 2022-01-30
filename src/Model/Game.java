@@ -71,6 +71,7 @@ public class Game {
     public void setTileSack(ArrayList<Tile> tileSack){
         this.tileSack = tileSack;
     }
+
     public void setFinishGame(boolean finishGame){
         this.finishGame = finishGame;
     }
@@ -394,7 +395,7 @@ public class Game {
 
                 board.showBoard();
 
-                if (players.get(currentPlayer).getMove().isMoveMade()) {
+                if (players.get(currentPlayer).getMove().isMoveMade() || players.get(currentPlayer).getMove().isMoveLost()) {
                     currentPlayer++;
                 }
 //                players.get(currentPlayer).getMove().calculateScore();

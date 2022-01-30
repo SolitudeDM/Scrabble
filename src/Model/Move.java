@@ -25,11 +25,12 @@ public class Move {
 
 //    private boolean doubleWord;
 //    private boolean tripleWord;
-
+//
     private int doubleWord;
     private int tripleWord;
     private boolean bingo;
     private boolean moveMade;
+    private boolean moveLost;
     private boolean requestAnother;
 
 
@@ -40,6 +41,10 @@ public class Move {
 
     public boolean isMoveMade() {
         return moveMade;
+    }
+
+    public boolean isMoveLost() {
+        return moveLost;
     }
     public boolean isRequestAnother() {
         return requestAnother;
@@ -54,11 +59,12 @@ public class Move {
      */
     public void options(String choice) throws EmptyCommandException, WrongOrientationException, InvalidCommandException {
         moveMade = false;
+        moveLost = false;
 
         choice = choice.toUpperCase();
     //        System.out.println(choice);
 
-        while (!moveMade && !requestAnother) {
+        while (!moveMade && !requestAnother && !moveLost) {
             String[] splittedChoice = choice.split("; ", -1);
 
             if (choice.isEmpty()) {
@@ -298,13 +304,13 @@ public class Move {
 
         //  Check if word exists
         if (checker.isValidWord(word) == null && !requestAnother) {
-            moveMade = true;
+            moveLost = true;
             System.out.println("Word " + word + " does not exist!");
             return;
         }
 
         neighboursCheck(boardCopy, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
-        if (moveMade || requestAnother){
+        if (moveLost || requestAnother){
             return;
         }
 
@@ -569,7 +575,7 @@ public class Move {
                                 System.out.println("Word " + wordToCheck + " changed score to " + player.getScore());
                             } else {
                                 System.out.println(wordToCheck + " is not a word");
-                                moveMade = true;
+                                moveLost = true;
                             }
                         }
                     }
@@ -596,7 +602,7 @@ public class Move {
                                     System.out.println("Word " + wordToCheck + " changed score tO " + player.getScore());
                                 } else {
                                     System.out.println(wordToCheck + " is not a word");
-                                    moveMade = true;
+                                    moveLost = true;
                                 }
                             }
                         }
@@ -645,7 +651,7 @@ public class Move {
 
                                } else {
                                   System.out.println(wordToCheck + " is not a word");
-                                  moveMade = true;
+                                  moveLost = true;
                               }
                             }
 
@@ -670,7 +676,7 @@ public class Move {
                                      }
                                  } else {
                                      System.out.println(wordToCheck + " is not a word");
-                                     moveMade = true;
+                                     moveLost = true;
                                  }
                              }
                          }
