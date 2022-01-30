@@ -46,12 +46,15 @@ public class ScrabbleServer implements ServerProtocol {
     public List<ScrabbleClientHandler> getClients() {
         return clients;
     }
-    //    public void setCurrentPlayer(Player currentPlayer) {
+//    public Player getCurrentPlayer() {
+//        return currentPlayer;
+//    }
+//
+//    public synchronized void setCurrentPlayer(Player currentPlayer) {
 //        this.currentPlayer = currentPlayer;
 //    }
 
     public void setUp(){
-//        setUpGame();
         ssock = null;
         while(ssock == null){
             int port = 8888;
@@ -86,7 +89,7 @@ public class ScrabbleServer implements ServerProtocol {
                 }
 
             } catch(IOException e) {
-                System.out.println("Poshel naxyi");
+                System.out.println("Connection issues");
                 openNewSock = false;
             }
         }
@@ -129,17 +132,6 @@ public class ScrabbleServer implements ServerProtocol {
         this.clients.remove(client);
     }
 
-//    public Player currentClient(Player currentPlayer){
-//
-//        //return player owner (client)
-//    }
-
-//    public void start(){
-//        boolean run = true;
-//        while(run){
-//            run();
-//        }
-//    }
 
     @Override
     public String handleConnection(String playerName) {
@@ -148,13 +140,11 @@ public class ScrabbleServer implements ServerProtocol {
         }
         else{
             Player clientPlayer = new HumanPlayer_v3(playerName, game);
-//            clients.
             players.add(clientPlayer);
-            System.out.println(players.size());
             currentPlayerIndex = players.size() - 1;
             currentPlayer = players.get(currentPlayerIndex);
 
-            return ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server \n";
+            return ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server. Type 'fs' to start game! \n";
         }
     }
 
@@ -199,12 +189,14 @@ public class ScrabbleServer implements ServerProtocol {
         } else{
             caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
         }
-        //todo check for finished game
+        if(game.isFinished()){
+            sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + game.determineWinner() + "\n");
+        }
     }
 
 
     @Override
-    public void handleForceStart() {
+    public void handleForceStart(ScrabbleClientHandler caller) {
         setUpGame();
         for(Player p : players) {
             p.setGame(game);
@@ -236,13 +228,24 @@ public class ScrabbleServer implements ServerProtocol {
             for (ScrabbleClientHandler h : clients) {
                 if (currentPlayer.getName().equals(h.getName())) {
                     if(swap) {
-                        h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n");
-                        break;
+                        if(currentPlayer.getMove().isMoveMade()) {
+                            h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n Opponent's turn now! \n");
+                            break;
+                        }else{
+                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You don't have the tiles you want to replace! You lost your turn! \n");
+                            break;
+                        }
                     }else{
                         h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "You skipped your turn \n");
                     }
-                }else{
-                    h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn \n");
+
+                }else {
+                    if (!swap) {
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn \n");
+                    }
+                    else{
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your opponent swapped tiles, your turn now! \n");
+                    }
                 }
 
             }
@@ -253,8 +256,10 @@ public class ScrabbleServer implements ServerProtocol {
     }
 
     @Override
-    public String handleExit() {
-        return null;
+    public void handleExit() {
+        game.setFinishGame(true);
+        sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + game.determineWinner() + "\n");
+
     }
 
     public void sendMessageToAll(String msg){

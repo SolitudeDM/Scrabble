@@ -269,7 +269,7 @@ public class Game {
 
         /**
          * This method determines the winner after the game is finished*/
-        public void determineWinner(){
+        public String determineWinner(){
             if(isFinished()){
 
                 for (Player p : players) {
@@ -286,8 +286,9 @@ public class Game {
                         tempWinner = player;
                     }
                 }
-                System.out.println("The winner is: " + tempWinner.getName() +  ". His score: " + highestScore);
+                return "The winner is: " + tempWinner.getName() +  ". His score: " + highestScore;
             }
+            return null;
         }
 
         public String tilesToString(Player player) {

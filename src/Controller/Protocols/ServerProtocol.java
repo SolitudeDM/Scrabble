@@ -22,7 +22,7 @@ public interface ServerProtocol {
 
     /**
      * Called when client wants to initiate game*/
-    public void handleForceStart();
+    public void handleForceStart(ScrabbleClientHandler caller);
 
     /**
      * Called when client wants to skip turn */
@@ -30,7 +30,7 @@ public interface ServerProtocol {
 
     /**
      * Called when client wants to exit the game*/
-    public String handleExit();
+    public void handleExit();
 //    /**
 //     * Called when a new room is being created
 //     * @return a room id that the person just created

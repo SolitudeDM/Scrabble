@@ -9,13 +9,14 @@ import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class ScrabbleClient {
+public class ScrabbleClient implements Runnable{
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
     private String playerReference;
 
     private boolean playerMade = false;
+    private boolean quit = false;
 
 
     public void createConnection(){
@@ -57,7 +58,7 @@ public class ScrabbleClient {
                 out.newLine();
                 out.flush();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Server is unreachable!");
             }
         } else {
             System.out.println("Could not write to server!");
@@ -81,9 +82,9 @@ public class ScrabbleClient {
         }
         return null;
     }
-    public String readMultipleLinesFromServer() {
+    public String readMultipleLinesFromServer() throws IOException {
         if (in != null) {
-            try {
+//            try {
                 // Read and return answer from Server
                 StringBuilder sb = new StringBuilder();
                 String line = in.readLine();
@@ -91,11 +92,10 @@ public class ScrabbleClient {
                     sb.append(line + System.lineSeparator());
                     line = in.readLine();
                 }
-                System.out.println(ANSI.RED + sb.toString() + ANSI.RESET); //todo delete this later
                 return sb.toString();
-            } catch (IOException e) {
-                System.out.println("Could not read from server!");
-            }
+//            } catch (IOException e) {
+//                System.out.println("Could not read from server!");
+//            }
         } else {
             System.out.println("Could not read from server!");
 
@@ -130,16 +130,23 @@ public class ScrabbleClient {
     }
 
     public void start(){
-        System.out.println("Welcome to scrabble, connect to the server using command 'c'_'your name' ");
+        System.out.println("Welcome to scrabble, connect to the server using command 'c' 'your name' ");
         boolean run = true;
         createConnection();
+        new Thread(this).start();
         while (run) {
-            clientCommands();
-            receiveMessage();
+            try{
+                receiveMessage();
+            } catch (IOException e) {
+                if(!quit) {
+                    System.out.println("Can't reach the server, type 'D' to close the game");
+                }
+                run = false;
+            }
         }
     }
 
-    public void clientCommands(){
+    public void clientCommands() throws IOException {
         Scanner sc = new Scanner(System.in);
         String message = sc.nextLine();
         String[] splitMsg = message.split(" ");
@@ -168,13 +175,18 @@ public class ScrabbleClient {
             case ProtocolMessages.REPLACE_TILES:
                 sendMessage(ProtocolMessages.REPLACE_TILES + ProtocolMessages.DELIMITER + message.substring(message.indexOf(" ") + 1));
                 break;
+            case ProtocolMessages.DISCONNECT:
+                sendMessage(ProtocolMessages.DISCONNECT);
+                quit = true;
+                throw new IOException("Game Over!");
         }
     }
 
-    public void receiveMessage(){
+    public void receiveMessage() throws IOException {
 //        while(true){
-            String serverMsg = readMultipleLinesFromServer();
-            String[] split = serverMsg.split(ProtocolMessages.DELIMITER);
+        String serverMsg = null;
+        serverMsg = readMultipleLinesFromServer();
+        String[] split = serverMsg.split(ProtocolMessages.DELIMITER);
             switch(split[0]){
                 case ProtocolMessages.INITIATE_GAME:
                     System.out.println(split[1]);
@@ -200,11 +212,25 @@ public class ScrabbleClient {
                 case ProtocolMessages.CUSTOM_EXCEPTION:
                     System.out.println(split[1]);
                     break;
+                case  ProtocolMessages.FINISH_GAME:
+                    System.out.println(split[1]);
+                    throw new IOException("Game Over!");
             }
         //}
+    }
+    @Override
+    public void run() {
+        try {
+            while(true) {
+                clientCommands();
+            }
+        }catch (IOException e){
+            System.out.println("Game finished!");
+        }
     }
 
     public static void main(String[] args) {
         new ScrabbleClient().start();
     }
+
 }

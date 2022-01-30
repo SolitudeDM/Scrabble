@@ -44,15 +44,18 @@ public class ProtocolMessages {
 //    /** <b> Usage:</b> "us;[player_name#player_number];[score]", <b> Example:</b> "us;PlayerC#3;10" */
 //    public static final String UPDATE_SCORE = "us";
 
-    /** <b> Usage:</b> "SWAP; [tile] [tile] [tile]", <b> Example:</b> "r; A B C" */
+    /** <b> Usage:</b> "r; [tile] [tile] [tile]", <b> Example:</b> "r; A B C" */
     public static final String REPLACE_TILES = "r";
 
     /** <b> Usage:</b> "gt;[tile][tile]", <b> Example:</b> "gt;ABC"
      * server response on 'r' command*/
     public static final String GIVE_TILE = "gt";
 
-    /** <b> Usage:</b> "EXIT" */
+    /** <b> Usage:</b> "x" */
     public static final String FINISH_GAME = "x";
+
+    /** <b> Usage:</b> "D" */
+    public static final String DISCONNECT = "D";
 
     /**
      * server response to some exceptions*/

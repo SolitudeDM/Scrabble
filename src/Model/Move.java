@@ -81,7 +81,6 @@ public class Move {
                 case ("SWAP"):
 //FORMAT --> SWAP; A B C D
                     swap(splittedChoice[1]);
-                    moveMade = true;
                     break;
 
                 case ("EXIT"):
@@ -728,6 +727,7 @@ public class Move {
                         for (int j = 0; j < newHand.size(); j++) {
                             if (newHand.get(j).getLetter() == letter.charAt(0)) {
                                 newHand.remove(j);
+                                break;
                             }
                         }
                         tilesToSwap++;
@@ -739,6 +739,13 @@ public class Move {
             if (tilesToSwap > game.getTileSack().size()) {
                 System.out.println("There is only " + game.getTileSack().size() + " tiles left in the sack");
                 requestAnother = true;
+                moveMade = false;
+                return;
+            }
+            if(letterDoesNotBelong){
+                System.out.println("You don't have the tiles you want to swap! Try another move!");
+                requestAnother = true;
+                moveMade = false;
                 return;
             }
 
@@ -752,6 +759,7 @@ public class Move {
             game.setTileSack(tileSackCopy);
 
             player.setHand(newHand);
+            moveMade = true;
         }
     }
 

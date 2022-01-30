@@ -47,12 +47,8 @@ public class ScrabbleClientHandler implements Runnable{
         String message;
         try{
             message = in.readLine();
-            String messageCopy = "";
             while(message != null){
-                if(!messageCopy.equals(message)) {
-                    handleCommand(message);
-                }
-                messageCopy = message;
+                handleCommand(message);
                 message = in.readLine();
             }
             shutdown();
@@ -62,12 +58,10 @@ public class ScrabbleClientHandler implements Runnable{
     }
 
     private void handleCommand(String message) throws IOException{
-        System.out.println(ANSI.RED + message + ANSI.RESET); //todo delete this later
         String[] splittedMsg = message.split(ProtocolMessages.DELIMITER);
         outer:
         switch(splittedMsg[0]){
             case "Hello":
-//                printWriter.println(server.getHello(message));
                 sendMessage(server.getHello(message));
                 break;
             case ProtocolMessages.CONNECT:
@@ -98,10 +92,10 @@ public class ScrabbleClientHandler implements Runnable{
                 break;
             case ProtocolMessages.FORCE_START:
                 if(server.getClients().size() < 2){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You can't start the game without 2 players! \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You can't start the game without at least 2 players!(You are the only one on the server now) \n");
                     break;
                 }
-                server.handleForceStart();
+                server.handleForceStart(this);
                 break;
             case ProtocolMessages.SKIP_TURN:
                 server.handleSkipAndSwap(this, null);
@@ -109,6 +103,9 @@ public class ScrabbleClientHandler implements Runnable{
             case ProtocolMessages.REPLACE_TILES:
                 server.handleSkipAndSwap(this, splittedMsg[1]);
                 break;
+            case ProtocolMessages.DISCONNECT:
+                server.handleExit();
+                throw new IOException("Client disconnected");
         }
     }
 
