@@ -36,7 +36,7 @@ public class Game {
      * @requires players.size() >= 2 && players.size() <= 4 && board != null
      * @ensures to create a Game instance*/
     public Game(ArrayList<Player> players, Board board) {
-        assert players.size() >= 2 && players.size() <= 4 && board != null;
+//        assert players.size() >= 2 && players.size() <= 4 && board != null;
         this.players = players;
         this.board = board;
         tileSack = createTileSack();
@@ -263,6 +263,24 @@ public class Game {
             if (skippers == players.size()) {
                 return  true;
             }
+
+
+            boolean boardFull = false;
+            //Check if board is filled
+            for (int i = 0; i < 15; i++) {
+                for (int j = 0; j < 15; j++) {
+                    if (board.getSquare(i,j).getTile() == null) {
+                        return false;
+                    } else {
+                        boardFull = true;
+                    }
+                }
+            }
+
+            if (boardFull) {
+                return true;
+            }
+
             return false;
         }
 

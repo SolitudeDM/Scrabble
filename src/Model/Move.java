@@ -53,7 +53,7 @@ public class Move {
         moveMade = false;
 
         choice = choice.toUpperCase();
-//        System.out.println(choice);
+    //        System.out.println(choice);
 
         while (!moveMade && !requestAnother) {
             String[] splittedChoice = choice.split("; ", -1);
