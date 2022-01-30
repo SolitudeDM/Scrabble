@@ -120,13 +120,6 @@ public class Move {
         boolean bingo = false;
 
 
-        //  Check if word exists
-        if (checker.isValidWord(word) == null) {
-            moveMade = true;
-            System.out.println("Word " + word + " does not exist!");
-            return;
-        }
-
         //in case the row index is a two-digit number
         String[] index = coordinates.split("");
         if (index.length != 2) {
@@ -297,6 +290,12 @@ public class Move {
             }
         }
 
+        //  Check if word exists
+        if (checker.isValidWord(word) == null && !requestAnother) {
+            moveMade = true;
+            System.out.println("Word " + word + " does not exist!");
+            return;
+        }
 
         neighboursCheck(boardCopy, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical);
         if (moveMade || requestAnother){
@@ -394,33 +393,6 @@ public class Move {
 //                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
-
-
-//        for (Tile t : tilesUsed) {
-//            t.setPlaced(true);
-//        }
-//
-//        if (vertical) {
-//            for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
-//
-//                if (board.getSquare(i, Integer.parseInt(index[1])).getTile().isPlaced()) {
-//                    board.getSquare(i, Integer.parseInt(index[1])).setType(Type.NORMAL);
-//                }
-//
-//
-//            }
-//        }
-//
-//        // Remove all the existing letters from "lettersUsed" horizontal
-//        if (!vertical) {
-//            for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
-//
-//                if (board.getSquare(Integer.parseInt(index[0]), i).getTile().isPlaced()) {
-//                    board.getSquare(Integer.parseInt(index[0]), i).setType(Type.NORMAL);
-//                }
-//
-//            }
-//        }
 
         if (bingo) {
             score += 50;
