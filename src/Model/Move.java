@@ -10,6 +10,7 @@ import main.java.InMemoryScrabbleWordChecker;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static Model.Board.RESOLUTION;
 
@@ -50,6 +51,9 @@ public class Move {
      */
     public void options(String choice) throws EmptyCommandException, WrongOrientationException, InvalidCommandException {
         moveMade = false;
+
+        choice = choice.toUpperCase();
+//        System.out.println(choice);
 
         while (!moveMade && !requestAnother) {
             String[] splittedChoice = choice.split("; ", -1);

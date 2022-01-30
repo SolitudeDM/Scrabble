@@ -232,7 +232,6 @@ public class Game {
         System.out.print("               ╚═════");
 
         System.out.print(ANSI.PURPLE_UNDERLINED);
-//        System.out.print(ANSI.PURPLE_BACKGROUND);
         System.out.print("Your Tiles");
         System.out.print(ANSI.RESET);
         System.out.print(ANSI.PURPLE);
@@ -240,15 +239,6 @@ public class Game {
         System.out.println();
         System.out.print(ANSI.RESET);
 
-
-//        for(Player p : hands.keySet()){
-//            if (p.equals(player)){
-//
-//                for(Tile t : hands.get(p)){
-//                    System.out.print(t.getLetter() + " ");
-//                }
-//                System.out.println();
-//            }
         }
 
 
