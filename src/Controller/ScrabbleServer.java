@@ -134,18 +134,14 @@ public class ScrabbleServer implements ServerProtocol {
 
 
     @Override
-    public String handleConnection(String playerName) {
-        if(playerName == null){
-            return "No entered name";
-        }
-        else{
-            Player clientPlayer = new HumanPlayer_v3(playerName, game);
-            players.add(clientPlayer);
-            currentPlayerIndex = players.size() - 1;
-            currentPlayer = players.get(currentPlayerIndex);
+    public void handleConnection(String playerName) {
+        Player clientPlayer = new HumanPlayer_v3(playerName, game);
+        players.add(clientPlayer);
+        currentPlayerIndex = players.size() - 1;
+        currentPlayer = players.get(currentPlayerIndex);
 
-            return ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server. Type 'fs' to start game! \n";
-        }
+        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server. Type 'fs' to start game! \n");
+
     }
 
     @Override

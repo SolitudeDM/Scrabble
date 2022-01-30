@@ -1,7 +1,14 @@
 package Controller.Protocols;
 
+/**
+ * All of these messages except of the DELIMITER were stated in the documentation of the protocol.
+ * The DELIMITER was changed here because a single semicolon ruined the sending of the updated board in our implementation,
+ * we couldn't find a good solution to that and keep the original DELIMITER (hopefully this is not a major issue).
+ * The commented constants are used for room(not a requirement) and we don't implement it in our project*/
 public class ProtocolMessages {
-    /** Delimiter used to separate arguments sent over the network. */
+
+    /** Delimiter used to separate arguments sent over the network.
+     * This is the only constant we changed in our project (the reason described above)*/
     public static final String DELIMITER = ";;";
 
     /** <b> Usage:</b> "c;[player_name]", <b> Example:</b> "c; PlayerA" */

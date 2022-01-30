@@ -1,7 +1,6 @@
-package Controller;
+package View;
 
 import Controller.Protocols.ProtocolMessages;
-import View.utils.ANSI;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -130,7 +129,7 @@ public class ScrabbleClient implements Runnable{
     }
 
     public void start(){
-        System.out.println("Welcome to scrabble, connect to the server using command 'c' 'your name' ");
+        System.out.println("Welcome to scrabble, connect to the server using command 'c' 'your name', or type 'help' for the help menu.");
         boolean run = true;
         createConnection();
         new Thread(this).start();
@@ -179,6 +178,11 @@ public class ScrabbleClient implements Runnable{
                 sendMessage(ProtocolMessages.DISCONNECT);
                 quit = true;
                 throw new IOException("Game Over!");
+            case "help":
+                printHelpMenu();
+                break;
+            default:
+                System.out.println("Invalid command, type 'help' for the help menu.");
         }
     }
 
@@ -227,6 +231,12 @@ public class ScrabbleClient implements Runnable{
         }catch (IOException e){
             System.out.println("Game finished!");
         }
+    }
+    public void printHelpMenu(){
+        System.out.println("To connect to the server: 'c' 'name'. \nTo start the game: 'fs'. \n" +
+                "To make a move: 'm' 'coordinates' 'orientation(H or V)' 'word' \n" +
+                "To skip your turn: 's' \nTo replace tiles: 'r' 'tile1' 'tile2' 'tile3' etc... \n" +
+                "To disconnect and finish game: 'D'");
     }
 
     public static void main(String[] args) {

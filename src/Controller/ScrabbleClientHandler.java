@@ -71,7 +71,7 @@ public class ScrabbleClientHandler implements Runnable{
                         break outer;
                     }
                 }
-                sendMessage(server.handleConnection(splittedMsg[1]));
+                server.handleConnection(splittedMsg[1]);
                 this.name = splittedMsg[1]; //todo add if statements for checking splittedMsg.length
                 break;
             case ProtocolMessages.MAKE_MOVE:

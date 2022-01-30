@@ -5,18 +5,20 @@ import Controller.ScrabbleClientHandler;
 public interface ServerProtocol {
     /**
      * Called when new connection is established
-     * @ensures to connect a player
-     * @return "Player" + playerName + " connected to the server"
+     * @ensures to connect a player and send confirmation
      */
-    public String handleConnection(String playerName);
-
+    public void handleConnection(String playerName);
 
     /**
      * Called when client wants to place tiles
-     * @param coordinates
-     * @param orientation
-     * @param word
-     * @return updated board with placed tiles
+     * @requires coordinates != null && to be within the board boundaries
+     * @requires orientation != null && to be either 'H' or 'V'
+     * @requires word != null && to be a valid word
+     * @param coordinates coordinates of the move
+     * @param orientation orientation of the move
+     * @param word word to be placed
+     * @param caller is the caller of the command
+     * @ensures to send updated board with the made move
      */
     public void handlePlace(String coordinates, boolean orientation, String word, ScrabbleClientHandler caller);
 
