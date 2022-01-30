@@ -17,7 +17,7 @@ public class ScrabbleClient implements Runnable{
     private boolean playerMade = false;
     private boolean quit = false;
 
-
+//dasd
     public void createConnection(){
         clearConnection();
         while(socket == null){
