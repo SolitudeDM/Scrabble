@@ -21,13 +21,16 @@ public class Move {
     private Game game;
     private Player player;
     private int score = 0;
+
 //    private boolean doubleWord;
 //    private boolean tripleWord;
+
     private int doubleWord;
     private int tripleWord;
     private boolean bingo;
     private boolean moveMade;
     private boolean requestAnother;
+
 
     public Move(Game game, Player player) {
         this.game = game;
@@ -74,6 +77,7 @@ public class Move {
                     } catch (SquareNotEmptyException e) {
                         e.printStackTrace();
                     }
+                    player.setSkips(0);
 //                    moveMade = true;
 //FORMAT --> PLACE; H8; V; WORD
                     break;
@@ -709,7 +713,9 @@ public class Move {
         //check if SWAP command is called without any tiles selected it will be equal to skip the turn
         if (tiles.isBlank()) {
             moveMade = true;
+            player.setSkips(player.getSkips() + 1);
         } else {
+            player.setSkips(0);
             String[] splitInput = tiles.split(" ");
             ArrayList<Tile> newHand = new ArrayList<>(player.getHand());
             ArrayList<Tile> swappedTiles = new ArrayList<>();

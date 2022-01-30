@@ -256,6 +256,7 @@ public class Game {
          * This method checks if the game is finished
          * @return true if the tileSack is empty and one of the player's hands is empty*/
         public boolean isFinished(){
+            int skippers = 0;
             for(Player p : players){
                 if(tileSack.size() == 0 && p.getHand().size() == 0){
                     return true;
@@ -263,6 +264,14 @@ public class Game {
                 else if(finishGame){
                     return true;
                 }
+
+                if (p.getSkips() >= 2) {
+                    skippers++;
+                }
+            }
+
+            if (skippers == players.size()) {
+                return  true;
             }
             return false;
         }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  * Abstract class for a player in scrabble game, will later on be subclassed by Model.players.HumanPlayer and ComputerPlayer*/
 public abstract class Player {
+    private int skips;
     private String name;
     private int score;
     private ArrayList<Tile> hand;
@@ -27,6 +28,19 @@ public abstract class Player {
         this.score = 0;
 //        this.move = new Move(this.getGame(), this);
         this.move = null;
+        this.skips = 0;
+    }
+
+    public int getSkips() {
+        return skips;
+    }
+
+    public void setSkips(int skips) {
+        this.skips = skips;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Move getMove() {
