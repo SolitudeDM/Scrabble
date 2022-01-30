@@ -18,42 +18,35 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Class for the scrabble server */
 public class ScrabbleServer implements ServerProtocol {
     private ServerSocket ssock;
     private List<ScrabbleClientHandler> clients;
-//    private Player clientPlayer;
     private ArrayList<Player> players;
-//
-//    private PrintWriter printWriter;
-
     private Game game;
-
     private Player currentPlayer;
     private int currentPlayerIndex;
 
-
+    /**
+     * ScrabbleServer constructor that initialises the clients List and players List*/
     public ScrabbleServer(){
-
         this.clients = new ArrayList<>();
-        this.players = new ArrayList<Player>();
-        //not sure what to add next
+        this.players = new ArrayList<>();
     }
 
+    /** a getter to see the game variable */
     public Game getGame() {
         return game;
     }
 
+    /** a getter to see the clients variable*/
     public List<ScrabbleClientHandler> getClients() {
         return clients;
     }
-//    public Player getCurrentPlayer() {
-//        return currentPlayer;
-//    }
-//
-//    public synchronized void setCurrentPlayer(Player currentPlayer) {
-//        this.currentPlayer = currentPlayer;
-//    }
 
+    /**
+     * This method sets up the server by creating a ServerSocket
+     * @ensures to set up a server or show an appropriate error message*/
     public void setUp(){
         ssock = null;
         while(ssock == null){
@@ -66,6 +59,9 @@ public class ScrabbleServer implements ServerProtocol {
         }
     }
 
+    /**
+     * This method creates new client handlers for each connected client
+     * @ensures to create a ScrabbleClientHandler instance for each client connected and start a new thread for each client handler*/
     public void run(){
         boolean openNewSock = true;
         while(openNewSock){
@@ -73,8 +69,7 @@ public class ScrabbleServer implements ServerProtocol {
                 setUp();
                 int PlayerIndex = 1;
                 while(true) {
-//                  System.out.println("Server is waiting for the connection...");
-                    String name = "Player" + PlayerIndex;  //change this in the future
+                    String name = "Player" + PlayerIndex;
                     Socket sock = ssock.accept();
                     ScrabbleClientHandler handler = new ScrabbleClientHandler(sock, this, name);
                     new Thread(handler).start();
@@ -94,25 +89,20 @@ public class ScrabbleServer implements ServerProtocol {
             }
         }
 
-
-        sendMessageToAll(clients.size() + " clients active, waiting for player's connections...");
-
-
-        if (players.size() >= 2) {
-            setUpGame();
-        }
-
     }
 
 
-    public String getHello(String message){
-        System.out.println("Hello");
+//    public String getHello(String message){
+//        System.out.println("Hello");
 //        printWriter.println((message));
+//
+//        return "Hello";
+//    }
 
-        return "Hello";
-    }
 
-
+    /**
+     * This method sets up game by creating a new Board, assigning the players and handing out the tiles
+     * @ensures to properly initialise the game variable of the class*/
     public void setUpGame(){
         Square[][] squares = new Square[15][15];
         Board board = new Board(squares);
@@ -128,6 +118,10 @@ public class ScrabbleServer implements ServerProtocol {
 
     }
 
+    /** This method removes a client handler from the list of clients
+     * @param client is the client that is going to be removed
+     * @requires clients.contains(client)
+     * @ensures to remove client form clients List*/
     public void removeClient(ScrabbleClientHandler client) {
         this.clients.remove(client);
     }
@@ -157,6 +151,7 @@ public class ScrabbleServer implements ServerProtocol {
             }
 
             game.handOut();
+            boolean test = false;
             for (ScrabbleClientHandler h : clients) {
                 if (currentPlayer.getName().equals(h.getName())) {
                     if(currentPlayer.getMove().isRequestAnother()) {
@@ -164,7 +159,7 @@ public class ScrabbleServer implements ServerProtocol {
                         continue;
                     }
                     else {
-                        if(currentPlayer.getMove().isMoveMade()) {
+                        if(currentPlayer.getMove().isMoveLost()) {
                             h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Your move is invalid, you lose your turn \n");
                         }
                         else if(!currentPlayer.getMove().isRequestAnother()){
@@ -173,13 +168,21 @@ public class ScrabbleServer implements ServerProtocol {
                         }
                     }
                 }
+
                 for (Player p : players) {
                     if(p.getName().equals(h.getName())) {
                         if(!currentPlayer.getMove().isRequestAnother()) {
-                            if (currentPlayer.getMove().isMoveMade()) {
+                            if (!currentPlayer.getMove().isMoveLost()) {
                                 h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + "It's your turn!" + "\n");
-                            } else {
-                                h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, your turn now! \n");
+                            }
+                            if(currentPlayer.getMove().isMoveLost()){
+                                test = true;
+                            }
+                            if(p.getName().equals(h.getName()) && !p.equals(currentPlayer)) {
+                                if (test) {
+                                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, your turn now! \n");
+                                    test = false;
+                                }
                             }
                         }
                     }
@@ -270,6 +273,11 @@ public class ScrabbleServer implements ServerProtocol {
 
     }
 
+    /**
+     * This method sends a message to all the clients
+     * @param msg is the message to send
+     * @requires msg != null
+     * @ensures to send the message to all clients*/
     public void sendMessageToAll(String msg){
         for(ScrabbleClientHandler h : clients){
             h.sendMessage(msg);

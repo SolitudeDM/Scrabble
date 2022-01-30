@@ -8,16 +8,20 @@ import java.net.Socket;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * class for a client*/
 public class ScrabbleClient implements Runnable{
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
-    private String playerReference;
-
     private boolean playerMade = false;
     private boolean quit = false;
 
-//dasd
+
+    /**
+     * This method is responsible for creating connection with the server using the same host name and port.
+     * Also creates reader and writer that work with the socket streams
+     * @ensures to create the connection with the server if server is started, or ask to retry connection until the server is started with the same host and port*/
     public void createConnection(){
         clearConnection();
         while(socket == null){
@@ -50,6 +54,11 @@ public class ScrabbleClient implements Runnable{
         }
     }
 
+    /**
+     * This method sends a message into the stream
+     * @param msg is the message to be sent
+     * @requires msg != null
+     * @ensures to send the message into the stream or inform the user if any errors appear*/
     public synchronized void sendMessage(String msg) {
         if (out != null) {
             try {
@@ -63,27 +72,30 @@ public class ScrabbleClient implements Runnable{
             System.out.println("Could not write to server!");
         }
     }
+//    public String readLineFromServer() {
+//        if (in != null) {
+//            try {
+//                // Read and return answer from Server
+//                String answer = in.readLine();
+//                if (answer == null) {
+//                    System.out.println("Could not read from server!");
+//                }
+//                return answer;
+//            } catch (IOException e) {
+//                System.out.println("Could not read from server!");
+//            }
+//        } else {
+//            System.out.println("Could not read from server!");
+//        }
+//        return null;
+//    }
 
-    public String readLineFromServer() {
-        if (in != null) {
-            try {
-                // Read and return answer from Server
-                String answer = in.readLine();
-                if (answer == null) {
-                    System.out.println("Could not read from server!");
-                }
-                return answer;
-            } catch (IOException e) {
-                System.out.println("Could not read from server!");
-            }
-        } else {
-            System.out.println("Could not read from server!");
-        }
-        return null;
-    }
+    /**
+     * This method reads multiple lines from the server and returns them
+     * @ensures to return the lines from server or inform the user if any errors appear
+     * @return all the lines sent by the server as a single String*/
     public String readMultipleLinesFromServer() throws IOException {
         if (in != null) {
-//            try {
                 // Read and return answer from Server
                 StringBuilder sb = new StringBuilder();
                 String line = in.readLine();
@@ -92,9 +104,6 @@ public class ScrabbleClient implements Runnable{
                     line = in.readLine();
                 }
                 return sb.toString();
-//            } catch (IOException e) {
-//                System.out.println("Could not read from server!");
-//            }
         } else {
             System.out.println("Could not read from server!");
 
@@ -104,30 +113,24 @@ public class ScrabbleClient implements Runnable{
 
     /*we used this method in the beginning of the implementation to check whether the client connects to the server
      for the handshake process we now use connect commands*/
-    public void doHandshake(){
+//    public void doHandshake(){
 //        sendMessage("Hello");
-        if(readLineFromServer().equals("Hello")){
-            System.out.println("Connection established");
-        }
+//        if(readLineFromServer().equals("Hello")){
+//            System.out.println("Connection established");
+//        }
+//
+//    }
 
-    }
-
+    /**
+     * This method clears the connection with the server, setting the socket, reader and writer to null*/
     public void clearConnection(){
         socket = null;
         in = null;
         out = null;
     }
 
-    public void closeConnection(){
-        try {
-            in.close();
-            out.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * This method starts a new ScrabbleClient by creating a connection and a new thread*/
     public void start(){
         System.out.println("Welcome to scrabble, connect to the server using command 'c' 'your name', or type 'help' for the help menu.");
         boolean run = true;
@@ -145,6 +148,9 @@ public class ScrabbleClient implements Runnable{
         }
     }
 
+    /**
+     * This method reads the input of the user and reacts to it according to the command used, most of the cases it also sends an appropriate message to the server
+     */
     public void clientCommands() throws IOException {
         Scanner sc = new Scanner(System.in);
         String message = sc.nextLine();
@@ -153,14 +159,9 @@ public class ScrabbleClient implements Runnable{
             case ProtocolMessages.CONNECT:
                 if(!playerMade) {
                     sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
-                    playerReference = splitMsg[1];
                 } else{
                     System.out.println("Sorry, the player is already created, so please stop it, seriously...");
                 }
-                break;
-            case "Hello":
-                sendMessage(message);
-                doHandshake();
                 break;
             case ProtocolMessages.MAKE_MOVE:
                 sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
@@ -186,6 +187,8 @@ public class ScrabbleClient implements Runnable{
         }
     }
 
+    /**
+     * This method shows the messages sent by the server using the readMultipleLinesFromServer() method*/
     public void receiveMessage() throws IOException {
 //        while(true){
         String serverMsg = null;
@@ -200,7 +203,6 @@ public class ScrabbleClient implements Runnable{
                     if (split[1].contains("connected to the server")) {
                         playerMade = true;
                     } else {
-                        playerReference = null;
                         playerMade = false;
                     }
                     break;
@@ -232,6 +234,8 @@ public class ScrabbleClient implements Runnable{
             System.out.println("Game finished!");
         }
     }
+    /**
+     * This method prints the help menu to the console */
     public void printHelpMenu(){
         System.out.println("To connect to the server: 'c' 'name'. \nTo start the game: 'fs'. \n" +
                 "To make a move: 'm' 'coordinates' 'orientation(H or V)' 'word' \n" +

@@ -12,8 +12,6 @@ public class ScrabbleClientHandler implements Runnable{
     private BufferedWriter out;
     private Socket sock;
 
-
-
     /** the connected ScrabbleServer*/
     private ScrabbleServer server;
 
@@ -21,7 +19,8 @@ public class ScrabbleClientHandler implements Runnable{
     private String name;
 
 
-
+    /**
+     * Constructor of the class, initialises the variables*/
     public ScrabbleClientHandler(Socket sock, ScrabbleServer server, String name){
         try{
 //            printWriter = new PrintWriter(sock.getOutputStream(), true);
@@ -35,11 +34,9 @@ public class ScrabbleClientHandler implements Runnable{
         }
     }
 
+    /** A getter for the variable name*/
     public String getName() {
         return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
@@ -57,13 +54,14 @@ public class ScrabbleClientHandler implements Runnable{
         }
     }
 
+    /**
+     * This method handles the message sent by the clients and calls the according method from the server
+     * @param message is the message received
+     * @ensures to call the right method from the server according to the command sent*/
     private void handleCommand(String message) throws IOException{
         String[] splittedMsg = message.split(ProtocolMessages.DELIMITER);
         outer:
         switch(splittedMsg[0]){
-            case "Hello":
-                sendMessage(server.getHello(message));
-                break;
             case ProtocolMessages.CONNECT:
                 for(ScrabbleClientHandler h : server.getClients()){
                     if(h.getName().equalsIgnoreCase(splittedMsg[1])){
@@ -109,6 +107,8 @@ public class ScrabbleClientHandler implements Runnable{
         }
     }
 
+    /**
+     * This method shuts down the client, by closing the reader, writer, socket and removing this client handler from the List of clients on the server*/
     public void shutdown(){
         try{
             in.close();
@@ -120,6 +120,11 @@ public class ScrabbleClientHandler implements Runnable{
         server.removeClient(this);
     }
 
+    /**
+     * This method sends message into the stream
+     * @param msg is the message that will be sent
+     * @requires msg != null
+     * @ensures to send msg to the stream */
     public synchronized void sendMessage(String msg) {
         if (out != null) {
             try {

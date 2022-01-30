@@ -4,8 +4,10 @@ import Controller.ScrabbleClientHandler;
 
 public interface ServerProtocol {
     /**
-     * Called when new connection is established
-     * @ensures to connect a player and send confirmation
+     * Called when new connection is established, creates a new instance of HumanPlayer and add it to players List
+     * @param playerName is the name of connected user
+     * @requires playerName != null
+     * @ensures to connect a player, add him to players List and send confirmation
      */
     public void handleConnection(String playerName);
 
@@ -18,68 +20,27 @@ public interface ServerProtocol {
      * @param orientation orientation of the move
      * @param word word to be placed
      * @param caller is the caller of the command
-     * @ensures to send updated board with the made move
+     * @ensures to send updated board with the made move or send the appropriate error message(if needed)
      */
     public void handlePlace(String coordinates, boolean orientation, String word, ScrabbleClientHandler caller);
 
     /**
-     * Called when client wants to initiate game*/
+     * Called when client wants to initiate game
+     * @param caller is the caller of the method
+     * @requires clients.contains(caller)
+     * @ensures to initiate the game and set the caller as the currentPlayer or send the appropriate error message(if called when players.size() < 2) */
     public void handleForceStart(ScrabbleClientHandler caller);
 
     /**
-     * Called when client wants to skip turn */
+     * Called when client wants to skip turn or swap tiles
+     * @param caller is the caller of the method
+     * @param tiles are the tiles the player wants to swap (if tiles == null this means the player skips his turn)
+     * @requires clients.contains(caller)
+     * @ensures to skip the turn or to swap the tiles or send appropriate error message(if tiles are not in the hand of the player)*/
     public void handleSkipAndSwap(ScrabbleClientHandler caller, String tiles);
 
     /**
-     * Called when client wants to exit the game*/
+     * Called when client wants to exit the game
+     * @ensures to finish the game and show the determined winner*/
     public void handleExit();
-//    /**
-//     * Called when a new room is being created
-//     * @return a room id that the person just created
-//     */
-//    public String doCreateRoom(String player_number) ;
-
-//    /**
-//     * Sends
-//     * @send the table info, player_list with their associated client ids
-//     * @ensures it is synchronized
-//     */
-//    public void doStart(IRoom room);
-//
-//    /**`
-//     * Sends an information when a players join a room to all the players
-//     * @param room
-//     * @param identifier - player name and client id
-//     * @send a player identifier
-//     * @ensures it is synchronized
-//     */
-//    public void doJoin(IRoom room, String identifier);
-//
-//    /**
-//     * Sends a score update to all the players
-//     * @param room
-//     * @param info - the player identifier and the score
-//     * @sends the info to all the players
-//     * @ensures it is synchronized
-//     */
-//    public void doUpdateScore(IRoom room, String info);
-//
-//    /**
-//     * Sends a table update to all the players
-//     * @param room
-//     * @param table - the table string representation
-//     * @sends the table to all the players
-//     * @ensures it is synchronized
-//     */
-//    public void doUpdateTable(IRoom room, String table);
-//
-//    /**
-//     * Called when a game ends
-//     * @param room
-//     * @param best_player the best player id
-//     * @param score the best score
-//     * @sends information about the ended game
-//     * @ensures it is synchronized
-//     */
-//    public void doFinish(IRoom room, String best_player, int score);
 }

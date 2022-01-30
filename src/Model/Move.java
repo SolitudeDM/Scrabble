@@ -25,7 +25,6 @@ public class Move {
 
 //    private boolean doubleWord;
 //    private boolean tripleWord;
-//
     private int doubleWord;
     private int tripleWord;
     private boolean bingo;
