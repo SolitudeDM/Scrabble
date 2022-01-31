@@ -229,7 +229,7 @@ public class ScrabbleServer implements ServerProtocol {
                 currentPlayer.setMove(new Move(game, currentPlayer));
                 currentPlayer.getMove().swap(tiles);
             }
-
+//asd
             currentPlayerIndex++;
             currentPlayerIndex %= players.size();
 
