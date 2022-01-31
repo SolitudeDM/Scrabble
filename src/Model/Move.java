@@ -171,6 +171,15 @@ public class Move {
         doubleWord = 0;
         tripleWord = 0;
 
+
+        //Check if rigged correctly
+        if (!checkRig(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical)) {
+            System.out.println("Invalid placement!");
+            requestAnother = true;
+            return;
+        }
+
+
         //Check if cells are available
         if (vertical) {
 
@@ -214,17 +223,6 @@ public class Move {
 
             }
         }
-
-
-        //Check if rigged correctly
-        if (!checkRig(board, Integer.parseInt(index[0]), Integer.parseInt(index[1]), word, vertical)) {
-            System.out.println("Invalid placement!");
-            requestAnother = true;
-            return;
-        }
-
-
-
 
         if (tilesAbused) {
             System.out.println("Заабузел B)");
@@ -715,16 +713,22 @@ public class Move {
                 for (int i = 0; i < player.getHand().size() && letterDoesNotBelong; i++) {
                     if (!(player.getHand().get(i).getLetter() == letter.charAt(0))) {
                         letterDoesNotBelong = true;
+
                     } else {
                         for (int j = 0; j < newHand.size(); j++) {
                             if (newHand.get(j).getLetter() == letter.charAt(0)) {
                                 newHand.remove(j);
+                                letterDoesNotBelong = false;
                                 break;
                             }
                         }
                         tilesToSwap++;
-                        letterDoesNotBelong = false;
+
                     }
+                }
+
+                if (letterDoesNotBelong) {
+                    break;
                 }
             }
 
