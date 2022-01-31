@@ -6,6 +6,8 @@ import Model.ScrabbleServer;
 import java.io.*;
 import java.net.Socket;
 
+/** Class for a Scrabble client handler
+ * @author Dani Mahaini && Mark Zhitchenko*/
 public class ScrabbleClientHandler implements Runnable{
     /** Input and output streams + the socket*/
     private BufferedReader in;

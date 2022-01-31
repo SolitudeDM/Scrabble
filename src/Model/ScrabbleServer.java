@@ -15,7 +15,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Class for the scrabble server */
+/** Class for the scrabble server
+ * @author Dani Mahaini && Mark Zhitchenko */
 public class ScrabbleServer implements ServerProtocol {
     private ServerSocket ssock;
     private List<ScrabbleClientHandler> clients;

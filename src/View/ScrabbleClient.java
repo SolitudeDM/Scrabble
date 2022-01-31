@@ -9,7 +9,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * class for a client*/
+ * class for a Scrabble client
+ * @author Dani Mahaini && Mark Zhitchenko*/
 public class ScrabbleClient implements Runnable{
     private Socket socket;
     private BufferedReader in;

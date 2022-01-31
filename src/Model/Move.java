@@ -47,6 +47,11 @@ public class Move {
         return requestAnother;
     }
 
+    //added a getter for the score only for the unit testing
+    public int getScore(){
+        return score;
+    }
+
     /**
      * This method is responsible for the options the player has for the turn
      *
