@@ -250,6 +250,7 @@ public class Board {
         for (int x = 0; x < RESOLUTION; x++) {
             for (int y = 0; y < RESOLUTION; y++) {
                 newSquares[x][y] = squares[x][y].clone();
+                newSquares[x][y].setType(squares[x][y].getType());
                 newSquares[x][y].setTile(squares[x][y].getTile());
             }
         }

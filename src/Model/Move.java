@@ -151,6 +151,12 @@ public class Move {
         index[0] = index[1];
         index[1] = tempCoordinate;
 
+        if ((Integer.parseInt(index[0]) > 14) || (Integer.parseInt(index[1]) > 14) || (Integer.parseInt(index[0]) < 0) || (Integer.parseInt(index[1]) < 0)) {
+            System.out.println("Your coordinates are out of bounds!");
+            requestAnother = true;
+            return;
+        }
+
         String[] lettersUsed = (word.toUpperCase().split(""));
         ArrayList<Tile> tilesUsed = new ArrayList<>();
 
@@ -181,6 +187,7 @@ public class Move {
         }
 
 
+
         //Check if cells are available
         if (vertical) {
 
@@ -192,13 +199,17 @@ public class Move {
 
             tilesAbused = true;
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
-                if (!tilesUsed.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
+                if (!tilesUsedCopy.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
                     tilesAbused = false;
+
                     if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[1])))) {
                         requestAnother = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
+                    tilesUsedCopy.remove(0);
+
+
 
             }
         }
@@ -214,16 +225,18 @@ public class Move {
 
             tilesAbused = true;
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
-                if (!tilesUsed.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
+                if (!tilesUsedCopy.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
                     tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
                         requestAnother = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
-
+                    tilesUsedCopy.remove(0);
             }
         }
+
+        tilesUsedCopy = new ArrayList<>(tilesUsed);
 
         if (tilesAbused) {
             System.out.println("Заабузел B)");
@@ -281,8 +294,7 @@ public class Move {
                     }
                 }
             }
-        }
-        else{
+        } else {
             requestAnother = true;
             return;
         }
@@ -501,11 +513,13 @@ public class Move {
         if (!vertical) {
 
             if(col != 0 && board.getSquare(row, col - 1 ).getTile() != null) {
+                System.out.println("Please, write the whole word in one horizontal line");
+                requestAnother = true;
+                return;
+            } else if ( col + word.length() < 14 && board.getSquare(row, col + word.length()).getTile() != null) {
                 System.out.println("Please, write the whole word in one line");
                 requestAnother = true;
-            } else if ( col + word.length() < 15 && board.getSquare(row, col + word.length() + 1 ).getTile() != null) {
-                System.out.println("Please, write the whole word in one line");
-                requestAnother = true;
+                return;
             }
 
             for (int i = col; i < col + word.length(); i++) {
@@ -574,9 +588,11 @@ public class Move {
                 if(row != 0 && board.getSquare(row - 1, col).getTile() != null) {
                     System.out.println("Please, write the whole word in one vertical line");
                     requestAnother = true;
-                } else if(row + word.length() < 15 && board.getSquare(row + word.length() + 1, col).getTile() != null) {
+                    return;
+                } else if(row + word.length() < 14 && board.getSquare(row + word.length(), col).getTile() != null) {
                     System.out.println("Please, write the whole word in one line");
                     requestAnother = true;
+                    return;
                 }
 
                 for (int i = row; i < row + word.length(); i++) {
@@ -615,7 +631,7 @@ public class Move {
                                  coordinates[1] = j - 1;
                                  coordinates[0] = i;
                                  while (board.getSquare(i, j - 1).getTile() != null && j != 14) {
-                                     wordToCheck += board.getSquare(j - 1, i).getTile().getLetter();
+                                     wordToCheck += board.getSquare(i, j - 1).getTile().getLetter();
                                      j++;
                                  }
 
