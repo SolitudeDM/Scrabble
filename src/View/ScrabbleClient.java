@@ -219,7 +219,7 @@ public class ScrabbleClient implements Runnable{
     public void printHelpMenu(){
         System.out.println("To connect to the server: 'c' 'name'. \nTo start the game: 'fs'. \n" +
                 "To make a move: 'm' 'coordinates' 'orientation(H or V)' 'word'. Coordinates, orientation and word should be upper cases!\n" +
-                "To skip your turn: 's' \nTo replace tiles: 'r' 'tile1' 'tile2' 'tile3' etc... \n" +
+                "To skip your turn: 's' \nTo replace tiles: 'r' 'tile1' 'tile2' 'tile3' etc... Right the letter of the tile in upper case as well!\n" +
                 "To disconnect and finish game: 'D' \nTo chat: '/' 'your message' \nP.S. Consider the spaces between your input as shown above!");
     }
 

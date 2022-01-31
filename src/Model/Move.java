@@ -282,6 +282,10 @@ public class Move {
                 }
             }
         }
+        else{
+            requestAnother = true;
+            return;
+        }
 
         //  Check if word exists
         if (checker.isValidWord(word) == null && !requestAnother) {

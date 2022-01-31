@@ -224,6 +224,10 @@ public class ScrabbleServer implements ServerProtocol {
                 currentPlayer.setMove(new Move(game, currentPlayer));
                 currentPlayer.getMove().swap(tiles);
             }
+            else{
+                currentPlayer.setMove(new Move(game, currentPlayer));
+                currentPlayer.getMove().swap(" ");
+            }
 
             currentPlayerIndex++;
             currentPlayerIndex %= players.size();
@@ -238,7 +242,6 @@ public class ScrabbleServer implements ServerProtocol {
                         }
                     }else{
                         h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "You skipped your turn \n");
-                        currentPlayer.setSkips(currentPlayer.getSkips() + 1);
                     }
 
                 }else {
@@ -253,7 +256,7 @@ public class ScrabbleServer implements ServerProtocol {
                 }
 
             }
-            if(!currentPlayer.getMove().isRequestAnother()) {
+            if(!currentPlayer.getMove().isRequestAnother() || !swap) {
                 currentPlayer = players.get(currentPlayerIndex);
             }
         } else{
