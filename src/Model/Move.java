@@ -197,9 +197,10 @@ public class Move {
                 return;
             }
 
+            int tileIndex = 0;
             tilesAbused = true;
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
-                if (!tilesUsedCopy.contains(board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
+                if (tilesUsed.get(tileIndex) != (board.getSquare(i, Integer.parseInt(index[1])).getTile())) {
                     tilesAbused = false;
 
                     if (!board.isEmptySquare(board.getSquare(i, Integer.parseInt(index[1])))) {
@@ -207,11 +208,10 @@ public class Move {
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
-                    tilesUsedCopy.remove(0);
-
-
-
+//                    tilesUsedCopy.remove(0);
+                tileIndex++;
             }
+
         }
 
         //Check if cells are available
@@ -223,20 +223,22 @@ public class Move {
                 return;
             }
 
+            int tileIndex = 0;
             tilesAbused = true;
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
-                if (!tilesUsedCopy.contains(board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
+                if (tilesUsed.get(tileIndex) != (board.getSquare(Integer.parseInt(index[0]), i).getTile())) {
                     tilesAbused = false;
                     if (!board.isEmptySquare(board.getSquare(Integer.parseInt(index[0]), i))) {
                         requestAnother = true;
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
-                    tilesUsedCopy.remove(0);
+
+                tileIndex++;
             }
         }
 
-        tilesUsedCopy = new ArrayList<>(tilesUsed);
+
 
         if (tilesAbused) {
             System.out.println("Заабузел B)");
