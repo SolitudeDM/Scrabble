@@ -14,7 +14,6 @@ public class ScrabbleClient implements Runnable{
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
-//    private boolean playerMade = false;
     private boolean quit = false;
 
 
@@ -72,23 +71,6 @@ public class ScrabbleClient implements Runnable{
             System.out.println("Could not write to server!");
         }
     }
-//    public String readLineFromServer() {
-//        if (in != null) {
-//            try {
-//                // Read and return answer from Server
-//                String answer = in.readLine();
-//                if (answer == null) {
-//                    System.out.println("Could not read from server!");
-//                }
-//                return answer;
-//            } catch (IOException e) {
-//                System.out.println("Could not read from server!");
-//            }
-//        } else {
-//            System.out.println("Could not read from server!");
-//        }
-//        return null;
-//    }
 
     /**
      * This method reads multiple lines from the server and returns them
@@ -99,6 +81,9 @@ public class ScrabbleClient implements Runnable{
                 // Read and return answer from Server
                 StringBuilder sb = new StringBuilder();
                 String line = in.readLine();
+                if(line == null){
+                    throw new IOException("Disconnecting...");
+                }
                 while (line != null && !line.isBlank()){
                     sb.append(line + System.lineSeparator());
                     line = in.readLine();
@@ -110,16 +95,6 @@ public class ScrabbleClient implements Runnable{
         }
         return null;
     }
-
-    /*we used this method in the beginning of the implementation to check whether the client connects to the server
-     for the handshake process we now use connect commands*/
-//    public void doHandshake(){
-//        sendMessage("Hello");
-//        if(readLineFromServer().equals("Hello")){
-//            System.out.println("Connection established");
-//        }
-//
-//    }
 
     /**
      * This method clears the connection with the server, setting the socket, reader and writer to null*/
@@ -178,6 +153,9 @@ public class ScrabbleClient implements Runnable{
             case "help":
                 printHelpMenu();
                 break;
+            case ProtocolMessages.CUSTOM_COMMAND:
+                sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
+                break;
             default:
                 System.out.println("Invalid command, type 'help' for the help menu.");
         }
@@ -187,38 +165,43 @@ public class ScrabbleClient implements Runnable{
      * This method shows the messages sent by the server using the readMultipleLinesFromServer() method*/
     public void receiveMessage() throws IOException {
 //        while(true){
-        String serverMsg = null;
+        String serverMsg;
         serverMsg = readMultipleLinesFromServer();
         String[] split = serverMsg.split(ProtocolMessages.DELIMITER);
-            switch(split[0]){
-                case ProtocolMessages.INITIATE_GAME:
-                    System.out.println(split[1]);
-                    break;
-                case ProtocolMessages.CONFIRM_CONNECT:
-                    System.out.println(split[1]);
-//                    if (split[1].contains("connected to the server")) {
-//                        playerMade = true;
-//                    } else {
-//                        playerMade = false;
-//                    }
-                    break;
-                case ProtocolMessages.UPDATE_TABLE:
-                    System.out.println(split[1]);
-                    break;
-                case ProtocolMessages.FEEDBACK:
-                    System.out.println(split[1]);
-                    break;
-                case ProtocolMessages.GIVE_TILE:
-                    System.out.println(split[1]);
-                    break;
-                case ProtocolMessages.CUSTOM_EXCEPTION:
-                    System.out.println(split[1]);
-                    break;
-                case  ProtocolMessages.FINISH_GAME:
-                    System.out.println(split[1]);
-                    throw new IOException("Game Over!");
+        switch(split[0]){
+            case ProtocolMessages.INITIATE_GAME:
+                System.out.println(split[1]);
+                break;
+            case ProtocolMessages.CONFIRM_CONNECT:
+                System.out.println(split[1]);
+                break;
+            case ProtocolMessages.UPDATE_TABLE:
+                System.out.println(split[1]);
+                break;
+            case ProtocolMessages.FEEDBACK:
+                System.out.println(split[1]);
+                break;
+            case ProtocolMessages.GIVE_TILE:
+                System.out.println(split[1]);
+                break;
+            case ProtocolMessages.CUSTOM_EXCEPTION:
+                System.out.println(split[1]);
+                break;
+            case  ProtocolMessages.FINISH_GAME:
+                System.out.println(split[1]);
+                throw new IOException("Game Over!");
+            case ProtocolMessages.CUSTOM_COMMAND:
+                StringBuilder sb = new StringBuilder();
+                for(String s : split){
+                    if(s.equals("/")){
+                        continue;
+                    }
+                    sb.append(s);
+                    sb.append(" ");
+                }
+                System.out.println(sb);
+                break;
             }
-        //}
     }
     @Override
     public void run() {
@@ -234,9 +217,9 @@ public class ScrabbleClient implements Runnable{
      * This method prints the help menu to the console */
     public void printHelpMenu(){
         System.out.println("To connect to the server: 'c' 'name'. \nTo start the game: 'fs'. \n" +
-                "To make a move: 'm' 'coordinates' 'orientation(H or V)' 'word' \n" +
+                "To make a move: 'm' 'coordinates' 'orientation(H or V)' 'word'. Coordinates, orientation and word should be upper cases!\n" +
                 "To skip your turn: 's' \nTo replace tiles: 'r' 'tile1' 'tile2' 'tile3' etc... \n" +
-                "To disconnect and finish game: 'D'");
+                "To disconnect and finish game: 'D' \nTo chat: '/' 'your message' \nP.S. Consider the spaces between your input as shown above!");
     }
 
     public static void main(String[] args) {

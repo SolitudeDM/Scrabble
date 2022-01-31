@@ -9,25 +9,19 @@ import View.utils.ANSI;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-
-import static Model.Board.RESOLUTION;
 
 public class Game {
 
-
-
     private ArrayList<Tile> tileSack;
-    // Tilesack for searches
-    private final ArrayList<Tile> initialTiles;
+
+    // TileSack for searches
+    private static final ArrayList<Tile> INITIAL_TILES = createTileSack();
+
     private ArrayList<Player> players;
     private Board board;
     private boolean finishGame;
-
     private ArrayList<String> usedCoordinates;
-
-    //private HashMap<Player, ArrayList<Tile>> hands;
 
     /**
      * Game constructor creates an instance of a Game
@@ -36,11 +30,9 @@ public class Game {
      * @requires players.size() >= 2 && players.size() <= 4 && board != null
      * @ensures to create a Game instance*/
     public Game(ArrayList<Player> players, Board board) {
-//        assert players.size() >= 2 && players.size() <= 4 && board != null;
         this.players = players;
         this.board = board;
         tileSack = createTileSack();
-        initialTiles = createTileSack();
         usedCoordinates = new ArrayList<>();
     }
 
@@ -50,10 +42,6 @@ public class Game {
 
     public ArrayList<String> getUsedCoordinates() {
         return usedCoordinates;
-    }
-
-    public void setUsedCoordinates(ArrayList<String> usedCoordinates) {
-        this.usedCoordinates = usedCoordinates;
     }
 
     public void setPlayers(ArrayList<Player> players) {
@@ -126,7 +114,7 @@ public class Game {
     }
 
     public ArrayList<Tile> getInitialTiles() {
-        return initialTiles;
+        return INITIAL_TILES;
     }
 
     /**
@@ -141,14 +129,11 @@ public class Game {
             int missingTiles = 7 - p.getHand().size();
             if (missingTiles != 0 && tileSack.size() > missingTiles) {
                 List<Tile> given = tileSack.subList(0,missingTiles);
-//                hands = new HashMap<>();
-//                hands.put(p, new ArrayList<>(given));
                 ArrayList<Tile> result = p.getHand();
                 for (Tile tile : given) {
                     result.add(tile);
                 }
                 p.setHand(result);
-//                p.setHand(new ArrayList<>(given));
                 tileSack.removeAll(given);
             }
             else if(missingTiles != 0 && tileSack.size() < missingTiles && tileSack.size() != 0){
@@ -175,9 +160,9 @@ public class Game {
      * @return Model.Tile with required letter
      */
     public Tile getTile(char letter){
-        for (int i = 0; i < initialTiles.size(); i++){
-            if(letter == initialTiles.get(i).getLetter()){
-                return initialTiles.get(i);
+        for (int i = 0; i < INITIAL_TILES.size(); i++){
+            if(letter == INITIAL_TILES.get(i).getLetter()){
+                return INITIAL_TILES.get(i);
             }
         }
         return null;
@@ -192,7 +177,6 @@ public class Game {
     public void showTiles(Player player){
         assert player != null;
         ArrayList<Tile> hand = player.getHand();
-//        System.out.println();
         System.out.print(ANSI.BLUE_BOLD_BRIGHT);
         System.out.print(player.getName());
         for (int i = 0; i < 15 - player.getName().length(); i++) {
@@ -210,14 +194,6 @@ public class Game {
                 System.out.print(" ");
             }
         }
-
-//        for (Tile tile : hand) {
-//            System.out.print(ANSI.YELLOW_BACKGROUND_BRIGHT);
-//            System.out.print(ANSI.BLACK_BOLD);
-//            System.out.print(tile.getLetter() + " ");
-//            System.out.print(ANSI.RESET);
-//            System.out.println(" ");
-//        }
 
         System.out.print(ANSI.PURPLE);
         System.out.print("║");
@@ -243,119 +219,126 @@ public class Game {
         }
 
 
-        /**
-         * This method checks if the game is finished
-         * @return true if the tileSack is empty and one of the player's hands is empty*/
-        public boolean isFinished(){
-            int skippers = 0;
-            for(Player p : players){
-                if(tileSack.size() == 0 && p.getHand().size() == 0){
-                    return true;
-                }
-                else if(finishGame){
-                    return true;
-                }
-
-                if (p.getSkips() >= 2) {
-                    skippers++;
-                }
+    /**
+     * This method checks if the game is finished
+     * @return true if the tileSack is empty and one of the player's hands is empty*/
+    public boolean isFinished(){
+        int skippers = 0;
+        for(Player p : players){
+            if(tileSack.size() == 0 && p.getHand().size() == 0){
+                return true;
             }
-
-            if (skippers == players.size()) {
-                return  true;
-            }
-
-
-            boolean boardFull = false;
-            //Check if board is filled
-            for (int i = 0; i < 15; i++) {
-                for (int j = 0; j < 15; j++) {
-                    if (board.getSquare(i,j).getTile() == null) {
-                        return false;
-                    } else {
-                        boardFull = true;
-                    }
-                }
-            }
-
-            if (boardFull) {
+            else if(finishGame){
                 return true;
             }
 
-            return false;
-        }
-
-        /**
-         * This method determines the winner after the game is finished*/
-        public String determineWinner(){
-            if(isFinished()){
-
-                for (Player p : players) {
-                    for (Tile t : p.getHand()) {
-                        p.setScore(p.getScore() - t.getLetterPoints());
-                    }
-                }
-
-                int highestScore = 0;
-                Player tempWinner = players.get(0);
-                for (Player player : players){
-                    if(player.getScore() > highestScore){
-                        highestScore = player.getScore();
-                        tempWinner = player;
-                    }
-                }
-                return "The winner is: " + tempWinner.getName() +  ". His score: " + highestScore;
+            if (p.getSkips() >= 2) {
+                skippers++;
             }
-            return null;
         }
 
-        public String tilesToString(Player player) {
-            assert player != null;
-            ArrayList<Tile> hand = player.getHand();
+        if (skippers == players.size()) {
+            return  true;
+        }
 
-            String handString = "";
-            handString += (ANSI.BLUE_BOLD_BRIGHT);
-            handString += (player.getName());
-            for (int i = 0; i < 15 - player.getName().length(); i++) {
+
+        boolean boardFull = false;
+        //Check if board is filled
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (board.getSquare(i,j).getTile() == null) {
+                    return false;
+                } else {
+                    boardFull = true;
+                }
+            }
+        }
+
+        if (boardFull) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * This method determines the winner after the game is finished*/
+    public String determineWinner(){
+        if(isFinished()){
+
+            //subtract score for tiles that remained in the hand at the end
+            for (Player p : players) {
+                for (Tile t : p.getHand()) {
+                    p.setScore(p.getScore() - t.getLetterPoints());
+                }
+            }
+
+            int highestScore = 0;
+            Player tempWinner = players.get(0);
+            for (Player player : players){
+                if(player.getScore() > highestScore){
+                    highestScore = player.getScore();
+                    tempWinner = player;
+                }
+            }
+            return "The winner is: " + tempWinner.getName() +  ". His score: " + highestScore;
+        }
+        return null;
+    }
+
+    /**
+     * This method returns a String representation of player's tiles
+     * @param player is the player whose tiles will be shown
+     * @requires player != null && players.contains(player)
+     * @ensures to return a String of the player's tiles
+     * @return tiles of the player */
+    public String tilesToString(Player player) {
+        assert player != null;
+        ArrayList<Tile> hand = player.getHand();
+
+        String handString = "";
+        handString += (ANSI.BLUE_BOLD_BRIGHT);
+        handString += (player.getName());
+        for (int i = 0; i < 15 - player.getName().length(); i++) {
+            handString +=(" ");
+        }
+        handString +=(ANSI.PURPLE);
+        handString +=("║");
+        handString +=(ANSI.RESET);
+        for (int i = 0; i < hand.size(); i++) {
+            handString +=(ANSI.YELLOW_BACKGROUND_BRIGHT);
+            handString +=(ANSI.BLACK_BOLD);
+            handString +=(hand.get(i).getLetter() + " ");
+            handString +=(ANSI.RESET);
+            if (i != 6) {
                 handString +=(" ");
             }
-            handString +=(ANSI.PURPLE);
-            handString +=("║");
-            handString +=(ANSI.RESET);
-            for (int i = 0; i < hand.size(); i++) {
-                handString +=(ANSI.YELLOW_BACKGROUND_BRIGHT);
-                handString +=(ANSI.BLACK_BOLD);
-                handString +=(hand.get(i).getLetter() + " ");
-                handString +=(ANSI.RESET);
-                if (i != 6) {
-                    handString +=(" ");
-                }
-            }
-
-            handString +=(ANSI.PURPLE);
-            handString +=("║");
-
-            handString +=(ANSI.BLUE_BOLD_BRIGHT);
-
-            handString +=("    Score:");
-
-            handString +=(player.getScore());
-            handString +=(ANSI.PURPLE);
-
-            handString += "\n";
-            handString +=("               ╚═════");
-
-            handString +=(ANSI.PURPLE_UNDERLINED);
-
-            handString +=("Your Tiles");
-            handString +=(ANSI.RESET);
-            handString +=(ANSI.PURPLE);
-            handString +=("═════╝");
-            handString += "\n";
-            handString +=(ANSI.RESET);
-
-            return handString;
         }
+
+        handString +=(ANSI.PURPLE);
+        handString +=("║");
+
+        handString +=(ANSI.BLUE_BOLD_BRIGHT);
+
+        handString +=("    Score:");
+
+        handString +=(player.getScore());
+        handString +=(ANSI.PURPLE);
+
+        handString += "\n";
+        handString +=("               ╚═════");
+
+        handString +=(ANSI.PURPLE_UNDERLINED);
+
+        handString +=("Your Tiles");
+        handString +=(ANSI.RESET);
+        handString +=(ANSI.PURPLE);
+        handString +=("═════╝");
+        handString += "\n";
+        handString +=(ANSI.RESET);
+
+        return handString;
+    }
 
 
     public static void main(String[] args) throws EmptyCommandException, InvalidCommandException, WrongOrientationException {
@@ -379,7 +362,7 @@ public class Game {
         game.handOut();
 
 
-
+        //here we start the local game(that was used for testing before we started implementing networking)
         while (!game.isFinished()) {
             int currentPlayer = 0;
 
@@ -398,7 +381,6 @@ public class Game {
                 if (players.get(currentPlayer).getMove().isMoveMade() || players.get(currentPlayer).getMove().isMoveLost()) {
                     currentPlayer++;
                 }
-//                players.get(currentPlayer).getMove().calculateScore();
                 game.handOut();
                 if(game.isFinished()){
                     break;
@@ -407,23 +389,6 @@ public class Game {
 
         }
 
-
         game.determineWinner();
-
-
-//        game.showTiles(player1);
-//
-//
-//        player1.getMove().options(player1.determineMove(board));
-
-//        board.showBoard();
-//        game.showTiles(player1);
-//        game.handOut();
-//        game.showTiles(player1);
-        /*Here we checked if the tileSack is created properly(commented out because we don't need the createTileSack() method to be static
-        made it static only for the testing
-         */
-//        ArrayList<Model.Tile> test = createTileSack();
-//        System.out.println(test);
     }
 }

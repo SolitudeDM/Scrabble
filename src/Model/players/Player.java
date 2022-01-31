@@ -26,7 +26,6 @@ public abstract class Player {
         this.game = game;
         this.hand = new ArrayList<Tile>();
         this.score = 0;
-//        this.move = new Move(this.getGame(), this);
         this.move = null;
         this.skips = 0;
     }
@@ -37,10 +36,6 @@ public abstract class Player {
 
     public void setSkips(int skips) {
         this.skips = skips;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Move getMove() {
@@ -128,7 +123,6 @@ public abstract class Player {
             }
         }
         setHand(handDupe);
-
         return true;
     }
 
@@ -178,7 +172,6 @@ public abstract class Player {
                 return false;
             }
         }
-
         return true;
     }
 

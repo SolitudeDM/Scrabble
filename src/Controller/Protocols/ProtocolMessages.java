@@ -64,7 +64,9 @@ public class ProtocolMessages {
     /** <b> Usage:</b> "D" */
     public static final String DISCONNECT = "D";
 
-    /**
-     * server response to some exceptions*/
+    /** response to some exceptions*/
     public static final String CUSTOM_EXCEPTION = "!";
+
+    /** response to some commands*/
+    public static final String CUSTOM_COMMAND = "/";
 }

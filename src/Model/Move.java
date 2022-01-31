@@ -23,8 +23,6 @@ public class Move {
     private Player player;
     private int score = 0;
 
-//    private boolean doubleWord;
-//    private boolean tripleWord;
     private int doubleWord;
     private int tripleWord;
     private boolean bingo;
@@ -61,7 +59,6 @@ public class Move {
         moveLost = false;
 
         choice = choice.toUpperCase();
-    //        System.out.println(choice);
 
         while (!moveMade && !requestAnother && !moveLost) {
             String[] splittedChoice = choice.split("; ", -1);
@@ -128,7 +125,7 @@ public class Move {
     public void place(String coordinates, boolean vertical, String word, Board board) throws SquareNotEmptyException {
         InMemoryScrabbleWordChecker checker = new InMemoryScrabbleWordChecker();
         boolean tilesAbused = false;
-        boolean bingo = false;
+        bingo = false;
 
 
         //in case the row index is a two-digit number
@@ -165,9 +162,8 @@ public class Move {
         }
 
         ArrayList<Tile> tilesUsedCopy = new ArrayList<>(tilesUsed);
-//        ArrayList<Tile> tilesUsedCopy2 = new ArrayList<>(tilesUsed);
 
-        //doubleWord and tripleWord booleans are initialized
+        //doubleWord and tripleWord are initialized
         doubleWord = 0;
         tripleWord = 0;
 
@@ -233,9 +229,6 @@ public class Move {
         // Remove all the existing letters from "lettersUsed" vertical
         if (vertical) {
             for (int i = Integer.parseInt(index[0]); i < word.length() + Integer.parseInt(index[0]); i++) {
-//                wordScore += (board.getSquare(i,Integer.parseInt(index[0])).getTile().getLetterPoints()) *board.getSquare(i,Integer.parseInt(index[0])).getType()
-//                calculate(i, Integer.parseInt(index[1]), board);
-
                 tilesUsed.remove(board.getSquare(i, Integer.parseInt(index[1])).getTile());
             }
         }
@@ -243,9 +236,6 @@ public class Move {
         // Remove all the existing letters from "lettersUsed" horizontal
         if (!vertical) {
             for (int i = Integer.parseInt(index[1]); i < word.length() + Integer.parseInt(index[1]); i++) {
-
-//                calculate(Integer.parseInt(index[0]), i, board);
-
                 tilesUsed.remove(board.getSquare(Integer.parseInt(index[0]), i).getTile());
             }
         }
@@ -260,12 +250,6 @@ public class Move {
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         boardCopy.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
-
-//                        int temp = Integer.parseInt(index[0]) + i;
-
-//                        game.getUsedCoordinates().add(temp + ", " + index[1]);
-
-//                        calculate(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), boardCopy);
                         i++;
                     }
                 }
@@ -282,12 +266,6 @@ public class Move {
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         boardCopy.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
-
-//                        int temp = Integer.parseInt(index[1]) + i;
-//
-//                        game.getUsedCoordinates().add(index[0] + ", " + (temp));
-
-//                        calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  boardCopy);
                         i++;
                     }
                     if (doubleWord != 0) {
@@ -297,8 +275,6 @@ public class Move {
                         score *= 3 * tripleWord;
                     }
                 }
-
-//                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
 
@@ -314,18 +290,12 @@ public class Move {
             return;
         }
 
-//ALL THAT IS LEFT TO DO IS TO INSERT THE LETTERS AND SUM UP THE POINTS
         if (player.searchHand(tilesUsed)) {
             if (vertical) {
                 int i = 0;
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
-
-//                        int temp = Integer.parseInt(index[0]) + i;
-
-//                        game.getUsedCoordinates().add(temp + ", " + index[1]);
-
                         calculate(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), board);
                         i++;
                     }
@@ -344,10 +314,6 @@ public class Move {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
 
-//                        int temp = Integer.parseInt(index[1]) + i;
-//
-//                        game.getUsedCoordinates().add(index[0] + ", " + (temp));
-
                         calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  board);
                         i++;
                     }
@@ -358,8 +324,6 @@ public class Move {
                         score *= 3 * tripleWord;
                     }
                 }
-
-//                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
 
@@ -369,15 +333,12 @@ public class Move {
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
-
                         int temp = Integer.parseInt(index[0]) + i;
 
                         if (board.getSquare(temp, Integer.parseInt(index[1])).getTile() != null) {
                             board.getSquare(temp, Integer.parseInt(index[1])).setType(Type.NORMAL);
                         }
-
                         game.getUsedCoordinates().add(temp + ", " + index[1]);
-
                         i++;
                     }
                 }
@@ -388,21 +349,16 @@ public class Move {
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
-
                         int temp = Integer.parseInt(index[1]) + i;
 
                         if (board.getSquare(Integer.parseInt(index[0]), temp).getTile() != null) {
                             board.getSquare(Integer.parseInt(index[0]), temp).setType(Type.NORMAL);
                         }
-
                         game.getUsedCoordinates().add(index[0] + ", " + (temp));
-
                         i++;
                     }
 
                 }
-
-//                board.setTile(Integer.parseInt(index[0]),Integer.parseInt(index[1]), tile);
             }
         }
 
@@ -496,7 +452,6 @@ public class Move {
             //Check if cells are available
             if (vertical) {
                 for (int i = row; i < word.length() + row; i++) {
-
                     if (board.getSquare(i, col).getTile() != null || (i != 14 && board.getSquare(i + 1, col).getTile() != null) || ( i != 0 && board.getSquare(i - 1, col).getTile() != null) ||( col != 14 &&  board.getSquare(i, col + 1).getTile() != null) || (col != 0 && board.getSquare(i, col - 1).getTile() != null)) {
                         return true;
                     }
@@ -512,8 +467,6 @@ public class Move {
             }
 
         }
-
-
 
         return false;
     }
@@ -539,17 +492,14 @@ public class Move {
         if (!vertical) {
 
             if(col != 0 && board.getSquare(row, col - 1 ).getTile() != null) {
-
                 System.out.println("Please, write the whole word in one line");
                 requestAnother = true;
             } else if ( col + word.length() < 15 && board.getSquare(row, col + word.length() + 1 ).getTile() != null) {
-
                 System.out.println("Please, write the whole word in one line");
                 requestAnother = true;
             }
 
             for (int i = col; i < col + word.length(); i++) {
-
                 if (!game.getUsedCoordinates().contains(row + ", " + i)) {
                     if (row != 0) {
                         if (board.getSquare(row - 1, i).getTile() != null) {
@@ -568,7 +518,6 @@ public class Move {
                             if (checker.isValidWord(wordToCheck) != null) {
                                 for (int k = 0; k < wordToCheck.length(); k++) {
                                     score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
-
                                 }
                                 player.setScore(player.getScore() + score);
                                 score = 0;
@@ -607,23 +556,16 @@ public class Move {
                             }
                         }
                     }
-
-//                    if (board.getSquare(row + 1, i).getTile() != null) {
-//                        //to be implemented
-//                    }
                 }
                 directionChecked = false;
             }
         }
 
             if (vertical) {
-
                 if(row != 0 && board.getSquare(row - 1, col).getTile() != null) {
-
                     System.out.println("Please, write the whole word in one vertical line");
                     requestAnother = true;
                 } else if(row + word.length() < 15 && board.getSquare(row + word.length() + 1, col).getTile() != null) {
-
                     System.out.println("Please, write the whole word in one line");
                     requestAnother = true;
                 }
@@ -648,13 +590,11 @@ public class Move {
                                   for (int k = 0; k < wordToCheck.length(); k++) {
                                       score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
                                   }
-
-                               } else {
+                              } else {
                                   System.out.println(wordToCheck + " is not a word");
                                   moveLost = true;
                               }
-                            }
-
+                          }
                     }
 
                      wordToCheck = "";
@@ -686,7 +626,6 @@ public class Move {
                 }
 
                 }
-
         }
 
     /**
@@ -756,6 +695,7 @@ public class Move {
 
             player.setHand(newHand);
             moveMade = true;
+            requestAnother = false;
         }
     }
 

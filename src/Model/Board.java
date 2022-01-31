@@ -21,7 +21,6 @@ public class Board {
     /**
      * This two-dimensional array represents the pattern of squares on the board
      */
-    //add a custom pattern later
     private String[][] pattern = {
             {"3W", "NO", "NO", "2L", "NO", "NO", "NO", "3W", "NO", "NO", "NO", "2L", "NO", "NO", "3W"},
             {"NO", "2W", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "3L", "NO", "NO", "NO", "2W", "NO"},
@@ -75,10 +74,6 @@ public class Board {
                 }
             }
         }
-    }
-
-    public Square[][] getSquares() {
-        return squares;
     }
 
     /**
@@ -162,8 +157,6 @@ public class Board {
                             break;
                     }
 
-//                    System.out.print(squares[i][j].toString());
-//                    System.out.print(ANSI.RESET);
                     System.out.print(" ");
                 } else {
                     System.out.print(ANSI.YELLOW_BACKGROUND_BRIGHT);
@@ -179,7 +172,6 @@ public class Board {
             System.out.print(ANSI.RESET);
         }
         System.out.print(ANSI.PURPLE);
-//        System.out.println();
         System.out.print("║  ░▒▓");
         System.out.print(ANSI.WHITE_BRIGHT);
         System.out.print(ANSI.PURPLE_BACKGROUND);
@@ -199,8 +191,6 @@ public class Board {
      * @ensures to set a given square to a given type
      */
     public void setSquare(int row, int col, Type type) {
-//        this.squares[row][col].setRow(row);
-//        this.squares[row][col].setColumn(col);
         this.squares[row][col].setType(type);
     }
 
@@ -213,7 +203,6 @@ public class Board {
      */
     public void setTile(int row, int col, Tile tile) {
         this.squares[row][col].setTile(tile);
-//        showBoard();
     }
 
     /**
@@ -270,98 +259,6 @@ public class Board {
     @Override
     public String toString() {
     String board ="";
-//        String board = "" + ANSI.PURPLE + "╔═════════════════════" + ANSI.PURPLE_BACKGROUND + ANSI.WHITE_BOLD_BRIGHT + "Scrabble" + ANSI.RESET + ANSI.PURPLE + "═════════════════════╗\n" +
-//                "║" + ANSI.PURPLE_BOLD_BRIGHT + "    A  B  C  D  E  F  G  H  I  J  K  L  M  N  O   " + ANSI.PURPLE + "║\n" + ANSI.RESET + ANSI.PURPLE + "  ║";
-//
-//
-//        for (int i = 0; i < RESOLUTION; i++) {
-//            if (i + 1 < 10) {
-//                System.out.println(board);
-//                board += (ANSI.PURPLE);
-//                board +=(ANSI.RESET);
-//                board +=(ANSI.PURPLE_BOLD_BRIGHT);
-//                board += ((i + 1) + "  ");
-//            } else {
-//                board +=(ANSI.PURPLE);
-//                board +=(ANSI.RESET);
-//                board +=(ANSI.PURPLE_BOLD_BRIGHT);
-//                board +=(i + 1 + " ");
-//            }
-//
-//            for (int j = 0; j < RESOLUTION; j++) {
-//                board +=(ANSI.WHITE);
-//                if (isEmptySquare(squares[i][j])) {
-//
-//                    switch (squares[i][j].getType()) {
-//                        case CENTER:
-//                            board +=(ANSI.RED_BACKGROUND);
-//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
-//                            board +=(squares[i][j].toString());
-//                            board +=(ANSI.RESET);
-//                            break;
-//                        case DOUBLE_LETTER:
-//                            board +=(ANSI.BLUE_BACKGROUND);
-//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
-//                            board +=(squares[i][j].toString());
-//                            board +=(ANSI.RESET);
-//                            break;
-//                        case TRIPLE_LETTER:
-//                            board +=(ANSI.BLUE_BACKGROUND_BRIGHT);
-//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
-//                            board +=(squares[i][j].toString());
-//                            board +=(ANSI.RESET);
-//                            break;
-//                        case DOUBLE_WORD:
-//                            board +=(ANSI.PURPLE_BACKGROUND);
-//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
-//                            board +=(squares[i][j].toString());
-//                            board +=(ANSI.RESET);
-//                            break;
-//                        case TRIPLE_WORD:
-//                            board +=(ANSI.PURPLE_BACKGROUND_BRIGHT);
-//                            board +=(ANSI.WHITE_BOLD_BRIGHT);
-//                            board +=(squares[i][j].toString());
-//                            board +=(ANSI.RESET);
-//                            break;
-//                        default:
-//                            board +=(ANSI.RESET);
-//                            board +=(ANSI.WHITE);
-//                            board +=(squares[i][j].toString());
-//                            board +=(ANSI.RESET);
-//                            break;
-//                    }
-//
-////                    System.out.print(squares[i][j].toString());
-////                    System.out.print(ANSI.RESET);
-//                    board +=(" ");
-//                } else {
-//                    board +=(ANSI.YELLOW_BACKGROUND_BRIGHT);
-//                    board +=(ANSI.BLACK_BOLD);
-//                    board +=(squares[i][j].getTile().getLetter());
-//                    board +=(" ");
-//                    board +=(ANSI.RESET);
-//                    board +=(" ");
-//                }
-//            }
-//            board +=(ANSI.PURPLE);
-//            board += "\n";
-//            board +=("  ║");
-//            board +=(ANSI.RESET);
-//        }
-//        board +=(ANSI.PURPLE);
-////        System.out.println();
-//        board +=("║  ░▒▓");
-//        board +=(ANSI.WHITE_BRIGHT);
-//        board +=(ANSI.PURPLE_BACKGROUND);
-//        board +=("Made by: Mark Zhitchenko && Dani Mahaini");
-//        board +=(ANSI.RESET);
-//        board +=(ANSI.PURPLE);
-//        board += "\n";
-//        board +=("▓▒░  ║");
-//        board += "\n";
-//        board +=("╚══════════════╦════════════════════╦══════════════╝");
-//        board +=(ANSI.RESET);
-//
 
         board+=(ANSI.PURPLE);
         board+=("╔═════════════════════");
@@ -440,8 +337,6 @@ public class Board {
                             break;
                     }
 
-//                    System.out.print(squares[i][j].toString());
-//                    System.out.print(ANSI.RESET);
                     board+=" ";
                 } else {
                     board+=(ANSI.YELLOW_BACKGROUND_BRIGHT);
@@ -458,7 +353,6 @@ public class Board {
             board+=(ANSI.RESET);
         }
         board+=(ANSI.PURPLE);
-//        System.out.println();
         board+=("║  ░▒▓");
         board+=(ANSI.WHITE_BRIGHT);
         board+=(ANSI.PURPLE_BACKGROUND);

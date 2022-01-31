@@ -1,12 +1,9 @@
-package Controller;
+package Model;
 
 import Controller.Protocols.ProtocolMessages;
 import Controller.Protocols.ServerProtocol;
+import Controller.ScrabbleClientHandler;
 import Exceptions.SquareNotEmptyException;
-import Model.Board;
-import Model.Game;
-import Model.Move;
-import Model.Square;
 import Model.players.HumanPlayer_v3;
 import Model.players.Player;
 import View.utils.ANSI;
@@ -42,6 +39,10 @@ public class ScrabbleServer implements ServerProtocol {
     /** a getter to see the clients variable*/
     public List<ScrabbleClientHandler> getClients() {
         return clients;
+    }
+    /** a getter for the players List*/
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
     /**
@@ -91,15 +92,6 @@ public class ScrabbleServer implements ServerProtocol {
 
     }
 
-
-//    public String getHello(String message){
-//        System.out.println("Hello");
-//        printWriter.println((message));
-//
-//        return "Hello";
-//    }
-
-
     /**
      * This method sets up game by creating a new Board, assigning the players and handing out the tiles
      * @ensures to properly initialise the game variable of the class*/
@@ -107,11 +99,8 @@ public class ScrabbleServer implements ServerProtocol {
         Square[][] squares = new Square[15][15];
         Board board = new Board(squares);
         board.setBoard();
-//        board.showBoard();
 
         this.game = new Game(players, board);
-
-//        game.setPlayers(players);
 
         game.handOut();
 
@@ -217,7 +206,7 @@ public class ScrabbleServer implements ServerProtocol {
             if(caller.getName().equals(p.getName())) {
                 currentPlayerIndex = players.indexOf(p);
                 currentPlayer = p;
-                caller.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your turn! \n");
+                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "It's " + caller.getName() + "'s turn! \n");
             }
         }
     }
@@ -234,7 +223,7 @@ public class ScrabbleServer implements ServerProtocol {
                 currentPlayer.setMove(new Move(game, currentPlayer));
                 currentPlayer.getMove().swap(tiles);
             }
-//asd
+
             currentPlayerIndex++;
             currentPlayerIndex %= players.size();
 
@@ -243,10 +232,8 @@ public class ScrabbleServer implements ServerProtocol {
                     if(swap) {
                         if(currentPlayer.getMove().isMoveMade()) {
                             h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n Opponent's turn now! \n");
-                            break;
-                        }else{
-                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You don't have the tiles you want to replace! You lost your turn! \n");
-                            break;
+                        }else if(currentPlayer.getMove().isRequestAnother()){
+                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You don't have the tiles you want to replace! Try again! \n");
                         }
                     }else{
                         h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "You skipped your turn \n");
@@ -257,13 +244,17 @@ public class ScrabbleServer implements ServerProtocol {
                     if (!swap) {
                         h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn \n");
                     }
-                    else{
-                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your opponent swapped tiles, your turn now! \n");
+                    else {
+                        if (!currentPlayer.getMove().isRequestAnother()) {
+                            h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your opponent swapped tiles, your turn now! \n");
+                        }
                     }
                 }
 
             }
-            currentPlayer = players.get(currentPlayerIndex);
+            if(!currentPlayer.getMove().isRequestAnother()) {
+                currentPlayer = players.get(currentPlayerIndex);
+            }
         } else{
             caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
         }

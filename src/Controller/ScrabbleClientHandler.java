@@ -1,7 +1,7 @@
 package Controller;
 
 import Controller.Protocols.ProtocolMessages;
-import View.utils.ANSI;
+import Model.ScrabbleServer;
 
 import java.io.*;
 import java.net.Socket;
@@ -25,7 +25,6 @@ public class ScrabbleClientHandler implements Runnable{
      * Constructor of the class, initialises the variables*/
     public ScrabbleClientHandler(Socket sock, ScrabbleServer server, String name){
         try{
-//            printWriter = new PrintWriter(sock.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
             this.sock = sock;
@@ -65,6 +64,11 @@ public class ScrabbleClientHandler implements Runnable{
         outer:
         switch(splittedMsg[0]){
             case ProtocolMessages.CONNECT:
+                if(server.getPlayers().size() >= 4){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Sorry, the game is already full (max 4 players)! Shutting down connection... \n");
+                    shutdown();
+                    break;
+                }
                 for(ScrabbleClientHandler h : server.getClients()) {
                     if (splittedMsg.length != 2 || splittedMsg[1].isBlank()) {
                         sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Command 'c' should include the name. Type 'help' for more information about commands! \n");
@@ -74,16 +78,15 @@ public class ScrabbleClientHandler implements Runnable{
                             sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Player is already created! \n");
                             break outer;
                         }
-                        else if(h.getName().equalsIgnoreCase(splittedMsg[1])) {
-                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "This name already exists, try another one! (upper cases won't help) \n");
+                        else if(h.getName().equals(splittedMsg[1])) {
+                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "This name already exists, try another one! \n");
                             break outer;
                         }
-                        server.handleConnection(splittedMsg[1]);
-                        this.name = splittedMsg[1]; //todo add if statements for checking splittedMsg.length
-                        playerMade = true;
-                        break outer;
                     }
                 }
+                server.handleConnection(splittedMsg[1]);
+                this.name = splittedMsg[1];
+                playerMade = true;
                 break;
             case ProtocolMessages.MAKE_MOVE:
                 if(splittedMsg.length != 4){
@@ -102,7 +105,7 @@ public class ScrabbleClientHandler implements Runnable{
                 server.handlePlace(splittedMsg[1], vertical, splittedMsg[3], this);
                 break;
             case ProtocolMessages.FORCE_START:
-                if(server.getClients().size() < 2){
+                if(server.getPlayers().size() < 2){
                     sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You can't start the game without at least 2 players!(You are the only one on the server now) \n");
                     break;
                 }
@@ -112,7 +115,20 @@ public class ScrabbleClientHandler implements Runnable{
                 server.handleSkipAndSwap(this, null);
                 break;
             case ProtocolMessages.REPLACE_TILES:
+                if(splittedMsg.length != 2 || splittedMsg[1].isBlank()){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Command 'r' should also include your tiles! Type 'help' for the help menu. \n");
+                    break;
+                }
                 server.handleSkipAndSwap(this, splittedMsg[1]);
+                break;
+            case ProtocolMessages.CUSTOM_COMMAND:
+                if(splittedMsg.length > 1) {
+                    for (ScrabbleClientHandler h : server.getClients()) {
+                        h.sendMessage(ProtocolMessages.CUSTOM_COMMAND + ProtocolMessages.DELIMITER + name + ": " + message.substring(message.indexOf("/") + 1) + "\n");
+                    }
+                } else{
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "To chat enter '/' 'your message'. \n");
+                }
                 break;
             case ProtocolMessages.DISCONNECT:
                 server.handleExit();

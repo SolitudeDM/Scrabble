@@ -35,18 +35,6 @@ public class Square implements Cloneable{
         this.tile = tile;
     }
 
-    /**
-     * A setter for variable column*/
-    public void setColumn(int column){
-        this.column = column;
-    }
-
-    /**
-     * A setter for variable row*/
-    public void setRow(int row){
-        this.row = row;
-    }
-
     public Type getType() {
         return type;
     }
@@ -79,8 +67,6 @@ public class Square implements Cloneable{
     }
 
     public Square clone() {
-
-//        Square result = new Square(square.column, square.row);
         return new Square(this.column, this.row);
     }
 }
