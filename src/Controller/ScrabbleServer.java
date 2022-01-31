@@ -214,6 +214,11 @@ public class ScrabbleServer implements ServerProtocol {
                     break;
                 }
             }
+            if(caller.getName().equals(p.getName())) {
+                currentPlayerIndex = players.indexOf(p);
+                currentPlayer = p;
+                caller.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your turn! \n");
+            }
         }
     }
 
@@ -245,6 +250,7 @@ public class ScrabbleServer implements ServerProtocol {
                         }
                     }else{
                         h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "You skipped your turn \n");
+                        currentPlayer.setSkips(currentPlayer.getSkips() + 1);
                     }
 
                 }else {

@@ -18,6 +18,8 @@ public class ScrabbleClientHandler implements Runnable{
     /** Name of the clientHandler*/
     private String name;
 
+    private boolean playerMade = false;
+
 
     /**
      * Constructor of the class, initialises the variables*/
@@ -63,18 +65,29 @@ public class ScrabbleClientHandler implements Runnable{
         outer:
         switch(splittedMsg[0]){
             case ProtocolMessages.CONNECT:
-                for(ScrabbleClientHandler h : server.getClients()){
-                    if(h.getName().equalsIgnoreCase(splittedMsg[1])){
-                        sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "This name already exists, try another one! (upper cases won't help) \n");
+                for(ScrabbleClientHandler h : server.getClients()) {
+                    if (splittedMsg.length != 2 || splittedMsg[1].isBlank()) {
+                        sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Command 'c' should include the name. Type 'help' for more information about commands! \n");
+                        break outer;
+                    } else {
+                        if(playerMade){
+                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Player is already created! \n");
+                            break outer;
+                        }
+                        else if(h.getName().equalsIgnoreCase(splittedMsg[1])) {
+                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "This name already exists, try another one! (upper cases won't help) \n");
+                            break outer;
+                        }
+                        server.handleConnection(splittedMsg[1]);
+                        this.name = splittedMsg[1]; //todo add if statements for checking splittedMsg.length
+                        playerMade = true;
                         break outer;
                     }
                 }
-                server.handleConnection(splittedMsg[1]);
-                this.name = splittedMsg[1]; //todo add if statements for checking splittedMsg.length
                 break;
             case ProtocolMessages.MAKE_MOVE:
                 if(splittedMsg.length != 4){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "The move command should be of type: m-coordinates-orientation-word! \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "The move command should be of type: 'm' 'coordinates' 'orientation' 'word'! Type 'help' for the help menu. \n");
                     break;
                 }
                 boolean vertical = false;

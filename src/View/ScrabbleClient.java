@@ -14,7 +14,7 @@ public class ScrabbleClient implements Runnable{
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
-    private boolean playerMade = false;
+//    private boolean playerMade = false;
     private boolean quit = false;
 
 
@@ -157,11 +157,7 @@ public class ScrabbleClient implements Runnable{
         String[] splitMsg = message.split(" ");
         switch(splitMsg[0]) {
             case ProtocolMessages.CONNECT:
-                if(!playerMade) {
-                    sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
-                } else{
-                    System.out.println("Sorry, the player is already created, so please stop it, seriously...");
-                }
+                sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
                 break;
             case ProtocolMessages.MAKE_MOVE:
                 sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
@@ -200,11 +196,11 @@ public class ScrabbleClient implements Runnable{
                     break;
                 case ProtocolMessages.CONFIRM_CONNECT:
                     System.out.println(split[1]);
-                    if (split[1].contains("connected to the server")) {
-                        playerMade = true;
-                    } else {
-                        playerMade = false;
-                    }
+//                    if (split[1].contains("connected to the server")) {
+//                        playerMade = true;
+//                    } else {
+//                        playerMade = false;
+//                    }
                     break;
                 case ProtocolMessages.UPDATE_TABLE:
                     System.out.println(split[1]);

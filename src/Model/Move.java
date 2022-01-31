@@ -207,6 +207,7 @@ public class Move {
 
             if (Integer.parseInt(index[1]) + word.length()  - 1 >= 15) {
                 System.out.println("Word won't fit horizontally");
+                requestAnother = true;
                 return;
             }
 
