@@ -24,7 +24,7 @@ public abstract class Player {
         assert name!= null;
         this.name = name;
         this.game = game;
-        this.hand = new ArrayList<Tile>();
+        this.hand = new ArrayList<>();
         this.score = 0;
         this.move = null;
         this.skips = 0;

@@ -14,6 +14,7 @@ public class ProtocolMessages {
     /** <b> Usage:</b> "c;[player_name]", <b> Example:</b> "c; PlayerA" */
     public static final String CONNECT = "c";
 
+    /** used by the server to confirm connection*/
     public static final String CONFIRM_CONNECT = "cc";
 
 //    /** <b> Usage:</b> "jr;[room_id]", <b> Example:</b> "jr; 101" */
@@ -26,21 +27,19 @@ public class ProtocolMessages {
      * client command to start game*/
     public static final String FORCE_START = "fs";
 
-    /** <b> Usage:</b> "ig;[table];[player_name#player_number],[player_name#player_number],...", <b> Example:</b> "ig; , ,t, // , ,e, //t,e,s,t// , ,t, ;PlayerA#1,PlayerB#2"
-     * server response on 'fs' command*/
+    /** server response on 'fs' command*/
     public static final String INITIATE_GAME = "ig";
 
 //    /** <b> Usage:</b> "rp;[player_name#player_number]", <b> Example:</b> "rp; PlayerC#3" */
 //    public static final String ADD_OR_REMOVE_PLAYER = "rp";
 
-    /** <b> Usage:</b> "m;[alignment];[coordinates],[word]", <b> Example:</b> "m;A2;H;wood" */
+    /** <b> Usage:</b> "m [coordinates] [orientation] [word]", <b> Example:</b> "m A2 H WOOD" */
     public static final String MAKE_MOVE = "m";
 
-    /** <b> Usage:</b> "ut;[table]", <b> Example:</b> "ut; , ,t, // , ,e, //t,e,s,t// , ,t, "
-     * server response after client's move (updates the board)*/
+    /** server response after client's move (updates the board)*/
     public static final String UPDATE_TABLE = "ut";
 
-    /** <b> Usage:</b> "f;[accepted]", <b> Example:</b> "f; true"*/
+    /** used when feedback is sent to the client */
     public static final String FEEDBACK = "f";
 
 
@@ -51,17 +50,17 @@ public class ProtocolMessages {
 //    /** <b> Usage:</b> "us;[player_name#player_number];[score]", <b> Example:</b> "us;PlayerC#3;10" */
 //    public static final String UPDATE_SCORE = "us";
 
-    /** <b> Usage:</b> "r; [tile] [tile] [tile]", <b> Example:</b> "r; A B C" */
+    /** <b> Usage:</b> "r [tile] [tile] [tile]", <b> Example:</b> "r A B C" */
     public static final String REPLACE_TILES = "r";
 
-    /** <b> Usage:</b> "gt;[tile][tile]", <b> Example:</b> "gt;ABC"
-     * server response on 'r' command*/
+    /** server response on 'r' command*/
     public static final String GIVE_TILE = "gt";
 
-    /** <b> Usage:</b> "x" */
+    /** used by server to show that game is finished*/
     public static final String FINISH_GAME = "x";
 
-    /** <b> Usage:</b> "D" */
+    /** <b> Usage:</b> "D"
+     * used to finish game urgently*/
     public static final String DISCONNECT = "D";
 
     /** response to some exceptions*/

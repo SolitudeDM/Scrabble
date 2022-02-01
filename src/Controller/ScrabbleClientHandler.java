@@ -21,6 +21,7 @@ public class ScrabbleClientHandler implements Runnable{
     /** Name of the clientHandler*/
     private String name;
 
+    /** boolean to keep track of made player(so one client can't create multiple players)*/
     private boolean playerMade = false;
 
 
