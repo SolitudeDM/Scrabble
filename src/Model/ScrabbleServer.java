@@ -78,7 +78,6 @@ public class ScrabbleServer implements ServerProtocol {
 
                     if (!handler.getName().equals("Player")) {
                         clients.add(handler);
-                        System.out.println(handler.getName());
                     }
 
                     PlayerIndex++;
@@ -141,6 +140,10 @@ public class ScrabbleServer implements ServerProtocol {
             }
 
             game.handOut();
+
+            currentPlayerIndex++;
+            currentPlayerIndex %= players.size();
+
             boolean test = false;
             for (ScrabbleClientHandler h : clients) {
                 if (currentPlayer.getName().equals(h.getName())) {
@@ -153,7 +156,7 @@ public class ScrabbleServer implements ServerProtocol {
                             h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Your move is invalid, you lose your turn \n");
                         }
                         else if(!currentPlayer.getMove().isRequestAnother()){
-                            h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + "You made your move, its opponent's turn now! \n");
+                            h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + "You made your move, it's " + players.get(currentPlayerIndex).getName()+ "'s turn now! \n");
                             continue;
                         }
                     }
@@ -163,14 +166,14 @@ public class ScrabbleServer implements ServerProtocol {
                     if(p.getName().equals(h.getName())) {
                         if(!currentPlayer.getMove().isRequestAnother()) {
                             if (!currentPlayer.getMove().isMoveLost()) {
-                                h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + "It's your turn!" + "\n");
+                                h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + "It's " + players.get(currentPlayerIndex).getName() + "'s turn!" + "\n");
                             }
                             if(currentPlayer.getMove().isMoveLost()){
                                 test = true;
                             }
                             if(p.getName().equals(h.getName()) && !p.equals(currentPlayer)) {
                                 if (test) {
-                                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, your turn now! \n");
+                                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, it's " +players.get(currentPlayerIndex).getName() + "'s turn now! \n");
                                     test = false;
                                 }
                             }
@@ -179,8 +182,6 @@ public class ScrabbleServer implements ServerProtocol {
                 }
             }
             if(!currentPlayer.getMove().isRequestAnother()) {
-                currentPlayerIndex++;
-                currentPlayerIndex %= players.size();
                 currentPlayer = players.get(currentPlayerIndex);
             }
 
@@ -246,11 +247,11 @@ public class ScrabbleServer implements ServerProtocol {
 
                 }else {
                     if (!swap) {
-                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn \n");
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn! It's " + players.get(currentPlayerIndex).getName() + "'s turn now! \n");
                     }
                     else {
                         if (!currentPlayer.getMove().isRequestAnother()) {
-                            h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your opponent swapped tiles, your turn now! \n");
+                            h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your opponent swapped tiles, " + players.get(currentPlayerIndex).getName() + "'s turn now! \n");
                         }
                     }
                 }
@@ -270,7 +271,7 @@ public class ScrabbleServer implements ServerProtocol {
     @Override
     public void handleExit() {
         game.setFinishGame(true);
-        sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + game.determineWinner() + "\n");
+        sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + "Player " + currentPlayer.getName() + " finished the game! \n"+ game.determineWinner() + "\n");
 
     }
 
