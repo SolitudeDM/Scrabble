@@ -296,6 +296,7 @@ public class Move {
                     }
                 }
             }
+
         } else {
             requestAnother = true;
             return;
@@ -319,7 +320,9 @@ public class Move {
                 while (i < word.length()) {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
+
                         calculate(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), board);
+                        board.setSquare(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), Type.NORMAL);
                         i++;
                     }
                 }
@@ -338,6 +341,7 @@ public class Move {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
 
                         calculate(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i,  board);
+                        board.setSquare(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, Type.NORMAL);
                         i++;
                     }
                     if (doubleWord != 0) {
@@ -358,9 +362,9 @@ public class Move {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
                         int temp = Integer.parseInt(index[0]) + i;
 
-                        if (board.getSquare(temp, Integer.parseInt(index[1])).getTile() != null) {
-                            board.getSquare(temp, Integer.parseInt(index[1])).setType(Type.NORMAL);
-                        }
+//                        if (board.getSquare(temp, Integer.parseInt(index[1])).getTile() != null) {
+//                            board.getSquare(temp, Integer.parseInt(index[1])).setType(Type.NORMAL);
+//                        }
                         game.getUsedCoordinates().add(temp + ", " + index[1]);
                         i++;
                     }
@@ -374,9 +378,9 @@ public class Move {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
                         int temp = Integer.parseInt(index[1]) + i;
 
-                        if (board.getSquare(Integer.parseInt(index[0]), temp).getTile() != null) {
-                            board.getSquare(Integer.parseInt(index[0]), temp).setType(Type.NORMAL);
-                        }
+//                        if (board.getSquare(Integer.parseInt(index[0]), temp).getTile() != null) {
+//                            board.getSquare(Integer.parseInt(index[0]), temp).setType(Type.NORMAL);
+//                        }
                         game.getUsedCoordinates().add(index[0] + ", " + (temp));
                         i++;
                     }
@@ -599,24 +603,26 @@ public class Move {
 
                 for (int i = row; i < row + word.length(); i++) {
                      if (!game.getUsedCoordinates().contains(i + ", " + col)) {
-                     if (col != 0) {
-                          if (board.getSquare(i, col - 1).getTile() != null) {
-                              directionChecked = true;
-                              int j = col - 1;
-                              while (board.getSquare(i, j).getTile() != null && j != 0) {
-                                  j--;
-                              }
-                              coordinates[1] = j + 1;
-                              coordinates[0] = i;
-                              while (board.getSquare(i, j + 1).getTile() != null && j != 14) {
-                                  wordToCheck += board.getSquare(i, j + 1).getTile().getLetter();
-                                  j++;
-                              }
+                         if (col != 0) {
+                              if (board.getSquare(i, col - 1).getTile() != null) {
+                                  directionChecked = true;
+                                  int j = col - 1;
+                                  while (board.getSquare(i, j).getTile() != null && j != 0) {
+                                      j--;
+                                  }
+                                  coordinates[1] = j + 1;
+                                  coordinates[0] = i;
+                                  while (board.getSquare(i, j + 1).getTile() != null && j != 14) {
+                                      wordToCheck += board.getSquare(i, j + 1).getTile().getLetter();
+                                      j++;
+                                  }
 
                               if (checker.isValidWord(wordToCheck) != null) {
                                   for (int k = 0; k < wordToCheck.length(); k++) {
                                       score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
                                   }
+                                  player.setScore(player.getScore() + score);
+                                  score = 0;
                               } else {
                                   System.out.println(wordToCheck + " is not a word");
                                   moveLost = true;
@@ -641,6 +647,8 @@ public class Move {
                                      for (int k = 0; k < wordToCheck.length(); k++) {
                                          score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
                                      }
+                                     player.setScore(player.getScore() + score);
+                                     score = 0;
                                  } else {
                                      System.out.println(wordToCheck + " is not a word");
                                      moveLost = true;
