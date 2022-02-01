@@ -123,7 +123,7 @@ public class ScrabbleServer implements ServerProtocol {
         currentPlayerIndex = players.size() - 1;
         currentPlayer = players.get(currentPlayerIndex);
 
-        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server. Type 'fs' to start game! \n");
+        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + ANSI.RESET + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server." + ANSI.WHITE_BRIGHT + " Type " + ANSI.YELLOW_BRIGHT+ "'fs' " + ANSI.WHITE_BRIGHT + "to start game! \n");
 
     }
 
