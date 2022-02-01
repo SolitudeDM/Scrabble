@@ -46,7 +46,7 @@ class MoveTest {
         move1.place("G8", false, "PI", board);
         assertEquals('P', board.getSquare(7,6).getTile().getLetter());
         assertEquals('I', board.getSquare(7, 7).getTile().getLetter());
-        assertEquals(8, move1.getScore());
+        assertEquals(8, players.get(0).getScore());
 
         ArrayList<Tile> newHand2 = new ArrayList<>();
         newHand2.add(new Tile('B', 3, 2));
