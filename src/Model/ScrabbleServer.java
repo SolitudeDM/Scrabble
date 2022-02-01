@@ -207,7 +207,7 @@ public class ScrabbleServer implements ServerProtocol {
             if(caller.getName().equals(p.getName())) {
                 currentPlayerIndex = players.indexOf(p);
                 currentPlayer = p;
-                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "It's " + caller.getName() + "'s turn! \n");
+                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "It's " + caller.getName() + "'s turn! (First move should include the CENTER square!) \n");
             }
         }
     }
