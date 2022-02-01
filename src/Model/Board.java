@@ -259,7 +259,7 @@ public class Board {
 
     @Override
     public String toString() {
-    String board ="";
+        String board ="";
 
         board+=(ANSI.PURPLE);
         board+=("╔═════════════════════");

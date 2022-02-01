@@ -1,6 +1,6 @@
 package Model;
 
-import Model.players.HumanPlayer_v3;
+import Model.players.HumanPlayer;
 import Model.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +28,8 @@ public class EndOfTheGameTest {
 
         Game game = new Game(players, board);
 
-        HumanPlayer_v3 player1 = new HumanPlayer_v3("Dummy 1", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Dummy 2", game);
+        HumanPlayer player1 = new HumanPlayer("Dummy 1", game);
+        HumanPlayer player2 = new HumanPlayer("Dummy 2", game);
 
         game.setPlayers(players);
 
@@ -60,8 +60,8 @@ public class EndOfTheGameTest {
 
         Game game = new Game(players, board);
 
-        HumanPlayer_v3 player1 = new HumanPlayer_v3("Dummy 1", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Dummy 2", game);
+        HumanPlayer player1 = new HumanPlayer("Dummy 1", game);
+        HumanPlayer player2 = new HumanPlayer("Dummy 2", game);
 
         game.setPlayers(players);
 
@@ -88,8 +88,8 @@ public class EndOfTheGameTest {
 
         Game game = new Game(players, board);
 
-        HumanPlayer_v3 player1 = new HumanPlayer_v3("Dummy 1", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Dummy 2", game);
+        HumanPlayer player1 = new HumanPlayer("Dummy 1", game);
+        HumanPlayer player2 = new HumanPlayer("Dummy 2", game);
 
         game.setPlayers(players);
 

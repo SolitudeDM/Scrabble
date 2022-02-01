@@ -4,7 +4,7 @@ import Controller.Protocols.ProtocolMessages;
 import Controller.Protocols.ServerProtocol;
 import Controller.ScrabbleClientHandler;
 import Exceptions.SquareNotEmptyException;
-import Model.players.HumanPlayer_v3;
+import Model.players.HumanPlayer;
 import Model.players.Player;
 import View.utils.ANSI;
 
@@ -118,12 +118,12 @@ public class ScrabbleServer implements ServerProtocol {
 
     @Override
     public void handleConnection(String playerName) {
-        Player clientPlayer = new HumanPlayer_v3(playerName, game);
+        Player clientPlayer = new HumanPlayer(playerName, game);
         players.add(clientPlayer);
         currentPlayerIndex = players.size() - 1;
         currentPlayer = players.get(currentPlayerIndex);
 
-        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server. Type 'fs' to start game! \n");
+        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + ANSI.RESET + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server." + ANSI.WHITE_BRIGHT + " Type " + ANSI.YELLOW_BRIGHT+ "'fs' " + ANSI.WHITE_BRIGHT + "to start game! \n");
 
     }
 
@@ -201,8 +201,18 @@ public class ScrabbleServer implements ServerProtocol {
             p.setGame(game);
             for (ScrabbleClientHandler h : clients) {
                 if (p.getName().equals(h.getName())) {
-                    h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
-                    break;
+                    if(players.size() == 2) {
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
+                    else if(players.size() == 3){
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
+                    else if(players.size() == 4){
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
                 }
             }
             if(caller.getName().equals(p.getName())) {

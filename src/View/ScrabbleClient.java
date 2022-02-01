@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Protocols.ProtocolMessages;
+import View.utils.ANSI;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -35,10 +36,14 @@ public class ScrabbleClient implements Runnable{
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             }catch(IOException e) {
+                System.out.print(ANSI.RED_BOLD_BRIGHT);
                 System.out.println("ERROR: could not create a socket on "
                         + host + " and port " + port + ".");
+                System.out.print(ANSI.RESET);
                 while (true) {
+                    System.out.print(ANSI.WHITE_BRIGHT);
                     System.out.println("Want to connect again?(true/false)");
+                    System.out.print(ANSI.RESET);
                     Scanner in = new Scanner(System.in);
                     try {
                         if (in.nextBoolean()) {
@@ -79,17 +84,17 @@ public class ScrabbleClient implements Runnable{
      * @return all the lines sent by the server as a single String*/
     public String readMultipleLinesFromServer() throws IOException {
         if (in != null) {
-                // Read and return answer from Server
-                StringBuilder sb = new StringBuilder();
-                String line = in.readLine();
-                if(line == null){
-                    throw new IOException("Disconnecting...");
-                }
-                while (line != null && !line.isBlank()){
-                    sb.append(line + System.lineSeparator());
-                    line = in.readLine();
-                }
-                return sb.toString();
+            // Read and return answer from Server
+            StringBuilder sb = new StringBuilder();
+            String line = in.readLine();
+            if(line == null){
+                throw new IOException("Disconnecting...");
+            }
+            while (line != null && !line.isBlank()){
+                sb.append(line + System.lineSeparator());
+                line = in.readLine();
+            }
+            return sb.toString();
         } else {
             System.out.println("Could not read from server!");
 
@@ -108,7 +113,7 @@ public class ScrabbleClient implements Runnable{
     /**
      * This method starts a new ScrabbleClient by creating a connection and a new thread*/
     public void start(){
-        System.out.println("Welcome to scrabble, connect to the server using command 'c' 'your name', or type 'help' for the help menu.");
+        System.out.println(ANSI.WHITE_BRIGHT + "Welcome to scrabble," + ANSI.WHITE_BOLD_BRIGHT +  " connect" + ANSI.WHITE_BRIGHT +" to the server using command "+ ANSI.YELLOW_BRIGHT +"'c' 'your name'" + ANSI.WHITE_BRIGHT + ", or type" + ANSI.YELLOW_BRIGHT + " 'help' " + ANSI.WHITE_BRIGHT + "for the help menu.");
         boolean run = true;
         createConnection();
         new Thread(this).start();
@@ -159,6 +164,7 @@ public class ScrabbleClient implements Runnable{
                 break;
             default:
                 System.out.println("Invalid command, type 'help' for the help menu.");
+                break;
         }
     }
 
@@ -202,7 +208,7 @@ public class ScrabbleClient implements Runnable{
                 }
                 System.out.println(sb);
                 break;
-            }
+        }
     }
     @Override
     public void run() {
@@ -217,11 +223,11 @@ public class ScrabbleClient implements Runnable{
     /**
      * This method prints the help menu to the console */
     public void printHelpMenu(){
-        System.out.println("To connect to the server: 'c' 'name'. \nTo start the game: 'fs'. \n" +
-                "To make a move: 'm' 'coordinates' 'orientation(H or V)' 'word'. Coordinates, orientation and word should be upper cases!\n" +
-                "To skip your turn: 's' \nTo replace tiles: 'r' 'tile1' 'tile2' 'tile3' etc... Right the letter of the tile in upper case as well!\n" +
-                "To disconnect and finish game: 'D' \nTo chat: '/' 'your message' \nP.S. Consider the spaces between your input and upper/lower cases as shown above! \n" +
-                "P.P.S if you want to use any already placed tiles in your move, rewrite the whole word, including the placed tiles.");
+        System.out.println(ANSI.WHITE_BRIGHT + "To " + ANSI.YELLOW_UNDERLINED + "connect" + ANSI.WHITE_BRIGHT + " to the server: " + ANSI.YELLOW_BRIGHT + "'c' 'name'. \n" + ANSI.WHITE_BRIGHT + "To " + ANSI.YELLOW_UNDERLINED + "start" + ANSI.WHITE_BRIGHT + " the game: " + ANSI.YELLOW_BRIGHT + "'fs'. \n" +
+                ANSI.WHITE_BRIGHT +"To " + ANSI.YELLOW_UNDERLINED + "make a move" + ANSI.WHITE_BRIGHT + ": " + ANSI.YELLOW_BRIGHT + "'m' 'coordinates' 'orientation(H or V)' 'word' " + ANSI.WHITE_BRIGHT + ". Coordinates, orientation and word should be " + ANSI.WHITE_BOLD_BRIGHT + " upper cases!\n" +
+                ANSI.WHITE_BRIGHT + "To " + ANSI.YELLOW_UNDERLINED + "skip" + ANSI.WHITE_BRIGHT + " your turn: " + ANSI.YELLOW_BRIGHT + " 's' \n" + ANSI.WHITE_BRIGHT + "To " + ANSI.YELLOW_UNDERLINED + "replace" + ANSI.WHITE_BRIGHT + " tiles:" + ANSI.YELLOW_BRIGHT + " 'r' 'tile1' 'tile2' 'tile3' etc... " + ANSI.WHITE_BRIGHT + "Write the letter of the tile in" + ANSI.WHITE_BOLD_BRIGHT + " upper case" + ANSI.WHITE_BRIGHT + " as well!\n" +
+                ANSI.WHITE_BRIGHT +"To " + ANSI.YELLOW_UNDERLINED + "disconnect" + ANSI.WHITE_BRIGHT + " and finish game: " + ANSI.YELLOW_BRIGHT + "'D' \n" + ANSI.WHITE_BRIGHT + "To " + ANSI.YELLOW_UNDERLINED + "chat" + ANSI.WHITE_BRIGHT + ":" + ANSI.YELLOW_BRIGHT + " '/' 'your message'" + ANSI.WHITE_BRIGHT + " \nP.S. Consider the spaces between your input and upper/lower cases as shown above! \n" +
+                ANSI.WHITE_BRIGHT +"P.P.S if you want to use any already placed tiles in your move, rewrite the whole word, including the placed tiles.");
     }
 
     public static void main(String[] args) {

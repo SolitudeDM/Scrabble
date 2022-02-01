@@ -151,7 +151,7 @@ public class Move {
         index[0] = index[1];
         index[1] = tempCoordinate;
 
-        if ((Integer.parseInt(index[0]) > 14) || (Integer.parseInt(index[1]) > 14) || (Integer.parseInt(index[0]) < 0) || (Integer.parseInt(index[1]) < 0)) {
+        if (Integer.parseInt(index[0]) > 14 || Integer.parseInt(index[1]) > 14 || Integer.parseInt(index[0]) < 0 || Integer.parseInt(index[1]) < 0) {
             System.out.println("Your coordinates are out of bounds!");
             requestAnother = true;
             return;
@@ -208,7 +208,6 @@ public class Move {
                         throw new SquareNotEmptyException("Square is already occupied!");
                     }
                 }
-//                    tilesUsedCopy.remove(0);
                 tileIndex++;
             }
 
@@ -361,10 +360,6 @@ public class Move {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]) + i, Integer.parseInt(index[1]), tile);
                         int temp = Integer.parseInt(index[0]) + i;
-
-//                        if (board.getSquare(temp, Integer.parseInt(index[1])).getTile() != null) {
-//                            board.getSquare(temp, Integer.parseInt(index[1])).setType(Type.NORMAL);
-//                        }
                         game.getUsedCoordinates().add(temp + ", " + index[1]);
                         i++;
                     }
@@ -377,10 +372,6 @@ public class Move {
                     for (Tile tile : tilesUsedCopy) {
                         board.setTile(Integer.parseInt(index[0]), Integer.parseInt(index[1]) + i, tile);
                         int temp = Integer.parseInt(index[1]) + i;
-
-//                        if (board.getSquare(Integer.parseInt(index[0]), temp).getTile() != null) {
-//                            board.getSquare(Integer.parseInt(index[0]), temp).setType(Type.NORMAL);
-//                        }
                         game.getUsedCoordinates().add(index[0] + ", " + (temp));
                         i++;
                     }
@@ -452,8 +443,18 @@ public class Move {
         return -69;
     }
 
+    /** This method checks whether the word is placed correctly according the board situation
+     * @param board is the board where the check will be done
+     * @param row is the row index
+     * @param col is the column index
+     * @param word is the word that will be placed
+     * @param vertical is the orientation
+     * @requires board != null && indexes to be within the board boundaries && word != null
+     * @ensures to return true if placed correctly && to return false if placed incorrectly
+     * @return true if the word can be placed
+     * @return false if the word can not be placed
+     * */
     public boolean checkRig(Board board, int row, int col, String word, boolean vertical) {
-
         // Check if the first move is correctly placed
         if (board.isEmpty()) {
             //Check if cells are available
@@ -590,78 +591,78 @@ public class Move {
             }
         }
 
-            if (vertical) {
-                if(row != 0 && board.getSquare(row - 1, col).getTile() != null) {
-                    System.out.println("Please, write the whole word in one vertical line");
-                    requestAnother = true;
-                    return;
-                } else if(row + word.length() < 14 && board.getSquare(row + word.length(), col).getTile() != null) {
-                    System.out.println("Please, write the whole word in one line");
-                    requestAnother = true;
-                    return;
-                }
+        if (vertical) {
+            if(row != 0 && board.getSquare(row - 1, col).getTile() != null) {
+                System.out.println("Please, write the whole word in one vertical line");
+                requestAnother = true;
+                return;
+            } else if(row + word.length() < 14 && board.getSquare(row + word.length(), col).getTile() != null) {
+                System.out.println("Please, write the whole word in one line");
+                requestAnother = true;
+                return;
+            }
 
-                for (int i = row; i < row + word.length(); i++) {
-                     if (!game.getUsedCoordinates().contains(i + ", " + col)) {
-                         if (col != 0) {
-                              if (board.getSquare(i, col - 1).getTile() != null) {
-                                  directionChecked = true;
-                                  int j = col - 1;
-                                  while (board.getSquare(i, j).getTile() != null && j != 0) {
-                                      j--;
-                                  }
-                                  coordinates[1] = j + 1;
-                                  coordinates[0] = i;
-                                  while (board.getSquare(i, j + 1).getTile() != null && j != 14) {
-                                      wordToCheck += board.getSquare(i, j + 1).getTile().getLetter();
-                                      j++;
-                                  }
+            for (int i = row; i < row + word.length(); i++) {
+                if (!game.getUsedCoordinates().contains(i + ", " + col)) {
+                    if (col != 0) {
+                        if (board.getSquare(i, col - 1).getTile() != null) {
+                            directionChecked = true;
+                            int j = col - 1;
+                            while (board.getSquare(i, j).getTile() != null && j != 0) {
+                                j--;
+                            }
+                            coordinates[1] = j + 1;
+                            coordinates[0] = i;
+                            while (board.getSquare(i, j + 1).getTile() != null && j != 14) {
+                                wordToCheck += board.getSquare(i, j + 1).getTile().getLetter();
+                                j++;
+                            }
 
-                              if (checker.isValidWord(wordToCheck) != null) {
-                                  for (int k = 0; k < wordToCheck.length(); k++) {
-                                      score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
-                                  }
-                                  player.setScore(player.getScore() + score);
-                                  score = 0;
-                              } else {
-                                  System.out.println(wordToCheck + " is not a word");
-                                  moveLost = true;
-                              }
-                          }
+                            if (checker.isValidWord(wordToCheck) != null) {
+                                for (int k = 0; k < wordToCheck.length(); k++) {
+                                    score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
+                                }
+                                player.setScore(player.getScore() + score);
+                                score = 0;
+                            } else {
+                                System.out.println(wordToCheck + " is not a word");
+                                moveLost = true;
+                            }
+                        }
                     }
 
-                     wordToCheck = "";
+                    wordToCheck = "";
 
-                     if (!directionChecked) {
-                         if (col != 14) {
-                             if (board.getSquare(i, col + 1).getTile() != null) {
-                                 int j = col + 1;
-                                 coordinates[1] = j - 1;
-                                 coordinates[0] = i;
-                                 while (board.getSquare(i, j - 1).getTile() != null && j != 14) {
-                                     wordToCheck += board.getSquare(i, j - 1).getTile().getLetter();
-                                     j++;
-                                 }
+                    if (!directionChecked) {
+                        if (col != 14) {
+                            if (board.getSquare(i, col + 1).getTile() != null) {
+                                int j = col + 1;
+                                coordinates[1] = j - 1;
+                                coordinates[0] = i;
+                                while (board.getSquare(i, j - 1).getTile() != null && j != 14) {
+                                    wordToCheck += board.getSquare(i, j - 1).getTile().getLetter();
+                                    j++;
+                                }
 
-                                 if (checker.isValidWord(wordToCheck) != null) {
-                                     for (int k = 0; k < wordToCheck.length(); k++) {
-                                         score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
-                                     }
-                                     player.setScore(player.getScore() + score);
-                                     score = 0;
-                                 } else {
-                                     System.out.println(wordToCheck + " is not a word");
-                                     moveLost = true;
-                                 }
-                             }
-                         }
-                     }
-                     }
-                    directionChecked = false;
+                                if (checker.isValidWord(wordToCheck) != null) {
+                                    for (int k = 0; k < wordToCheck.length(); k++) {
+                                        score += game.getTile(wordToCheck.charAt(k)).getLetterPoints();
+                                    }
+                                    player.setScore(player.getScore() + score);
+                                    score = 0;
+                                } else {
+                                    System.out.println(wordToCheck + " is not a word");
+                                    moveLost = true;
+                                }
+                            }
+                        }
+                    }
                 }
+                directionChecked = false;
+            }
 
-                }
         }
+    }
 
     /**
      * This method is responsible for swapping tiles and skipping turn.

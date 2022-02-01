@@ -1,124 +1,62 @@
-//package Model.players;
-//
-//import Model.Board;
-//import Model.Game;
-//import Model.Tile;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.Scanner;
-//
-//import static java.lang.Integer.parseInt;
-//
-//public class HumanPlayer extends Player{
-//
-//    public HumanPlayer(String name, Game game){
-//        super(name,game);
-//    }
-//
-//
-//    //SWAP
-//
-//    @Override
-//    public String determineMove(Board board) {
-//        // Create a Scanner object to read input.
-//        Scanner keyboard = new Scanner(System.in);
-//        boolean moveMade = false;
-//
-//        while (!moveMade) {
-//
-//            HashMap<String[], String> tileset = new HashMap<>();
-//
-//            System.out.println("enter your choice(command, row, col, letter)");
-//
-//            String choice = keyboard.nextLine();
-//            String[] splittedChoice = choice.split(" ");
-//
-//            if (splittedChoice.length < 1) {
-//                System.out.println("Empty command");
-//                return null;
-//            }
-//
-//            switch (splittedChoice[0].toUpperCase()) {
-//
-//                case ("PLACE"):
-//
-//                    ArrayList<Tile> lettersUsed = new ArrayList<>();
-//                    for (int i = 1; i <= splittedChoice.length - 1; i = i + 3) {
-//                        String[] Index = new String[2];
-//
-//                        Index[0] = String.valueOf(letterToCoordinate(splittedChoice[i].charAt(0)));
-//                        Index[1] = splittedChoice[i + 1];
-//                        tileset.put(Index, splittedChoice[i + 2]);
-//
-//                lettersUsed.add(this.getGame().getTile(splittedChoice[i + 2].charAt(0)));
-//
-//                        if (searchHand(lettersUsed)) {
-//
-//                        // Make two ArrayLists to store all the rows and columns that will be scanned for new, generated words...
-//                        ArrayList<Integer> rowsInvolved = new ArrayList<>();
-//                        ArrayList<Integer> colInvolved = new ArrayList<>();
-//
-//                        // Make a board copy to check if word was established using ALL of the letters used
-//
-//
-//                        // Scan through the all the row and col coordinates in the hashmap
-//                            for (String[] key : tileset.keySet()) {
-//                                if (!rowsInvolved.contains(Integer.parseInt(key[1]))) {
-//                                    rowsInvolved.add(Integer.parseInt(key[1]));
-//                                }
-//                                if (!colInvolved.contains(Integer.parseInt(key[2]))) {
-//                                    colInvolved.add(Integer.parseInt(key[2]));
-//                                }
-//                            }
-//
-//                            //Horizontal check
-//                            // Check wheteher new words had been established (make a new array of words that are used)
-//                            // Remove the letters from the UsedLetters if they were involved in new words establishment
-//                            for (int j = 0; j < rowsInvolved.size(); j++) {
-//
-//                            }
-//
-//                            //Vertical check
-//                            // Remove the letters from the UsedLetters if they were involved in new words establishment
-//
-//
-//
-//                            moveMade = true;
-//                        }
-//                    }
-//                    break;
-//
-//                case ("SWAP"):
-//
-//
-//
-//                    break;
-//
-//                case ("EXIT"):
-//
-//                    break;
-//
-//                default:
-//                    System.out.println("Invalid command " + splittedChoice[0]);
-//                    break;
-//            }
-//        }
-//
-////        if(board.isEmptySquare(board.getSquare(parseInt(splittedChoice[1]), parseInt(splittedChoice[2])))){
-////            board.setTile(parseInt(splittedChoice[1]), parseInt(splittedChoice[2]), );
-//
-//        return null;
-//    }
-//
-//
-//
-//    public int letterToCoordinate(char letter) {
-//        int temp = (int)letter;
-//        int temp_integer = 64; //for upper case
-//        if(temp<=90 & temp>=65) {
-//            return (temp - temp_integer);
-//        }
-//        return -69;
-//    }
-//}
+package Model.players;
+
+import Model.Board;
+import Model.Game;
+import Model.Move;
+import Model.Tile;
+import View.utils.ANSI;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Scanner;
+
+public class HumanPlayer extends Player {
+
+    public HumanPlayer(String name, Game game){
+        super(name,game);
+
+    }
+
+    @Override
+    public String determineMove(Board board) {
+
+        Scanner keyboard = new Scanner(System.in);
+
+        System.out.print(ANSI.WHITE_BRIGHT);
+        System.out.println("      Please enter your choice using this format: ");
+        System.out.print("To place a tile:");
+        System.out.print(ANSI.PURPLE_BOLD_BRIGHT);
+        System.out.print("PLACE;");
+        System.out.print(ANSI.PURPLE_BOLD);
+        System.out.print(" coordinates;");
+        System.out.print(ANSI.BLUE_BOLD);
+        System.out.print(" orientation;");
+        System.out.print(ANSI.BLUE_BOLD_BRIGHT);
+        System.out.print(" word;");
+
+        System.out.print(ANSI.WHITE_BRIGHT);
+        System.out.println();
+        System.out.print("      To swap tiles: ");
+        System.out.print(ANSI.PURPLE_BOLD_BRIGHT);
+        System.out.print("SWAP;");
+        System.out.print(ANSI.PURPLE_BOLD);
+        System.out.print(" tile1 ");
+        System.out.print(ANSI.BLUE_BOLD);
+        System.out.print(" tile2 ");
+        System.out.print(ANSI.BLUE_BOLD_BRIGHT);
+        System.out.print(" tile3 ...");
+
+        System.out.print(ANSI.WHITE_BRIGHT);
+        System.out.println();
+        System.out.print("              To exit the game: ");
+        System.out.print(ANSI.RED_BOLD_BRIGHT);
+        System.out.print("EXIT");
+        System.out.println();
+        System.out.print("                ");
+
+        String choice = keyboard.nextLine();
+        return choice;
+
+    }
+}

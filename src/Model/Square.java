@@ -14,7 +14,6 @@ public class Square implements Cloneable{
 
     /**
      * Model.Square constructor, creates a new square with a given type, index and tile
-//     * @param type is the type of the square
      * @param column is the column index of the square
      * @param row is the row index of the square*/
     public Square(int column, int row){
