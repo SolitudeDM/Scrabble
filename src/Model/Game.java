@@ -3,7 +3,7 @@ package Model;
 import Exceptions.EmptyCommandException;
 import Exceptions.InvalidCommandException;
 import Exceptions.WrongOrientationException;
-import Model.players.HumanPlayer_v3;
+import Model.players.HumanPlayer;
 import Model.players.Player;
 import View.utils.ANSI;
 
@@ -352,8 +352,8 @@ public class Game {
         ArrayList<Player> players = new ArrayList<>();
 
         Game game = new Game(players, board);
-        HumanPlayer_v3 player1 = new HumanPlayer_v3("Player 1", game);
-        HumanPlayer_v3 player2 = new HumanPlayer_v3("Player 2", game);
+        HumanPlayer player1 = new HumanPlayer("Player 1", game);
+        HumanPlayer player2 = new HumanPlayer("Player 2", game);
         players.add(player1);
         players.add(player2);
 

@@ -126,7 +126,7 @@ public class ScrabbleClientHandler implements Runnable{
             case ProtocolMessages.CUSTOM_COMMAND:
                 if(splittedMsg.length > 1) {
                     for (ScrabbleClientHandler h : server.getClients()) {
-                        h.sendMessage(ProtocolMessages.CUSTOM_COMMAND + ProtocolMessages.DELIMITER + name + ": " + message.substring(message.indexOf("/") + 1) + "\n");
+                        h.sendMessage(ProtocolMessages.CUSTOM_COMMAND + ProtocolMessages.DELIMITER + name + ":" + message.substring(message.indexOf("/") + 1) + "\n");
                     }
                 } else{
                     sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "To chat enter '/' 'your message'. \n");

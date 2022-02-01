@@ -1,6 +1,6 @@
 package Model;
 
-import Model.players.HumanPlayer_v3;
+import Model.players.HumanPlayer;
 import Model.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,8 @@ class GameMethodsTest {
         board = new Board(squares);
         board.setBoard();
 
-        HumanPlayer_v3 p1 = new HumanPlayer_v3("P1", game);
-        HumanPlayer_v3 p2 = new HumanPlayer_v3("P2", game);
+        HumanPlayer p1 = new HumanPlayer("P1", game);
+        HumanPlayer p2 = new HumanPlayer("P2", game);
 
         players.add(p1);
         players.add(p2);

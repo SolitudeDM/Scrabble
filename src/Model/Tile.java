@@ -10,7 +10,6 @@ public class Tile {
     private char letter;
     private int letterPoints;
     private int letterQuantity;
-    private boolean placed;
 
 
     /**
@@ -19,7 +18,6 @@ public class Tile {
         this.letter = letter;
         this.letterPoints = letterPoints;
         this.letterQuantity = letterQuantity;
-        this.placed = false;
     }
 
     /**
@@ -41,12 +39,4 @@ public class Tile {
     public int getLetterQuantity(){
         return this.letterQuantity;
     }
-
-    public boolean isPlaced() {
-        return placed;
-    }
-    public void setPlaced(boolean substituted) {
-        this.placed = substituted;
-    }
-
 }

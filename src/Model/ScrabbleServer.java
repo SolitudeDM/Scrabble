@@ -4,7 +4,7 @@ import Controller.Protocols.ProtocolMessages;
 import Controller.Protocols.ServerProtocol;
 import Controller.ScrabbleClientHandler;
 import Exceptions.SquareNotEmptyException;
-import Model.players.HumanPlayer_v3;
+import Model.players.HumanPlayer;
 import Model.players.Player;
 import View.utils.ANSI;
 
@@ -118,7 +118,7 @@ public class ScrabbleServer implements ServerProtocol {
 
     @Override
     public void handleConnection(String playerName) {
-        Player clientPlayer = new HumanPlayer_v3(playerName, game);
+        Player clientPlayer = new HumanPlayer(playerName, game);
         players.add(clientPlayer);
         currentPlayerIndex = players.size() - 1;
         currentPlayer = players.get(currentPlayerIndex);

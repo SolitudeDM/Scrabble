@@ -1,13 +1,12 @@
 package Model;
 
 import Exceptions.SquareNotEmptyException;
-import Model.players.HumanPlayer_v3;
+import Model.players.HumanPlayer;
 import Model.players.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,8 +24,8 @@ class MoveTest {
         board = new Board(squares);
         board.setBoard();
 
-        HumanPlayer_v3 p1 = new HumanPlayer_v3("P1", game);
-        HumanPlayer_v3 p2 = new HumanPlayer_v3("P2", game);
+        HumanPlayer p1 = new HumanPlayer("P1", game);
+        HumanPlayer p2 = new HumanPlayer("P2", game);
 
         players.add(p1);
         players.add(p2);
