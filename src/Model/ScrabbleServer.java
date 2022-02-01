@@ -201,8 +201,18 @@ public class ScrabbleServer implements ServerProtocol {
             p.setGame(game);
             for (ScrabbleClientHandler h : clients) {
                 if (p.getName().equals(h.getName())) {
-                    h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
-                    break;
+                    if(players.size() == 2) {
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
+                    else if(players.size() == 3){
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
+                    else if(players.size() == 4){
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        break;
+                    }
                 }
             }
             if(caller.getName().equals(p.getName())) {
