@@ -58,7 +58,7 @@ class MoveTest {
         move2.place("I7", true, "BE", board);
         assertEquals('B', board.getSquare(6,8).getTile().getLetter());
         assertEquals('E', board.getSquare(7, 8).getTile().getLetter());
-        assertEquals(12, move2.getScore());
+        assertEquals(12, players.get(1).getScore());
 
 
     }
