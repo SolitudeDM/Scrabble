@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Test for the biggest methods in Move class */
 class MoveTest {
 
     private Game game;
@@ -34,12 +35,14 @@ class MoveTest {
         tileSack = Game.createTileSack();
     }
 
+    /** Test for the place() method in Move class*/
     @Test
     void placeTest() throws SquareNotEmptyException {
         ArrayList<Tile> newHand = new ArrayList<>();
         newHand.add(new Tile('P', 3, 2));
         newHand.add(new Tile('I', 1, 8));
 
+        //create a new Move and invoke the place() method, check whether the tiles placed correctly and the score is right
         Move move1 = new Move(game, players.get(0));
         players.get(0).setGame(game);
         players.get(0).setHand(newHand);
@@ -52,6 +55,7 @@ class MoveTest {
         newHand2.add(new Tile('B', 3, 2));
         newHand2.add(new Tile('E', 1, 12));
 
+        //create another Move instance and call the place() method, check whether the tiles are placed correctly and the score is calculated correctly
         Move move2 = new Move(game, players.get(1));
         players.get(1).setGame(game);
         players.get(1).setHand(newHand2);
@@ -63,6 +67,7 @@ class MoveTest {
 
     }
 
+    /** Test if the swap() method works as expected */
     @Test
     void swap() {
         //check for skip turn

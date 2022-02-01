@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This Test tests the Board class
+ * @author Dani Mahaini & Mark Zhitchenko*/
 class BoardTest {
 
     private Board board;
@@ -17,6 +20,8 @@ class BoardTest {
         board.setBoard();
     }
 
+    /**
+     * Test of the setBoard() method*/
     @Test
     public void setBoardTest(){
         //we already invoked setBoard() in the setup() method, so we do not call it again in this test
@@ -30,6 +35,8 @@ class BoardTest {
         assertEquals(Type.DOUBLE_LETTER, board.getSquare(8,6).getType());
     }
 
+    /**
+     * Test of the setSquare() method*/
     @Test
     public void setSquareTest(){
         board.setSquare(1, 1, Type.DOUBLE_LETTER);
@@ -43,6 +50,8 @@ class BoardTest {
         assertEquals(Type.TRIPLE_WORD, board.getSquare(10,14).getType());
     }
 
+    /**
+     * Test of the setTile() method */
     @Test
     public void setTileTest(){
         Tile t1 = new Tile('A', 1, 9);
@@ -57,6 +66,8 @@ class BoardTest {
         assertEquals(t3, board.getSquare(1,3).getTile());
     }
 
+    /**
+     * Test of the getSquare() method */
     @Test
     public void getSquareTest(){
         assertEquals(board.getSquare(0, 1), squares[0][1]);
@@ -66,6 +77,8 @@ class BoardTest {
         assertEquals(board.getSquare(9, 5), squares[9][5]);
     }
 
+    /**
+     * Test of the isEmptySquare() method*/
     @Test
     public void isEmptySquareTest(){
         assertTrue(board.isEmptySquare(squares[3][7]));
@@ -80,6 +93,8 @@ class BoardTest {
         assertFalse(board.isEmptySquare(squares[7][8]));
     }
 
+    /**
+     * Test of the isEmpty() method*/
     @Test
     public void isEmptyTest(){
         //check if board is empty before adding anything to it
@@ -92,6 +107,8 @@ class BoardTest {
         assertFalse(board.isEmpty());
     }
 
+    /**
+     * Test of the clone() method*/
     @Test
     public void cloneTest(){
         //we set Tile t1 on board and then make a clone of the board, we expect t1 to be present in the cloneBoard

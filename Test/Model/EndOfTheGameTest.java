@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** This test class tests whether the game ends when an end-game condition is met*/
 public class EndOfTheGameTest {
 
     private Board board;
@@ -21,6 +22,8 @@ public class EndOfTheGameTest {
         board.setBoard();
     }
 
+    /**
+     * Test whether the game finishes when the tileSack is empty and when one of the player's hands is empty*/
     @Test
     public void outOfTilesTest(){
 
@@ -36,8 +39,8 @@ public class EndOfTheGameTest {
         players.add(player1);
         players.add(player2);
 
+        game.handOut();
 
-        ArrayList<Tile> tiles = new ArrayList<>();
 
         player1.getHand().removeAll(player1.getHand());
         assertFalse(game.isFinished());
@@ -46,13 +49,21 @@ public class EndOfTheGameTest {
         player2.getHand().removeAll(player1.getHand());
         assertFalse(game.isFinished());
 
+        //both player's hands are empty and tileSack is empty
         player1.getHand().removeAll(player1.getHand());
+        player2.getHand().removeAll(player1.getHand());
+        game.getTileSack().removeAll(game.getTileSack());
+        assertTrue(game.isFinished());
+
+        //one player's hand is empty and tileSack is empty
         player2.getHand().removeAll(player1.getHand());
         game.getTileSack().removeAll(game.getTileSack());
         assertTrue(game.isFinished());
 
     }
 
+    /**
+     * Test whether the game finishes if all the players skipped two times in a row*/
     @Test
     public void skipTest(){
 
@@ -72,15 +83,19 @@ public class EndOfTheGameTest {
         game.getPlayers().get(1).setSkips(1);
         assertFalse(game.isFinished());
 
+        //test if game finishes when both players skipped more than twice
         game.getPlayers().get(0).setSkips(3);
         game.getPlayers().get(1).setSkips(3);
         assertTrue(game.isFinished());
 
+        //test if game finishes when both players skipped twice
         game.getPlayers().get(0).setSkips(2);
         game.getPlayers().get(1).setSkips(2);
         assertTrue(game.isFinished());
     }
 
+    /**
+     * test if game finishes when there are no empty squares left */
     @Test
     public void outOfSpace(){
 

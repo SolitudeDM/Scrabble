@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Test for important methods of the Game class*/
 class GameMethodsTest {
     private Game game;
     private Board board;
@@ -32,11 +33,13 @@ class GameMethodsTest {
         tileSack = Game.createTileSack();
     }
 
+    /** Test if the createTileSack() method creates a sack with 100 tiles*/
     @Test
     void createTileSackTest() {
         assertEquals(100, tileSack.size());
     }
 
+    /** Test if the handOut() method gives all the players 7 tiles */
     @Test
     void handOutTest() {
         game.handOut();
@@ -45,6 +48,7 @@ class GameMethodsTest {
         assertEquals(7, players.get(1).getHand().size());
     }
 
+    /** Test if the getTile() method returns the right tile */
     @Test
     void getTileTest() {
         assertEquals('A', game.getTile('A').getLetter());
