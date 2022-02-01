@@ -2,6 +2,7 @@ package Controller;
 
 import Controller.Protocols.ProtocolMessages;
 import Model.ScrabbleServer;
+import View.utils.ANSI;
 
 import java.io.*;
 import java.net.Socket;
@@ -67,21 +68,21 @@ public class ScrabbleClientHandler implements Runnable{
         switch(splittedMsg[0]){
             case ProtocolMessages.CONNECT:
                 if(server.getPlayers().size() >= 4){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Sorry, the game is already full (max 4 players)! Shutting down connection... \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Sorry, the game is already full (max 4 players)! Shutting down connection... \n");
                     shutdown();
                     break;
                 }
                 for(ScrabbleClientHandler h : server.getClients()) {
                     if (splittedMsg.length != 2 || splittedMsg[1].isBlank()) {
-                        sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Command 'c' should include the name. Type 'help' for more information about commands! \n");
+                        sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Command 'c' should include the name. Type 'help' for more information about commands! \n");
                         break outer;
                     } else {
                         if(playerMade){
-                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Player is already created! \n");
+                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Player is already created! \n");
                             break outer;
                         }
                         else if(h.getName().equals(splittedMsg[1])) {
-                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "This name already exists, try another one! \n");
+                            sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "This name already exists, try another one! \n");
                             break outer;
                         }
                     }
@@ -92,7 +93,7 @@ public class ScrabbleClientHandler implements Runnable{
                 break;
             case ProtocolMessages.MAKE_MOVE:
                 if(splittedMsg.length != 4){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "The move command should be of type: 'm' 'coordinates' 'orientation' 'word'! Type 'help' for the help menu. \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "The move command should be of type: 'm' 'coordinates' 'orientation' 'word'! Type 'help' for the help menu. \n");
                     break;
                 }
                 boolean vertical = false;
@@ -101,14 +102,14 @@ public class ScrabbleClientHandler implements Runnable{
                 } else if (splittedMsg[2].equalsIgnoreCase("H")) {
                     vertical = false;
                 } else {
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Orientation should be: H (horizontal) or V (vertical)! \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Orientation should be: H (horizontal) or V (vertical)! \n");
                     break;
                 }
                 server.handlePlace(splittedMsg[1], vertical, splittedMsg[3], this);
                 break;
             case ProtocolMessages.FORCE_START:
                 if(server.getPlayers().size() < 2){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You can't start the game without at least 2 players!(You are the only one on the server now) \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't start the game without at least 2 players!(You are the only one on the server now) \n");
                     break;
                 }
                 server.handleForceStart(this);
@@ -118,7 +119,7 @@ public class ScrabbleClientHandler implements Runnable{
                 break;
             case ProtocolMessages.REPLACE_TILES:
                 if(splittedMsg.length != 2 || splittedMsg[1].isBlank()){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Command 'r' should also include your tiles! Type 'help' for the help menu. \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Command 'r' should also include your tiles! Type 'help' for the help menu. \n");
                     break;
                 }
                 server.handleSkipAndSwap(this, splittedMsg[1]);
@@ -129,7 +130,7 @@ public class ScrabbleClientHandler implements Runnable{
                         h.sendMessage(ProtocolMessages.CUSTOM_COMMAND + ProtocolMessages.DELIMITER + name + ":" + message.substring(message.indexOf("/") + 1) + "\n");
                     }
                 } else{
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "To chat enter '/' 'your message'. \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "To chat enter '/' 'your message'. \n");
                 }
                 break;
             case ProtocolMessages.DISCONNECT:

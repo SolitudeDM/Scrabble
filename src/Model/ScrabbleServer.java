@@ -148,15 +148,15 @@ public class ScrabbleServer implements ServerProtocol {
             for (ScrabbleClientHandler h : clients) {
                 if (currentPlayer.getName().equals(h.getName())) {
                     if(currentPlayer.getMove().isRequestAnother()) {
-                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Invalid input, try one more time! (Type 'help' for help menu) \n");
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Invalid input, try one more time! (Type 'help' for help menu) " + ANSI.RESET + "\n");
                         continue;
                     }
                     else {
                         if(currentPlayer.getMove().isMoveLost()) {
-                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "Your move is invalid, you lose your turn \n");
+                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Your move is invalid, you lose your turn " + ANSI.RESET + "\n");
                         }
                         else if(!currentPlayer.getMove().isRequestAnother()){
-                            h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + "You made your move, it's " + players.get(currentPlayerIndex).getName()+ "'s turn now! \n");
+                            h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n" + ANSI.WHITE_BRIGHT + "You made your move, it's "  + ANSI.PURPLE_BRIGHT + players.get(currentPlayerIndex).getName() + ANSI.WHITE_BRIGHT + "'s turn now! " + ANSI.RESET + "\n");
                             continue;
                         }
                     }
@@ -166,14 +166,14 @@ public class ScrabbleServer implements ServerProtocol {
                     if(p.getName().equals(h.getName())) {
                         if(!currentPlayer.getMove().isRequestAnother()) {
                             if (!currentPlayer.getMove().isMoveLost()) {
-                                h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + "It's " + players.get(currentPlayerIndex).getName() + "'s turn!" + "\n");
+                                h.sendMessage(ProtocolMessages.UPDATE_TABLE + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Updated board: \n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n" + ANSI.WHITE_BRIGHT + "It's "  + ANSI.PURPLE_BRIGHT + players.get(currentPlayerIndex).getName() + ANSI.WHITE_BRIGHT + "'s turn!" + ANSI.RESET + "\n");
                             }
                             if(currentPlayer.getMove().isMoveLost()){
                                 test = true;
                             }
                             if(p.getName().equals(h.getName()) && !p.equals(currentPlayer)) {
                                 if (test) {
-                                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + currentPlayer.getName() + "'s move was invalid, it's " +players.get(currentPlayerIndex).getName() + "'s turn now! \n");
+                                    h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + currentPlayer.getName() + ANSI.WHITE_BRIGHT + "'s move was invalid, it's " + ANSI.PURPLE_BRIGHT + players.get(currentPlayerIndex).getName() + "'s turn!" + ANSI.RESET + "\n");
                                     test = false;
                                 }
                             }
@@ -186,7 +186,7 @@ public class ScrabbleServer implements ServerProtocol {
             }
 
         } else{
-            caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
+            caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER  + ANSI.RED_BOLD_BRIGHT + "It is not your turn, mate!" + ANSI.RESET + "\n");
         }
         if(game.isFinished()){
             sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + game.determineWinner() + "\n");
@@ -202,15 +202,15 @@ public class ScrabbleServer implements ServerProtocol {
             for (ScrabbleClientHandler h : clients) {
                 if (p.getName().equals(h.getName())) {
                     if(players.size() == 2) {
-                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
                         break;
                     }
                     else if(players.size() == 3){
-                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
                         break;
                     }
                     else if(players.size() == 4){
-                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + "\n");
+                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
                         break;
                     }
                 }
@@ -218,7 +218,7 @@ public class ScrabbleServer implements ServerProtocol {
             if(caller.getName().equals(p.getName())) {
                 currentPlayerIndex = players.indexOf(p);
                 currentPlayer = p;
-                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "It's " + caller.getName() + "'s turn! (First move should include the CENTER square!) \n");
+                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "It's " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + "'s turn! (First move should include the CENTER square!) \n");
             }
         }
     }
@@ -247,21 +247,21 @@ public class ScrabbleServer implements ServerProtocol {
                 if (currentPlayer.getName().equals(h.getName())) {
                     if(swap) {
                         if(currentPlayer.getMove().isMoveMade()) {
-                            h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n Opponent's turn now! \n");
+                            h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n Opponent's turn now! " + ANSI.RESET + "\n");
                         }else if(currentPlayer.getMove().isRequestAnother()){
-                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "You don't have the tiles you want to replace! Try again! \n");
+                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "You don't have the tiles you want to replace! Try again! " + ANSI.RESET + "\n");
                         }
                     }else{
-                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "You skipped your turn \n");
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "You skipped your turn " + ANSI.RESET + "\n");
                     }
 
                 }else {
                     if (!swap) {
-                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "PLayer " + currentPlayer.getName() + " skipped his turn! It's " + players.get(currentPlayerIndex).getName() + "'s turn now! \n");
+                        h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "PLayer " + ANSI.PURPLE_BRIGHT + currentPlayer.getName() + ANSI.WHITE_BRIGHT + " skipped his turn! It's " + ANSI.PURPLE_BRIGHT + players.get(currentPlayerIndex).getName() + ANSI.WHITE_BRIGHT + "'s turn now!" + ANSI.RESET + "\n");
                     }
                     else {
                         if (!currentPlayer.getMove().isRequestAnother()) {
-                            h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Your opponent swapped tiles, " + players.get(currentPlayerIndex).getName() + "'s turn now! \n");
+                            h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Your opponent swapped tiles, " + ANSI.PURPLE_BRIGHT + players.get(currentPlayerIndex).getName() + ANSI.WHITE_BRIGHT + "'s turn now! " + ANSI.RESET + "\n");
                         }
                     }
                 }
@@ -271,7 +271,7 @@ public class ScrabbleServer implements ServerProtocol {
                 currentPlayer = players.get(currentPlayerIndex);
             }
         } else{
-            caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + "It is not your turn, mate! \n");
+            caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "It is not your turn, mate! \n");
         }
         if(game.isFinished()){
             sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + game.determineWinner() + "\n");
@@ -281,7 +281,7 @@ public class ScrabbleServer implements ServerProtocol {
     @Override
     public void handleExit() {
         game.setFinishGame(true);
-        sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + "Player " + currentPlayer.getName() + " finished the game! \n"+ game.determineWinner() + "\n");
+        sendMessageToAll(ProtocolMessages.FINISH_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Player " + ANSI.PURPLE_BRIGHT + currentPlayer.getName() + ANSI.WHITE_BRIGHT + " finished the game! \n" + game.determineWinner() + ANSI.RESET + "\n");
 
     }
 
