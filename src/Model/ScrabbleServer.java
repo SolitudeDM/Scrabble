@@ -45,7 +45,7 @@ public class ScrabbleServer implements ServerProtocol {
         return clients;
     }
     /** a getter for the players List*/
-    public ArrayList<Player> getPlayers() {
+    public synchronized ArrayList<Player> getPlayers() {
         return players;
     }
 

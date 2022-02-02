@@ -2,6 +2,7 @@ package Controller;
 
 import Controller.Protocols.ProtocolMessages;
 import Model.ScrabbleServer;
+import Model.players.Player;
 import View.utils.ANSI;
 
 import java.io.*;
@@ -69,6 +70,12 @@ public class ScrabbleClientHandler implements Runnable{
         outer:
         switch(splittedMsg[0]){
             case ProtocolMessages.CONNECT:
+                if(server.isGameRunning()){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't connect to a running game! \n");
+                    server.getPlayers().removeIf(p -> p.getName().equals(name));
+                    shutdown();
+                    break;
+                }
                 if(server.getPlayers().size() >= 4){
                     sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Sorry, the game is already full (max 4 players)! Shutting down connection... \n");
                     shutdown();
@@ -110,10 +117,12 @@ public class ScrabbleClientHandler implements Runnable{
                 server.handlePlace(splittedMsg[1], vertical, splittedMsg[3], this);
                 break;
             case ProtocolMessages.FORCE_START:
-                if(server.isGameRunning()){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't connect to a running game! Type 'D' to disconnect. \n");
-                    break;
-                }
+//                if(server.isGameRunning()){
+//                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't connect to a running game! Type 'D' to disconnect. \n");
+//                    server.getPlayers().removeIf(p -> p.getName().equals(name));
+//                    shutdown();
+//                    break;
+//                }
                 if(server.getPlayers().size() < 2){
                     sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't start the game without at least 2 players! Wait for connections of other players! \n");
                     break;
