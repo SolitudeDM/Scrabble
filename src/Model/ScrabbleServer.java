@@ -24,6 +24,7 @@ public class ScrabbleServer implements ServerProtocol {
     private Game game;
     private Player currentPlayer;
     private int currentPlayerIndex;
+    private int fsCount;
 
     /**
      * ScrabbleServer constructor that initialises the clients List and players List*/
@@ -123,7 +124,7 @@ public class ScrabbleServer implements ServerProtocol {
         currentPlayerIndex = players.size() - 1;
         currentPlayer = players.get(currentPlayerIndex);
 
-        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + ANSI.RESET + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server." + ANSI.WHITE_BRIGHT + " Type " + ANSI.YELLOW_BRIGHT+ "'fs' " + ANSI.WHITE_BRIGHT + "to start game! \n");
+        sendMessageToAll(ProtocolMessages.CONFIRM_CONNECT + ProtocolMessages.DELIMITER + ANSI.RESET + "Player " + ANSI.PURPLE_BOLD_BRIGHT + playerName + ANSI.RESET +" connected to the server." + ANSI.WHITE_BRIGHT + " Type " + ANSI.YELLOW_BRIGHT+ "'fs' " + ANSI.WHITE_BRIGHT + " if you are ready to start the game! \n");
 
     }
 
@@ -197,23 +198,27 @@ public class ScrabbleServer implements ServerProtocol {
     @Override
     public void handleForceStart(ScrabbleClientHandler caller) {
         setUpGame();
+        fsCount++;
         for(Player p : players) {
             p.setGame(game);
-            for (ScrabbleClientHandler h : clients) {
-                if (p.getName().equals(h.getName())) {
-                    if(players.size() == 2) {
-                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
-                        break;
-                    }
-                    else if(players.size() == 3){
-                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
-                        break;
-                    }
-                    else if(players.size() == 4){
-                        h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
-                        break;
+            if(fsCount == players.size()) {
+                for (ScrabbleClientHandler h : clients) {
+                    if (p.getName().equals(h.getName())) {
+                        if (players.size() == 2) {
+                            h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
+                            break;
+                        } else if (players.size() == 3) {
+                            h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
+                            break;
+                        } else if (players.size() == 4) {
+                            h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
+                            break;
+                        }
                     }
                 }
+            } else {
+                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + caller.getName() + " is ready to start, type 'fs' if you are ready as well! \n");
+                break;
             }
             if(caller.getName().equals(p.getName())) {
                 currentPlayerIndex = players.indexOf(p);
