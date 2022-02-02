@@ -51,6 +51,7 @@ class DetermineWinnerTest {
         assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
     }
 
+    /** Here we test if the negative score will be changed to 0 and the winner will be the player who had the highest score before the reset to 0 */
     @Test
     public void emptyHandsTestNegativeScore(){
         ArrayList<Tile> empty = new ArrayList<>();
@@ -127,6 +128,8 @@ class DetermineWinnerTest {
         assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
     }
 
+    /** Here we test if the scores were negative and there is a tie situation, we expect the scores to be set to 0 and
+     * that the winner with the highest score before reset will be shown */
     @Test
     public void tieSituationTestNegativeScore(){
         Tile t1 = new Tile('A', 1, 9);
