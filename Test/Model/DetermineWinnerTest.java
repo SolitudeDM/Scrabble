@@ -48,7 +48,7 @@ class DetermineWinnerTest {
         assertEquals(5, p2.getScore());
         assertEquals(2, p1.getScore());
 
-        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
+        assertEquals("The winner is: " + p2.getName() +  ". His final score: " + p2.getScore(), game.determineWinner());
     }
 
     /** Here we test if the negative score will be changed to 0 and the winner will be the player who had the highest score before the reset to 0 */
@@ -68,7 +68,7 @@ class DetermineWinnerTest {
         assertEquals(0, p2.getScore());
         assertEquals(0, p1.getScore());
 
-        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), "The winner is: " + "P2" +  ". His score: " + "0");
+        assertEquals("The winner is: " + p2.getName() +  ". His final score: " + p2.getScore(), "The winner is: " + "P2" +  ". His final score: " + "0");
     }
 
     /** Here we test if the scores were changed correctly in the determineWinner() method*/
@@ -125,7 +125,7 @@ class DetermineWinnerTest {
 
         game.setFinishGame(true);
 
-        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
+        assertEquals("The winner is: " + p2.getName() +  ". His final score: " + p2.getScore(), game.determineWinner());
     }
 
     /** Here we test if the scores were negative and there is a tie situation, we expect the scores to be set to 0 and
@@ -152,6 +152,6 @@ class DetermineWinnerTest {
 
         game.setFinishGame(true);
 
-        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
+        assertEquals("The winner is: " + p2.getName() +  ". His final score: " + p2.getScore(), game.determineWinner());
     }
 }

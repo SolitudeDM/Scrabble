@@ -345,7 +345,7 @@ public class Game {
                 highestScore = 0;
             }
 
-            return "The winner is: " + tempWinner.getName() +  ". His score: " + highestScore;
+            return "The winner is: " + tempWinner.getName() +  ". His final score: " + highestScore;
         }
         return null;
     }

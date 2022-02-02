@@ -154,8 +154,10 @@ public class ScrabbleServer implements ServerProtocol {
 
             game.handOut();
 
-            currentPlayerIndex++;
-            currentPlayerIndex %= players.size();
+            if(!currentPlayer.getMove().isRequestAnother()) {
+                currentPlayerIndex++;
+                currentPlayerIndex %= players.size();
+            }
 
             boolean test = false;
             for (ScrabbleClientHandler h : clients) {
@@ -268,8 +270,10 @@ public class ScrabbleServer implements ServerProtocol {
                 currentPlayer.getMove().swap(" ");
             }
 
-            currentPlayerIndex++;
-            currentPlayerIndex %= players.size();
+            if(!currentPlayer.getMove().isRequestAnother()) {
+                currentPlayerIndex++;
+                currentPlayerIndex %= players.size();
+            }
 
             for (ScrabbleClientHandler h : clients) {
                 if (currentPlayer.getName().equals(h.getName())) {
