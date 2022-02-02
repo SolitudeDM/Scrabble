@@ -308,9 +308,6 @@ public class Game {
                 } else if (player.getScore() == highestScore){
                     tieSituation = true;
                 }
-                if (player.getScore() < 0) {
-                    player.setScore(0);
-                }
             }
 
             //if there is a tie situation we add the subtracted score back and check who had a higher score before the subtractions
@@ -337,6 +334,16 @@ public class Game {
                 }
             }
 
+            for (Player player : players){
+                if(player.getScore() < 0){
+                    player.setScore(0);
+                }
+            }
+
+
+            if (highestScore < 0) {
+                highestScore = 0;
+            }
 
             return "The winner is: " + tempWinner.getName() +  ". His score: " + highestScore;
         }
