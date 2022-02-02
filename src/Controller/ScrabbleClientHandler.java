@@ -110,6 +110,10 @@ public class ScrabbleClientHandler implements Runnable{
                 server.handlePlace(splittedMsg[1], vertical, splittedMsg[3], this);
                 break;
             case ProtocolMessages.FORCE_START:
+                if(server.isGameRunning()){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't connect to a running game! Type 'D' to disconnect. \n");
+                    break;
+                }
                 if(server.getPlayers().size() < 2){
                     sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't start the game without at least 2 players! Wait for connections of other players! \n");
                     break;
