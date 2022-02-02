@@ -299,7 +299,7 @@ public class Game {
             }
 
 
-            int highestScore = 0;
+            int highestScore = -69;
             Player tempWinner = players.get(0);
 
             for (Player player : players){
