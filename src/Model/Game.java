@@ -292,9 +292,6 @@ public class Game {
             for (Player p : players) {
                 for (Tile t : p.getHand()) {
                     p.setScore(p.getScore() - t.getLetterPoints());
-                    if (p.getScore() < 0) {
-                        p.setScore(0);
-                    }
                 }
             }
 
@@ -320,10 +317,13 @@ public class Game {
                 }
 
 
-                highestScore = 0;
+                highestScore = -69;
                 tempWinner = players.get(0);
 
                 for (Player player : players){
+                    if (player.getScore() < 0) {
+                        player.setScore(0);
+                    }
                     if(player.getScore() > highestScore){
                         highestScore = player.getScore();
                         tempWinner = player;
