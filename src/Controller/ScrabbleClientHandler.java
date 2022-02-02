@@ -24,6 +24,7 @@ public class ScrabbleClientHandler implements Runnable{
     /** boolean to keep track of made player(so one client can't create multiple players)*/
     private boolean playerMade = false;
 
+    private boolean fsCalled = false;
 
     /**
      * Constructor of the class, initialises the variables*/
@@ -110,10 +111,21 @@ public class ScrabbleClientHandler implements Runnable{
                 break;
             case ProtocolMessages.FORCE_START:
                 if(server.getPlayers().size() < 2){
-                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't start the game without at least 2 players!(You are the only one on the server now) \n");
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You can't start the game without at least 2 players! Wait for connections of other players! \n");
                     break;
                 }
-                server.handleForceStart(this);
+                if(!fsCalled) {
+                    server.handleForceStart(this);
+                }
+                else if(server.isGameCreated()){
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Game is already created! \n");
+                    break;
+                }
+                else {
+                    sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You already sent 'fs' and everyone knows that you are ready! \n");
+                    break;
+                }
+                fsCalled = true;
                 break;
             case ProtocolMessages.SKIP_TURN:
                 server.handleSkipAndSwap(this, null);
