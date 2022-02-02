@@ -35,7 +35,7 @@ class DetermineWinnerTest {
 
     /** Here we test if both player's hands and tileSack are empty, so we expect the player with most score to be the winner*/
     @Test
-    public void emptyHandsTest(){
+    public void emptyHandsTestPositiveScore(){
         ArrayList<Tile> empty = new ArrayList<>();
         p1.setHand(empty);
         p2.setHand(empty);
@@ -45,7 +45,29 @@ class DetermineWinnerTest {
 
         game.setFinishGame(true);
 
+        assertEquals(5, p2.getScore());
+        assertEquals(2, p1.getScore());
+
         assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
+    }
+
+    @Test
+    public void emptyHandsTestNegativeScore(){
+        ArrayList<Tile> empty = new ArrayList<>();
+        p1.setHand(empty);
+        p2.setHand(empty);
+
+        p2.setScore(-5);
+        p1.setScore(-7);
+
+        game.setFinishGame(true);
+
+        game.determineWinner();
+
+        assertEquals(0, p2.getScore());
+        assertEquals(0, p1.getScore());
+
+        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), "The winner is: " + "P2" +  ". His score: " + "0");
     }
 
     /** Here we test if the scores were changed correctly in the determineWinner() method*/
@@ -81,7 +103,7 @@ class DetermineWinnerTest {
     /** Here we check if the tie situation is handled as expected
      * In case of a tie after all manipulations with tiles, we will check who had the highest score before the subtraction of tiles left*/
     @Test
-    public void tieSituationTest(){
+    public void tieSituationTestPositiveScore(){
         Tile t1 = new Tile('A', 1, 9);
         Tile t2 = new Tile('B', 3, 2);
         Tile t3 = new Tile('Z', 10, 2);
@@ -89,24 +111,44 @@ class DetermineWinnerTest {
 
         ArrayList<Tile> hand1 = new ArrayList<>();
         hand1.add(t1);
-        hand1.add(t2);
-        hand1.add(t3);
+        hand1.add(t4);
 
         ArrayList<Tile> hand2 = new ArrayList<>();
-        hand2.add(t1);
         hand2.add(t2);
-        hand2.add(t3);
-        hand2.add(t4);
 
         p1.setHand(hand1);
         p2.setHand(hand2);
 
-        p1.setScore(5);
-        p2.setScore(6);
+        p1.setScore(4);
+        p2.setScore(5);
 
         game.setFinishGame(true);
 
-        game.determineWinner();
+        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
+    }
 
+    @Test
+    public void tieSituationTestNegativeScore(){
+        Tile t1 = new Tile('A', 1, 9);
+        Tile t2 = new Tile('B', 3, 2);
+        Tile t3 = new Tile('Z', 10, 2);
+        Tile t4 = new Tile('E', 1, 12);
+
+        ArrayList<Tile> hand1 = new ArrayList<>();
+        hand1.add(t1);
+        hand1.add(t4);
+
+        ArrayList<Tile> hand2 = new ArrayList<>();
+        hand2.add(t2);
+
+        p1.setHand(hand1);
+        p2.setHand(hand2);
+
+        p1.setScore(0);
+        p2.setScore(1);
+
+        game.setFinishGame(true);
+
+        assertEquals("The winner is: " + p2.getName() +  ". His score: " + p2.getScore(), game.determineWinner());
     }
 }
