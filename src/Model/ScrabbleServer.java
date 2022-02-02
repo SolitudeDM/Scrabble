@@ -219,7 +219,7 @@ public class ScrabbleServer implements ServerProtocol {
                     }
 
                 } else {
-                    sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + caller.getName() + " is ready to start, type 'fs' if you are ready as well! \n");
+                    sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + " is ready to start, type " + ANSI.YELLOW_BRIGHT + "'fs'" + ANSI.WHITE_BRIGHT + " if you are ready as well! \n");
                     break;
                 }
                 currentPlayerIndex = players.indexOf(p);
