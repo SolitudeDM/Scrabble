@@ -288,13 +288,13 @@ public class Game {
             }
 
             //subtract score for tiles that remained in the hand at the end
-            if (privileged == null) {
-                for (Player p : players) {
-                    for (Tile t : p.getHand()) {
-                        p.setScore(p.getScore() - t.getLetterPoints());
-                    }
+
+            for (Player p : players) {
+                for (Tile t : p.getHand()) {
+                    p.setScore(p.getScore() - t.getLetterPoints());
                 }
             }
+
 
             int highestScore = 0;
             Player tempWinner = players.get(0);
@@ -346,6 +346,7 @@ public class Game {
 
         String handString = "";
         handString += (ANSI.BLUE_BOLD_BRIGHT);
+        handString += (player.getName());
         handString += (player.getName());
         for (int i = 0; i < 15 - player.getName().length(); i++) {
             handString +=(" ");
