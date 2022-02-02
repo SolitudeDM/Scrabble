@@ -356,7 +356,6 @@ public class Game {
         String handString = "";
         handString += (ANSI.BLUE_BOLD_BRIGHT);
         handString += (player.getName());
-        handString += (player.getName());
         for (int i = 0; i < 15 - player.getName().length(); i++) {
             handString +=(" ");
         }

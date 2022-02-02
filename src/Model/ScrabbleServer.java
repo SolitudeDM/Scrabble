@@ -47,8 +47,9 @@ public class ScrabbleServer implements ServerProtocol {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-    /** a getter for the gameCreated boolean*/
-    public boolean isGameCreated() {
+
+    /** a getter for the gameCreated boolean */
+    public boolean isGameCreated(){
         return gameCreated;
     }
 
@@ -77,7 +78,7 @@ public class ScrabbleServer implements ServerProtocol {
                 setUp();
                 int PlayerIndex = 1;
                 while(true) {
-                    String name = "Player" + PlayerIndex;
+                    String name = "Player " + PlayerIndex;
                     Socket sock = ssock.accept();
                     ScrabbleClientHandler handler = new ScrabbleClientHandler(sock, this, name);
                     new Thread(handler).start();
@@ -202,31 +203,34 @@ public class ScrabbleServer implements ServerProtocol {
 
     @Override
     public void handleForceStart(ScrabbleClientHandler caller) {
-        if (!gameCreated) {
+        if(!gameCreated) {
             setUpGame();
             fsCount++;
             for (Player p : players) {
                 p.setGame(game);
-                if (fsCount == players.size()) {
-                    if (p.getName().equals(caller.getName())) {
-                        if (players.size() == 2) {
-                            sendMessageToAll(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
-                        } else if (players.size() == 3) {
-                            sendMessageToAll(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
-                        } else if (players.size() == 4) {
-                            sendMessageToAll(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n");
+                if (fsCount == players.size() && fsCount == clients.size()) {
+                    for (ScrabbleClientHandler h : clients) {
+                        if (p.getName().equals(h.getName())) {
+                            if (players.size() == 2) {
+                                h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n" + ANSI.WHITE_BRIGHT + "It's " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + "'s turn! (First move should include the CENTER square!) \n");
+                                break;
+                            } else if (players.size() == 3) {
+                                h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n" + ANSI.WHITE_BRIGHT + "It's " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + "'s turn! (First move should include the CENTER square!) \n");
+                                break;
+                            } else if (players.size() == 4) {
+                                h.sendMessage(ProtocolMessages.INITIATE_GAME + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Starting game... players: " + players.get(0).getName() + " & " + players.get(1).getName() + " & " + players.get(2).getName() + " & " + players.get(3).getName() + "\n" + game.getBoard().toString() + "\n" + game.tilesToString(p) + ANSI.RESET + "\n" + ANSI.WHITE_BRIGHT + "It's " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + "'s turn! (First move should include the CENTER square!) \n");
+                                break;
+                            }
                         }
                     }
-
                 } else {
-                    sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + " is ready to start, type " + ANSI.YELLOW_BRIGHT + "'fs'" + ANSI.WHITE_BRIGHT + " if you are ready as well! \n");
+                    sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + caller.getName() + " is ready to start, type 'fs' if you are ready as well! \n");
                     break;
                 }
-                currentPlayerIndex = players.indexOf(p);
-                currentPlayer = p;
-                sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "It's " + ANSI.PURPLE_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + "'s turn! (First move should include the CENTER square!) \n");
-                gameCreated = true;
-                break;
+                if (caller.getName().equals(p.getName())) {
+                    currentPlayerIndex = players.indexOf(p);
+                    currentPlayer = p;
+                }
             }
         } else {
             caller.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "Game is already created! \n");
