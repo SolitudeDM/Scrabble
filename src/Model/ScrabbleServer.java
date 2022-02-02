@@ -224,7 +224,7 @@ public class ScrabbleServer implements ServerProtocol {
                         }
                     }
                 } else {
-                    sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + caller.getName() + " is ready to start, type 'fs' if you are ready as well! \n");
+                    sendMessageToAll(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + "Player " + ANSI.PURPLE_BOLD_BRIGHT + caller.getName() + ANSI.WHITE_BRIGHT + " is ready to start, type "+ ANSI.YELLOW_BRIGHT + "'fs'" + ANSI.WHITE_BRIGHT + "if you are ready as well! \n");
                     break;
                 }
                 if (caller.getName().equals(p.getName())) {
@@ -263,7 +263,7 @@ public class ScrabbleServer implements ServerProtocol {
                         if(currentPlayer.getMove().isMoveMade()) {
                             h.sendMessage(ProtocolMessages.GIVE_TILE + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "Board with your new tiles: \n" + game.getBoard().toString() + "\n" + game.tilesToString(currentPlayer) + "\n Opponent's turn now! " + ANSI.RESET + "\n");
                         }else if(currentPlayer.getMove().isRequestAnother()){
-                            h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "You don't have the tiles you want to replace! Try again! " + ANSI.RESET + "\n");
+                                h.sendMessage(ProtocolMessages.CUSTOM_EXCEPTION + ProtocolMessages.DELIMITER + ANSI.RED_BOLD_BRIGHT + "You don't have the tiles you want to replace! Try again! " + ANSI.RESET + "\n");
                         }
                     }else{
                         h.sendMessage(ProtocolMessages.FEEDBACK + ProtocolMessages.DELIMITER + ANSI.WHITE_BRIGHT + "You skipped your turn " + ANSI.RESET + "\n");

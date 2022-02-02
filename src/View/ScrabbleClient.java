@@ -163,7 +163,7 @@ public class ScrabbleClient implements Runnable{
                 sendMessage(String.join(ProtocolMessages.DELIMITER, splitMsg));
                 break;
             default:
-                System.out.println("Invalid command, type 'help' for the help menu.");
+                System.out.println(ANSI.RED_BOLD_BRIGHT + "Invalid command, type 'help' for the help menu." + ANSI.RESET);
                 break;
         }
     }
