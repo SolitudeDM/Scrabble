@@ -296,7 +296,7 @@ public class Game {
             }
 
 
-            int highestScore = -69;
+            int highestScore = -1000000;
             Player tempWinner = players.get(0);
 
             for (Player player : players){
@@ -305,6 +305,9 @@ public class Game {
                     tempWinner = player;
                 } else if (player.getScore() == highestScore){
                     tieSituation = true;
+                }
+                if (player.getScore() < 0) {
+                    player.setScore(0);
                 }
             }
 
@@ -317,16 +320,16 @@ public class Game {
                 }
 
 
-                highestScore = -69;
+                highestScore = -1000000000;
                 tempWinner = players.get(0);
 
                 for (Player player : players){
-                    if (player.getScore() < 0) {
-                        player.setScore(0);
-                    }
                     if(player.getScore() > highestScore){
                         highestScore = player.getScore();
                         tempWinner = player;
+                    }
+                    if (player.getScore() < 0) {
+                        player.setScore(0);
                     }
                 }
             }
