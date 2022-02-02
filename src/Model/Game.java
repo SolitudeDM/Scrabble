@@ -292,6 +292,9 @@ public class Game {
             for (Player p : players) {
                 for (Tile t : p.getHand()) {
                     p.setScore(p.getScore() - t.getLetterPoints());
+                    if (p.getScore() < 0) {
+                        p.setScore(0);
+                    }
                 }
             }
 
