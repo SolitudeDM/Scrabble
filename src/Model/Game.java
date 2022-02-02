@@ -266,6 +266,7 @@ public class Game {
     public String determineWinner(){
         if(isFinished()){
 
+            //the priveleged player is player who had an empty hand when the game ended
             Player privileged = null;
             boolean tieSituation = false;
 
@@ -276,6 +277,7 @@ public class Game {
                 }
             }
 
+            //if there is a priveleged player, we add to his score all other player's left tiles
             if (privileged != null) {
                 int markup = 0;
                 for (Player p : players) {
@@ -285,10 +287,10 @@ public class Game {
                         }
                     }
                 }
+                privileged.setScore(privileged.getScore() + markup);
             }
 
             //subtract score for tiles that remained in the hand at the end
-
             for (Player p : players) {
                 for (Tile t : p.getHand()) {
                     p.setScore(p.getScore() - t.getLetterPoints());
@@ -311,6 +313,7 @@ public class Game {
                 }
             }
 
+            //if there is a tie situation we add the subtracted score back and check who had a higher score before the subtractions
             if (tieSituation) {
 
                 for (Player p : players) {
