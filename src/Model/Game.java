@@ -266,21 +266,69 @@ public class Game {
     public String determineWinner(){
         if(isFinished()){
 
-            //subtract score for tiles that remained in the hand at the end
+            Player privileged = null;
+            boolean tieSituation = false;
+
             for (Player p : players) {
-                for (Tile t : p.getHand()) {
-                    p.setScore(p.getScore() - t.getLetterPoints());
+                if (p.getHand().size() == 0) {
+                    privileged = p;
+                    break;
+                }
+            }
+
+            if (privileged != null) {
+                int markup = 0;
+                for (Player p : players) {
+                    if (p != privileged) {
+                        for (Tile t : p.getHand()) {
+                            markup += t.getLetterPoints();
+                        }
+                    }
+                }
+            }
+
+            //subtract score for tiles that remained in the hand at the end
+            if (privileged == null) {
+                for (Player p : players) {
+                    for (Tile t : p.getHand()) {
+                        p.setScore(p.getScore() - t.getLetterPoints());
+                    }
                 }
             }
 
             int highestScore = 0;
             Player tempWinner = players.get(0);
+
             for (Player player : players){
                 if(player.getScore() > highestScore){
                     highestScore = player.getScore();
                     tempWinner = player;
+                } else if (player.getScore() == highestScore){
+                    tieSituation = true;
                 }
             }
+
+            if (tieSituation) {
+
+                for (Player p : players) {
+                    for (Tile t : p.getHand()) {
+                        p.setScore(p.getScore() + t.getLetterPoints());
+                    }
+                }
+
+
+                highestScore = 0;
+                tempWinner = players.get(0);
+
+                for (Player player : players){
+                    if(player.getScore() > highestScore){
+                        highestScore = player.getScore();
+                        tempWinner = player;
+                    }
+                }
+            }
+
+
             return "The winner is: " + tempWinner.getName() +  ". His score: " + highestScore;
         }
         return null;

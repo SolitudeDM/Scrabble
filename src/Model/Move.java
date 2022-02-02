@@ -240,7 +240,7 @@ public class Move {
 
 
         if (tilesAbused) {
-            System.out.println("Заабузел B)");
+//            System.out.println("Заабузел B)");
             requestAnother = true;
             return;
         }

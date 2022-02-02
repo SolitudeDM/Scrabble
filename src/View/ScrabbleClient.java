@@ -113,7 +113,7 @@ public class ScrabbleClient implements Runnable{
     /**
      * This method starts a new ScrabbleClient by creating a connection and a new thread*/
     public void start(){
-        System.out.println(ANSI.WHITE_BRIGHT + "Welcome to " + ANSI.CYAN_BOLD_BRIGHT +  "scrabble" + ANSI.WHITE_BRIGHT +  " lobby," + ANSI.YELLOW_BRIGHT +  " connect" + ANSI.WHITE_BRIGHT +" to the server using command "+ ANSI.YELLOW_BRIGHT +"'c' 'your name'" + ANSI.WHITE_BRIGHT + ", or type" + ANSI.YELLOW_BRIGHT + " 'help' " + ANSI.WHITE_BRIGHT + "for the help menu.");
+        System.out.println(ANSI.WHITE_BRIGHT + "Welcome to " + ANSI.CYAN_BOLD_BRIGHT +  "scrabble" + ANSI.WHITE_BRIGHT +  " lobby, " + ANSI.YELLOW_UNDERLINED +  "connect" + ANSI.WHITE_BRIGHT +" to the server using command "+ ANSI.YELLOW_BRIGHT +"'c' 'your name'" + ANSI.WHITE_BRIGHT + ", or type" + ANSI.YELLOW_BRIGHT + " 'help' " + ANSI.WHITE_BRIGHT + "for the help menu.");
         boolean run = true;
         createConnection();
         new Thread(this).start();
